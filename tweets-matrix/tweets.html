@@ -37,7 +37,17 @@
 </select>
 </aside>
 
+<aside style="margin-top:160px;">
+  <p>Number of Nodes: <select id="nodescount">
+  <option value="5" selected="true">5</option>
+  <option value="10">10</option>
+  <option value="20">20</option>
+  <option value="100">100</option>
+</select>
+</aside>
+
 <script>
+  var selected_nodes = 5;
   function myfunction() {
     var margin = { top: 80, right: 0, bottom: 10, left: 80 },
       width = 720,
@@ -60,8 +70,7 @@
       el.innerHTML = msg;
       document.body.appendChild(el);
     }
-
-    d3.json("tweets.json", function (tweets) {
+    d3.json("tweets_" + selected_nodes +".json", function (tweets) {
       var matrix = [],
         nodes = tweets.nodes,
         n = nodes.length;
@@ -143,9 +152,7 @@
           .attr("text-anchor", "start")
           .text(function (d, i) { return nodes[i].name; });
       }
-
       colgen();
-
       var selected_group = d3.select("#group").value;
       function row_f(row) {
         var cell = d3.select(this).selectAll(".cell")
@@ -186,6 +193,12 @@
         svg.selectAll(".column").remove();
         rowgen();
         colgen();
+      });
+
+      d3.select("#nodescount").on("change", function () {
+        selected_nodes = this.value;
+        d3.select("body").select("svg").remove();
+        myfunction();
       });
 
       function order(value) {
