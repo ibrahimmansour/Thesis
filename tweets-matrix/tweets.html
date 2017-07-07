@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <title>TweetsVIS Co-occurrence</title>
 <style>
-  @import url(./style.css?aea6f0a);
+  @import url(./style.css);
 
   .background {
     fill: #eee;
@@ -21,7 +21,7 @@
 
 <h1>TweetsVIS Co-occurrence</h1>
 
-<aside style="margin-top:80px;">
+<aside style="margin-top:80px;width: 200px;">
   <p>Order: <select id="order">
   <option value="name">by Name</option>
   <option value="count">by Frequency</option>
@@ -30,195 +30,29 @@
 </select>
 </aside>
 
-<aside style="margin-top:120px;">
+<aside style="margin-top:120px;width: 200px;">
   <p>Group: <select id="group">
   <option value="cooccurence">by Co-occurrence</option>
   <option value="similarity">by Similarity Count</option>
 </select>
 </aside>
 
-<aside style="margin-top:160px;">
+<aside style="margin-top:160px;width: 200px;">
   <p>Number of Nodes: <select id="nodescount">
-  <option value="5" selected="true">5</option>
+  <option value="5">5</option>
   <option value="10">10</option>
-  <option value="20">20</option>
+  <option value="20" selected = "true">20</option>
   <option value="100">100</option>
 </select>
 </aside>
 
-<script>
-  var selected_nodes = 5;
-  function myfunction() {
-    var margin = { top: 80, right: 0, bottom: 10, left: 80 },
-      width = 720,
-      height = 720;
+<aside style="margin-top:200px;width: 200px;">
+<p>Relation Value(%):</p>
+   <label for="similarity_value_from">From:</label>
+   <input id="similarity_value_from" type="number" min="0" max="100" step="5" value="0" style="width: 40px;" >
+   <label for="similarity_value_to">To:</label>
+   <input id="similarity_value_to" type="number" min="0" max="100" step="5" value="100" style="width: 40px;">
+<button id="relationsSettingApplyBtn" class="applyBtn">Apply</button>
+</aside>
 
-    var x = d3.scale.ordinal().rangeBands([0, width]),
-      z = d3.scale.linear().domain([0, 1]).clamp(true),
-      c = d3.scale.category10().domain(d3.range(10));
-
-    var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .style("margin-left", -margin.left + "px")
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var el = document.createElement("div");
-    function tempAlert(msg, location) {
-      el.setAttribute("style", "position:absolute;top:" + (x(location.y) + 85) + "px;left:" + x(location.x) + "px;background-color:LightGray;");
-      el.innerHTML = msg;
-      document.body.appendChild(el);
-    }
-    d3.json("tweets_" + selected_nodes +".json", function (tweets) {
-      var matrix = [],
-        nodes = tweets.nodes,
-        n = nodes.length;
-      var invertedindex = [];
-      // Compute index per node.
-      nodes.forEach(function (node, i) {
-        node.index = i;
-        node.count = 0;
-        node.cooccurencecount = 0;
-        node.similaritycount = 0;
-        invertedindex[node.name] = i;
-        matrix[i] = d3.range(n).map(function (j) { return { x: j, y: i, z: 0 }; });
-      });
-
-      // Convert links to matrix; count character occurrences.
-      tweets.links.forEach(function (tweet) {
-        matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].z += tweet.portion1;
-        matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].similarity = tweet.portion2;
-        nodes[invertedindex[tweet.word1]].count = tweet.countTotal;
-        nodes[invertedindex[tweet.word1]].cooccurencecount += tweet.portion1;
-        nodes[invertedindex[tweet.word1]].similaritycount += tweet.portion2;
-      });
-
-      // Precompute the orders.
-      var orders = {
-        name: d3.range(n).sort(function (a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
-        count: d3.range(n).sort(function (a, b) { return nodes[b].count - nodes[a].count; }),
-        cooccurence: d3.range(n).sort(function (a, b) { return nodes[b].cooccurencecount - nodes[a].cooccurencecount; }),
-        similarity: d3.range(n).sort(function (a, b) { return nodes[b].similaritycount - nodes[a].similaritycount; })
-      };
-
-      // The default sort order.
-      x.domain(orders.name);
-
-      svg.append("rect")
-        .attr("class", "background")
-        .attr("width", width)
-        .attr("height", height);
-
-      function rowgen() {
-        var row = svg.selectAll(".row")
-          .data(matrix)
-          .enter().append("g")
-          .attr("class", "row")
-          .attr("transform", function (d, i) { return "translate(0," + x(i) + ")"; })
-          .each(row_f);
-
-        row.append("line")
-          .attr("stroke-width", 2)
-          .attr("stroke", "black")
-          .attr("x2", width);
-
-        row.append("text")
-          .attr("x", -6)
-          .attr("y", x.rangeBand() / 2)
-          .attr("dy", ".32em")
-          .attr("text-anchor", "end")
-          .text(function (d, i) { return nodes[i].name; });
-        
-        selected_group = d3.select("#group").value;
-      }
-
-      rowgen();
-      function colgen() {
-        var column = svg.selectAll(".column")
-          .data(matrix)
-          .enter().append("g")
-          .attr("class", "column")
-          .attr("transform", function (d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
-
-        column.append("line")
-          .attr("stroke-width", 3)
-          .attr("x1", -width);
-
-        column.append("text")
-          .attr("x", 6)
-          .attr("y", x.rangeBand() / 2)
-          .attr("dy", ".32em")
-          .attr("text-anchor", "start")
-          .text(function (d, i) { return nodes[i].name; });
-      }
-      colgen();
-      var selected_group = d3.select("#group").value;
-      function row_f(row) {
-        var cell = d3.select(this).selectAll(".cell")
-          .data(row.filter(function (d) { return (d.z > 0); }))
-          .enter().append("rect")
-          .attr("class", "cell")
-          .attr("x", function (d) { return x(d.x); })
-          .attr("width", x.rangeBand())
-          .attr("height", x.rangeBand())
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout);
-
-        cell.style("opacity", 0.0).transition().duration(1000).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.z); })
-        cell.style("fill", function (d) { return selected_group == "similarity" ? c( Math.round( nodes[d.y].similaritycount)) : c(Math.round( nodes[d.y].cooccurencecount)) ; })
-      }
-
-      function mouseover(p) {
-        d3.selectAll(".row text").classed("active", function (d, i) { return i == p.y; });
-        d3.selectAll(".column text").classed("active", function (d, i) { return i == p.x; });
-        var tweetscount = "(" + Math.round(nodes[p.y].count * (p.z)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
-        var tweetspercentage = Math.round(p.z * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
-        var nodesimilarity = "'" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
-        var msg = tweetscount + "</br>" + tweetspercentage + "</br>" + nodesimilarity + "</br>" + Math.round (nodes[p.y].similaritycount) + " cooc:" + nodes[p.y].cooccurencecount;
-        tempAlert(msg, p);
-      }
-      function mouseout() {
-        d3.selectAll("text").classed("active", false);
-        el.parentNode.removeChild(el);
-      }
-
-      d3.select("#order").on("change", function () {
-        order(this.value);
-      });
-
-      d3.select("#group").on("change", function () {
-        selected_group = this.value;
-        svg.selectAll(".row").remove();
-        svg.selectAll(".column").remove();
-        rowgen();
-        colgen();
-      });
-
-      d3.select("#nodescount").on("change", function () {
-        selected_nodes = this.value;
-        d3.select("body").select("svg").remove();
-        myfunction();
-      });
-
-      function order(value) {
-        x.domain(orders[value]);
-
-        var t = svg.transition().duration(2500);
-
-        t.selectAll(".row")
-          .delay(function (d, i) { return x(i) * 4; })
-          .attr("transform", function (d, i) { return "translate(0," + x(i) + ")"; })
-          .selectAll(".cell")
-          .delay(function (d) { return x(d.x) * 4; })
-          .attr("x", function (d) { return x(d.x); });
-
-        t.selectAll(".column")
-          .delay(function (d, i) { return x(i) * 4; })
-          .attr("transform", function (d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
-      }
-    });
-  }
-  myfunction();
-
-</script>
+<script src="./controller.js"></script>
