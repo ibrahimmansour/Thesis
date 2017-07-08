@@ -1,17 +1,18 @@
   var selected_nodes = 20;
-  var selected_group = d3.select("#group").value;
+  var selected_order = document.getElementById("order").value;
+  var selected_group = document.getElementById("group").value;
   var relationvaluefrom = document.getElementById("similarity_value_from").value;
   var relationvalueto =  document.getElementById("similarity_value_to").value;
 
-  function myfunction() {
-    var margin = { top: 80, right: 0, bottom: 10, left: 80 },
+  var margin = { top: 80, right: 0, bottom: 10, left: 80 },
       width = 720,
       height = 720;
 
-    var x = d3.scale.ordinal().rangeBands([0, width]),
+  var x = d3.scale.ordinal().rangeBands([0, width]),
       z = d3.scale.linear().domain([0, 1]).clamp(true),
       c = d3.scale.category10().domain(d3.range(10));
 
+  function myfunction() {
     var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -25,6 +26,7 @@
       el.innerHTML = msg;
       document.body.appendChild(el);
     }
+    
     d3.json("tweets_" + selected_nodes +".json", function (tweets) {
       var matrix = [],
         nodes = tweets.nodes,
@@ -58,7 +60,7 @@
       };
 
       // The default sort order.
-      x.domain(orders.name);
+      x.domain(orders[selected_order]);
 
       svg.append("rect")
         .attr("class", "background")
@@ -138,8 +140,8 @@
         d3.selectAll("text").classed("active", false);
         el.parentNode.removeChild(el);
       }
-
       d3.select("#order").on("change", function () {
+        selected_order = this.value;
         order(this.value);
       });
 
