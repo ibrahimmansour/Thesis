@@ -112,8 +112,8 @@
         var cell = d3.select(this).selectAll(".cell")
           .data(row.filter(function (d) { 
           return selected_group == "similarity" 
-          ? ((d.similarity * 100 > relationvaluefrom) && (d.similarity * 100 < relationvalueto)) 
-          : ((d.z * 100 > relationvaluefrom) && (d.z * 100 < relationvalueto)) ; 
+          ? ((d.similarity * 100 > relationvaluefrom) && (d.similarity * 100 <= relationvalueto))
+          : ((d.z * 100 > relationvaluefrom) && (d.z * 100 <= relationvalueto));
         }))
           .enter().append("rect")
           .attr("class", "cell")
