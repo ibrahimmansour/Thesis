@@ -22,8 +22,8 @@
 
     var el = document.createElement("div");
     function tempAlert(msg, location) {
-      el.setAttribute("style", "position:absolute;top:" + (x(location.y) + 85) + "px;left:" + x(location.x) + "px;background-color:LightGray;");
-      el.innerHTML = msg;
+      el.setAttribute("style", "white-space:nowrap;border-radius: 15px;position:absolute;top:" + (x(location.y) + 125) + "px;left:" + x(location.x) + "px;background-color:LightGray;");
+      el.innerHTML = "<i>" + msg + "</i>";
       document.body.appendChild(el);
     }
     
@@ -120,6 +120,8 @@
           .attr("x", function (d) { return x(d.x); })
           .attr("width", x.rangeBand())
           .attr("height", x.rangeBand())
+          .attr("rx", 10) // rounded corners
+          .attr("ry", 10)
           .on("mouseover", mouseover)
           .on("mouseout", mouseout);
 
@@ -130,10 +132,10 @@
       function mouseover(p) {
         d3.selectAll(".row text").classed("active", function (d, i) { return i == p.y; });
         d3.selectAll(".column text").classed("active", function (d, i) { return i == p.x; });
-        var tweetscount = "(" + Math.round(nodes[p.y].count * (p.z)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
-        var tweetspercentage = Math.round(p.z * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
-        var nodesimilarity = "'" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
-        var msg = tweetscount + "</br>" + tweetspercentage + "</br>" + nodesimilarity + "</br>" + Math.round (nodes[p.y].similaritycount) + " cooc:" + nodes[p.y].cooccurencecount;
+        var tweetscount = "  (" + Math.round(nodes[p.y].count * (p.z)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
+        var tweetspercentage = "  " + Math.round(p.z * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
+        var nodesimilarity = "  '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
+        var msg = tweetscount + "</br>" + ((selected_group == "similarity") ? nodesimilarity : tweetspercentage);tempAlert(msg, p);
         tempAlert(msg, p);
       }
       function mouseout() {
