@@ -1,1 +1,706 @@
-{"nodes":[{"name":"uk","group":3},{"name":"vote","group":3},{"name":"eu","group":3},{"name":"britain","group":3},{"name":"london","group":3},{"name":"news","group":3},{"name":"referendum","group":3},{"name":"amp","group":3},{"name":"europe","group":3},{"name":"business","group":3}],"links":[{"word1":"uk","word2":"uk","portion1":0.0,"portion2":0.0,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"vote","portion1":0.08282730143308234,"portion2":0.11999999731779099,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"eu","portion1":0.1289774107359728,"portion2":0.23999999463558197,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"britain","portion1":0.015545299975710469,"portion2":1.0,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"london","portion1":0.008744231236337139,"portion2":0.67000001668930054,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"news","portion1":0.040320621811999031,"portion2":0.11999999731779099,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"referendum","portion1":0.077969395190672822,"portion2":0.11999999731779099,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"amp","portion1":0.029390332766577605,"portion2":0.10999999940395355,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"europe","portion1":0.021860578090842846,"portion2":0.34999999403953552,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"uk","word2":"business","portion1":0.022103473402963324,"portion2":0.12999999523162842,"countTotal":4117,"semCountPo":1664,"semConfValPo":0.76555265034738151,"semCountNt":1808,"semConfValNt":0.67174385436716555,"semCountNe":645,"semConfValNe":0.66162784184134638},{"word1":"vote","word2":"uk","portion1":0.10985824742268041,"portion2":0.11999999731779099,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"vote","portion1":0.0,"portion2":0.0,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"eu","portion1":0.090206185567010308,"portion2":0.56999999284744263,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"britain","portion1":0.070876288659793812,"portion2":0.14000000059604645,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"london","portion1":0.11146907216494846,"portion2":0.17000000178813934,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"news","portion1":0.04252577319587629,"portion2":0.56999999284744263,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"referendum","portion1":0.017719072164948453,"portion2":0.92000001668930054,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"amp","portion1":0.02222938144329897,"portion2":0.28999999165534973,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"europe","portion1":0.025128865979381444,"portion2":0.550000011920929,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"vote","word2":"business","portion1":0.0547680412371134,"portion2":0.70999997854232788,"countTotal":3104,"semCountPo":1278,"semConfValPo":0.78433320992769251,"semCountNt":1366,"semConfValNt":0.67790150639695668,"semCountNe":460,"semConfValNe":0.66964108150640411},{"word1":"eu","word2":"uk","portion1":0.18322981366459629,"portion2":0.23999999463558197,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"vote","portion1":0.0966183574879227,"portion2":0.56999999284744263,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"eu","portion1":0.0,"portion2":0.0,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"britain","portion1":0.058316080055210488,"portion2":0.23999999463558197,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"london","portion1":0.032091097308488616,"portion2":0.28999999165534973,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"news","portion1":0.032781228433402344,"portion2":0.28999999165534973,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"referendum","portion1":0.15769496204278813,"portion2":0.89999997615814209,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"amp","portion1":0.035886818495514144,"portion2":0.43999999761581421,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"europe","portion1":0.067287784679089024,"portion2":1.0,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"eu","word2":"business","portion1":0.022429261559696344,"portion2":0.67000001668930054,"countTotal":2898,"semCountPo":1121,"semConfValPo":0.770968074599119,"semCountNt":1315,"semConfValNt":0.67139073076872857,"semCountNe":462,"semConfValNe":0.67033835692442811},{"word1":"britain","word2":"uk","portion1":0.033719704952581663,"portion2":1.0,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"vote","portion1":0.11591148577449947,"portion2":0.14000000059604645,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"eu","portion1":0.089041095890410954,"portion2":0.23999999463558197,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"britain","portion1":0.0,"portion2":0.0,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"london","portion1":0.0036880927291886197,"portion2":0.67000001668930054,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"news","portion1":0.019494204425711276,"portion2":0.11999999731779099,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"referendum","portion1":0.021601685985247629,"portion2":0.11999999731779099,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"amp","portion1":0.011591148577449948,"portion2":0.14000000059604645,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"europe","portion1":0.0136986301369863,"portion2":0.34999999403953552,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"britain","word2":"business","portion1":0.031612223393045313,"portion2":0.25,"countTotal":1898,"semCountPo":728,"semConfValPo":0.78255759219546572,"semCountNt":862,"semConfValNt":0.67128094392862192,"semCountNe":308,"semConfValNe":0.65515522953844851},{"word1":"london","word2":"uk","portion1":0.024064171122994651,"portion2":0.67000001668930054,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"vote","portion1":0.23128342245989306,"portion2":0.17000000178813934,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"eu","portion1":0.062165775401069517,"portion2":0.28999999165534973,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"britain","portion1":0.0046791443850267376,"portion2":0.67000001668930054,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"london","portion1":0.0,"portion2":0.0,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"news","portion1":0.055481283422459893,"portion2":0.17000000178813934,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"referendum","portion1":0.013368983957219251,"portion2":0.20000000298023224,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"amp","portion1":0.014705882352941176,"portion2":0.12999999523162842,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"europe","portion1":0.038101604278074866,"portion2":0.28999999165534973,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"london","word2":"business","portion1":0.03074866310160428,"portion2":0.17000000178813934,"countTotal":1496,"semCountPo":600,"semConfValPo":0.76683924233180867,"semCountNt":678,"semConfValNt":0.68101084016183422,"semCountNe":218,"semConfValNe":0.66847427779105684},{"word1":"news","word2":"uk","portion1":0.12425149700598802,"portion2":0.11999999731779099,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"vote","portion1":0.09880239520958084,"portion2":0.56999999284744263,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"eu","portion1":0.07110778443113773,"portion2":0.28999999165534973,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"britain","portion1":0.027694610778443114,"portion2":0.11999999731779099,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"london","portion1":0.062125748502994009,"portion2":0.17000000178813934,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"news","portion1":0.0,"portion2":0.0,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"referendum","portion1":0.014221556886227544,"portion2":0.52999997138977051,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"amp","portion1":0.032185628742514967,"portion2":0.28999999165534973,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"europe","portion1":0.069610778443113766,"portion2":0.36000001430511475,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"news","word2":"business","portion1":0.0531437125748503,"portion2":0.52999997138977051,"countTotal":1336,"semCountPo":539,"semConfValPo":0.782082381491317,"semCountNt":615,"semConfValNt":0.67147018296655769,"semCountNe":182,"semConfValNe":0.7044191337261031},{"word1":"referendum","word2":"uk","portion1":0.24673328209069947,"portion2":0.11999999731779099,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"vote","portion1":0.042275172943889314,"portion2":0.92000001668930054,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"eu","portion1":0.35126825518831667,"portion2":0.89999997615814209,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"britain","portion1":0.031514219830899311,"portion2":0.11999999731779099,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"london","portion1":0.015372790161414296,"portion2":0.20000000298023224,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"news","portion1":0.014604150653343582,"portion2":0.52999997138977051,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"referendum","portion1":0.0,"portion2":0.0,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"amp","portion1":0.0099923136049192927,"portion2":0.27000001072883606,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"europe","portion1":0.021521906225980016,"portion2":0.33000001311302185,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"referendum","word2":"business","portion1":0.0099923136049192927,"portion2":0.67000001668930054,"countTotal":1301,"semCountPo":503,"semConfValPo":0.76391327947030263,"semCountNt":578,"semConfValNt":0.67007975758717686,"semCountNe":220,"semConfValNe":0.66647729758225882},{"word1":"amp","word2":"uk","portion1":0.09467918622848201,"portion2":0.10999999940395355,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"vote","portion1":0.0539906103286385,"portion2":0.28999999165534973,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"eu","portion1":0.081377151799687,"portion2":0.43999999761581421,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"britain","portion1":0.017214397496087636,"portion2":0.14000000059604645,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"london","portion1":0.017214397496087636,"portion2":0.12999999523162842,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"news","portion1":0.033646322378716745,"portion2":0.28999999165534973,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"referendum","portion1":0.010172143974960876,"portion2":0.27000001072883606,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"amp","portion1":0.0,"portion2":0.0,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"europe","portion1":0.011737089201877934,"portion2":0.31000000238418579,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"amp","word2":"business","portion1":0.019561815336463225,"portion2":0.31000000238418579,"countTotal":1278,"semCountPo":513,"semConfValPo":0.76621385729505143,"semCountNt":569,"semConfValNt":0.67621342136669838,"semCountNe":196,"semConfValNe":0.67339522143384745},{"word1":"europe","word2":"uk","portion1":0.077186963979416809,"portion2":0.34999999403953552,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"vote","portion1":0.066895368782161235,"portion2":0.550000011920929,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"eu","portion1":0.16723842195540309,"portion2":1.0,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"britain","portion1":0.022298456260720412,"portion2":0.34999999403953552,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"london","portion1":0.048885077186963978,"portion2":0.28999999165534973,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"news","portion1":0.0797598627787307,"portion2":0.36000001430511475,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"referendum","portion1":0.024013722126929673,"portion2":0.33000001311302185,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"amp","portion1":0.012864493996569469,"portion2":0.31000000238418579,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"europe","portion1":0.0,"portion2":0.0,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"europe","word2":"business","portion1":0.018010291595197257,"portion2":0.60000002384185791,"countTotal":1166,"semCountPo":453,"semConfValPo":0.76720562137080306,"semCountNt":536,"semConfValNt":0.68046279170244384,"semCountNe":177,"semConfValNe":0.68276724003710465},{"word1":"business","word2":"uk","portion1":0.078719723183391,"portion2":0.12999999523162842,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"vote","portion1":0.14705882352941177,"portion2":0.70999997854232788,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"eu","portion1":0.056228373702422146,"portion2":0.67000001668930054,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"britain","portion1":0.051903114186851208,"portion2":0.25,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"london","portion1":0.039792387543252594,"portion2":0.17000000178813934,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"news","portion1":0.061418685121107264,"portion2":0.37999999523162842,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"referendum","portion1":0.01124567474048443,"portion2":0.67000001668930054,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"amp","portion1":0.02162629757785467,"portion2":0.31000000238418579,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"europe","portion1":0.018166089965397925,"portion2":0.60000002384185791,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872},{"word1":"business","word2":"business","portion1":0.0,"portion2":0.0,"countTotal":1156,"semCountPo":465,"semConfValPo":0.78471644870118651,"semCountNt":524,"semConfValNt":0.668624587839922,"semCountNe":167,"semConfValNe":0.66673362527537872}]}
+{
+    "nodes": [
+        {
+            "name": "uk",
+            "count": 4117,
+            "semCountPo": 1664,
+            "semConfValPo": 0.76555265034738151,
+            "semCountNt": 1808,
+            "semConfValNt": 0.67174385436716555,
+            "semCountNe": 645,
+            "semConfValNe": 0.66162784184134638
+        },
+        {
+            "name": "vote",
+            "count": 3104,
+            "semCountPo": 1278,
+            "semConfValPo": 0.78433320992769251,
+            "semCountNt": 1366,
+            "semConfValNt": 0.67790150639695668,
+            "semCountNe": 460,
+            "semConfValNe": 0.66964108150640411
+        },
+        {
+            "name": "eu",
+            "count": 2898,
+            "semCountPo": 1121,
+            "semConfValPo": 0.770968074599119,
+            "semCountNt": 1315,
+            "semConfValNt": 0.67139073076872857,
+            "semCountNe": 462,
+            "semConfValNe": 0.67033835692442811
+        },
+        {
+            "name": "britain",
+            "count": 1898,
+            "semCountPo": 728,
+            "semConfValPo": 0.78255759219546572,
+            "semCountNt": 862,
+            "semConfValNt": 0.67128094392862192,
+            "semCountNe": 308,
+            "semConfValNe": 0.65515522953844851
+        },
+        {
+            "name": "london",
+            "count": 1496,
+            "semCountPo": 600,
+            "semConfValPo": 0.76683924233180867,
+            "semCountNt": 678,
+            "semConfValNt": 0.68101084016183422,
+            "semCountNe": 218,
+            "semConfValNe": 0.66847427779105684
+        },
+        {
+            "name": "news",
+            "count": 1336,
+            "semCountPo": 539,
+            "semConfValPo": 0.782082381491317,
+            "semCountNt": 615,
+            "semConfValNt": 0.67147018296655769,
+            "semCountNe": 182,
+            "semConfValNe": 0.7044191337261031
+        },
+        {
+            "name": "referendum",
+            "count": 1301,
+            "semCountPo": 503,
+            "semConfValPo": 0.76391327947030263,
+            "semCountNt": 578,
+            "semConfValNt": 0.67007975758717686,
+            "semCountNe": 220,
+            "semConfValNe": 0.66647729758225882
+        },
+        {
+            "name": "amp",
+            "count": 1278,
+            "semCountPo": 513,
+            "semConfValPo": 0.76621385729505143,
+            "semCountNt": 569,
+            "semConfValNt": 0.67621342136669838,
+            "semCountNe": 196,
+            "semConfValNe": 0.67339522143384745
+        },
+        {
+            "name": "europe",
+            "count": 1166,
+            "semCountPo": 453,
+            "semConfValPo": 0.76720562137080306,
+            "semCountNt": 536,
+            "semConfValNt": 0.68046279170244384,
+            "semCountNe": 177,
+            "semConfValNe": 0.68276724003710465
+        },
+        {
+            "name": "business",
+            "count": 1156,
+            "semCountPo": 465,
+            "semConfValPo": 0.78471644870118651,
+            "semCountNt": 524,
+            "semConfValNt": 0.668624587839922,
+            "semCountNe": 167,
+            "semConfValNe": 0.66673362527537872
+        }
+    ],
+    "links": [
+        {
+            "word1": "uk",
+            "word2": "uk",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "uk",
+            "word2": "vote",
+            "portion1": 0.08282730143308234,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "uk",
+            "word2": "eu",
+            "portion1": 0.1289774107359728,
+            "portion2": 0.23999999463558197
+        },
+        {
+            "word1": "uk",
+            "word2": "britain",
+            "portion1": 0.015545299975710469,
+            "portion2": 1.0
+        },
+        {
+            "word1": "uk",
+            "word2": "london",
+            "portion1": 0.008744231236337139,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "uk",
+            "word2": "news",
+            "portion1": 0.040320621811999031,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "uk",
+            "word2": "referendum",
+            "portion1": 0.077969395190672822,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "uk",
+            "word2": "amp",
+            "portion1": 0.029390332766577605,
+            "portion2": 0.10999999940395355
+        },
+        {
+            "word1": "uk",
+            "word2": "europe",
+            "portion1": 0.021860578090842846,
+            "portion2": 0.34999999403953552
+        },
+        {
+            "word1": "uk",
+            "word2": "business",
+            "portion1": 0.022103473402963324,
+            "portion2": 0.12999999523162842
+        },
+        {
+            "word1": "vote",
+            "word2": "uk",
+            "portion1": 0.10985824742268041,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "vote",
+            "word2": "vote",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "vote",
+            "word2": "eu",
+            "portion1": 0.090206185567010308,
+            "portion2": 0.56999999284744263
+        },
+        {
+            "word1": "vote",
+            "word2": "britain",
+            "portion1": 0.070876288659793812,
+            "portion2": 0.14000000059604645
+        },
+        {
+            "word1": "vote",
+            "word2": "london",
+            "portion1": 0.11146907216494846,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "vote",
+            "word2": "news",
+            "portion1": 0.04252577319587629,
+            "portion2": 0.56999999284744263
+        },
+        {
+            "word1": "vote",
+            "word2": "referendum",
+            "portion1": 0.017719072164948453,
+            "portion2": 0.92000001668930054
+        },
+        {
+            "word1": "vote",
+            "word2": "amp",
+            "portion1": 0.02222938144329897,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "vote",
+            "word2": "europe",
+            "portion1": 0.025128865979381444,
+            "portion2": 0.550000011920929
+        },
+        {
+            "word1": "vote",
+            "word2": "business",
+            "portion1": 0.0547680412371134,
+            "portion2": 0.70999997854232788
+        },
+        {
+            "word1": "eu",
+            "word2": "uk",
+            "portion1": 0.18322981366459629,
+            "portion2": 0.23999999463558197
+        },
+        {
+            "word1": "eu",
+            "word2": "vote",
+            "portion1": 0.0966183574879227,
+            "portion2": 0.56999999284744263
+        },
+        {
+            "word1": "eu",
+            "word2": "eu",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "eu",
+            "word2": "britain",
+            "portion1": 0.058316080055210488,
+            "portion2": 0.23999999463558197
+        },
+        {
+            "word1": "eu",
+            "word2": "london",
+            "portion1": 0.032091097308488616,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "eu",
+            "word2": "news",
+            "portion1": 0.032781228433402344,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "eu",
+            "word2": "referendum",
+            "portion1": 0.15769496204278813,
+            "portion2": 0.89999997615814209
+        },
+        {
+            "word1": "eu",
+            "word2": "amp",
+            "portion1": 0.035886818495514144,
+            "portion2": 0.43999999761581421
+        },
+        {
+            "word1": "eu",
+            "word2": "europe",
+            "portion1": 0.067287784679089024,
+            "portion2": 1.0
+        },
+        {
+            "word1": "eu",
+            "word2": "business",
+            "portion1": 0.022429261559696344,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "britain",
+            "word2": "uk",
+            "portion1": 0.033719704952581663,
+            "portion2": 1.0
+        },
+        {
+            "word1": "britain",
+            "word2": "vote",
+            "portion1": 0.11591148577449947,
+            "portion2": 0.14000000059604645
+        },
+        {
+            "word1": "britain",
+            "word2": "eu",
+            "portion1": 0.089041095890410954,
+            "portion2": 0.23999999463558197
+        },
+        {
+            "word1": "britain",
+            "word2": "britain",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "britain",
+            "word2": "london",
+            "portion1": 0.0036880927291886197,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "britain",
+            "word2": "news",
+            "portion1": 0.019494204425711276,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "britain",
+            "word2": "referendum",
+            "portion1": 0.021601685985247629,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "britain",
+            "word2": "amp",
+            "portion1": 0.011591148577449948,
+            "portion2": 0.14000000059604645
+        },
+        {
+            "word1": "britain",
+            "word2": "europe",
+            "portion1": 0.0136986301369863,
+            "portion2": 0.34999999403953552
+        },
+        {
+            "word1": "britain",
+            "word2": "business",
+            "portion1": 0.031612223393045313,
+            "portion2": 0.25
+        },
+        {
+            "word1": "london",
+            "word2": "uk",
+            "portion1": 0.024064171122994651,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "london",
+            "word2": "vote",
+            "portion1": 0.23128342245989306,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "london",
+            "word2": "eu",
+            "portion1": 0.062165775401069517,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "london",
+            "word2": "britain",
+            "portion1": 0.0046791443850267376,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "london",
+            "word2": "london",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "london",
+            "word2": "news",
+            "portion1": 0.055481283422459893,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "london",
+            "word2": "referendum",
+            "portion1": 0.013368983957219251,
+            "portion2": 0.20000000298023224
+        },
+        {
+            "word1": "london",
+            "word2": "amp",
+            "portion1": 0.014705882352941176,
+            "portion2": 0.12999999523162842
+        },
+        {
+            "word1": "london",
+            "word2": "europe",
+            "portion1": 0.038101604278074866,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "london",
+            "word2": "business",
+            "portion1": 0.03074866310160428,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "news",
+            "word2": "uk",
+            "portion1": 0.12425149700598802,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "news",
+            "word2": "vote",
+            "portion1": 0.09880239520958084,
+            "portion2": 0.56999999284744263
+        },
+        {
+            "word1": "news",
+            "word2": "eu",
+            "portion1": 0.07110778443113773,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "news",
+            "word2": "britain",
+            "portion1": 0.027694610778443114,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "news",
+            "word2": "london",
+            "portion1": 0.062125748502994009,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "news",
+            "word2": "news",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "news",
+            "word2": "referendum",
+            "portion1": 0.014221556886227544,
+            "portion2": 0.52999997138977051
+        },
+        {
+            "word1": "news",
+            "word2": "amp",
+            "portion1": 0.032185628742514967,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "news",
+            "word2": "europe",
+            "portion1": 0.069610778443113766,
+            "portion2": 0.36000001430511475
+        },
+        {
+            "word1": "news",
+            "word2": "business",
+            "portion1": 0.0531437125748503,
+            "portion2": 0.52999997138977051
+        },
+        {
+            "word1": "referendum",
+            "word2": "uk",
+            "portion1": 0.24673328209069947,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "referendum",
+            "word2": "vote",
+            "portion1": 0.042275172943889314,
+            "portion2": 0.92000001668930054
+        },
+        {
+            "word1": "referendum",
+            "word2": "eu",
+            "portion1": 0.35126825518831667,
+            "portion2": 0.89999997615814209
+        },
+        {
+            "word1": "referendum",
+            "word2": "britain",
+            "portion1": 0.031514219830899311,
+            "portion2": 0.11999999731779099
+        },
+        {
+            "word1": "referendum",
+            "word2": "london",
+            "portion1": 0.015372790161414296,
+            "portion2": 0.20000000298023224
+        },
+        {
+            "word1": "referendum",
+            "word2": "news",
+            "portion1": 0.014604150653343582,
+            "portion2": 0.52999997138977051
+        },
+        {
+            "word1": "referendum",
+            "word2": "referendum",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "referendum",
+            "word2": "amp",
+            "portion1": 0.0099923136049192927,
+            "portion2": 0.27000001072883606
+        },
+        {
+            "word1": "referendum",
+            "word2": "europe",
+            "portion1": 0.021521906225980016,
+            "portion2": 0.33000001311302185
+        },
+        {
+            "word1": "referendum",
+            "word2": "business",
+            "portion1": 0.0099923136049192927,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "amp",
+            "word2": "uk",
+            "portion1": 0.09467918622848201,
+            "portion2": 0.10999999940395355
+        },
+        {
+            "word1": "amp",
+            "word2": "vote",
+            "portion1": 0.0539906103286385,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "amp",
+            "word2": "eu",
+            "portion1": 0.081377151799687,
+            "portion2": 0.43999999761581421
+        },
+        {
+            "word1": "amp",
+            "word2": "britain",
+            "portion1": 0.017214397496087636,
+            "portion2": 0.14000000059604645
+        },
+        {
+            "word1": "amp",
+            "word2": "london",
+            "portion1": 0.017214397496087636,
+            "portion2": 0.12999999523162842
+        },
+        {
+            "word1": "amp",
+            "word2": "news",
+            "portion1": 0.033646322378716745,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "amp",
+            "word2": "referendum",
+            "portion1": 0.010172143974960876,
+            "portion2": 0.27000001072883606
+        },
+        {
+            "word1": "amp",
+            "word2": "amp",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "amp",
+            "word2": "europe",
+            "portion1": 0.011737089201877934,
+            "portion2": 0.31000000238418579
+        },
+        {
+            "word1": "amp",
+            "word2": "business",
+            "portion1": 0.019561815336463225,
+            "portion2": 0.31000000238418579
+        },
+        {
+            "word1": "europe",
+            "word2": "uk",
+            "portion1": 0.077186963979416809,
+            "portion2": 0.34999999403953552
+        },
+        {
+            "word1": "europe",
+            "word2": "vote",
+            "portion1": 0.066895368782161235,
+            "portion2": 0.550000011920929
+        },
+        {
+            "word1": "europe",
+            "word2": "eu",
+            "portion1": 0.16723842195540309,
+            "portion2": 1.0
+        },
+        {
+            "word1": "europe",
+            "word2": "britain",
+            "portion1": 0.022298456260720412,
+            "portion2": 0.34999999403953552
+        },
+        {
+            "word1": "europe",
+            "word2": "london",
+            "portion1": 0.048885077186963978,
+            "portion2": 0.28999999165534973
+        },
+        {
+            "word1": "europe",
+            "word2": "news",
+            "portion1": 0.0797598627787307,
+            "portion2": 0.36000001430511475
+        },
+        {
+            "word1": "europe",
+            "word2": "referendum",
+            "portion1": 0.024013722126929673,
+            "portion2": 0.33000001311302185
+        },
+        {
+            "word1": "europe",
+            "word2": "amp",
+            "portion1": 0.012864493996569469,
+            "portion2": 0.31000000238418579
+        },
+        {
+            "word1": "europe",
+            "word2": "europe",
+            "portion1": 0.0,
+            "portion2": 0.0
+        },
+        {
+            "word1": "europe",
+            "word2": "business",
+            "portion1": 0.018010291595197257,
+            "portion2": 0.60000002384185791
+        },
+        {
+            "word1": "business",
+            "word2": "uk",
+            "portion1": 0.078719723183391,
+            "portion2": 0.12999999523162842
+        },
+        {
+            "word1": "business",
+            "word2": "vote",
+            "portion1": 0.14705882352941177,
+            "portion2": 0.70999997854232788
+        },
+        {
+            "word1": "business",
+            "word2": "eu",
+            "portion1": 0.056228373702422146,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "business",
+            "word2": "britain",
+            "portion1": 0.051903114186851208,
+            "portion2": 0.25
+        },
+        {
+            "word1": "business",
+            "word2": "london",
+            "portion1": 0.039792387543252594,
+            "portion2": 0.17000000178813934
+        },
+        {
+            "word1": "business",
+            "word2": "news",
+            "portion1": 0.061418685121107264,
+            "portion2": 0.37999999523162842
+        },
+        {
+            "word1": "business",
+            "word2": "referendum",
+            "portion1": 0.01124567474048443,
+            "portion2": 0.67000001668930054
+        },
+        {
+            "word1": "business",
+            "word2": "amp",
+            "portion1": 0.02162629757785467,
+            "portion2": 0.31000000238418579
+        },
+        {
+            "word1": "business",
+            "word2": "europe",
+            "portion1": 0.018166089965397925,
+            "portion2": 0.60000002384185791
+        },
+        {
+            "word1": "business",
+            "word2": "business",
+            "portion1": 0.0,
+            "portion2": 0.0
+        }
+    ]
+}

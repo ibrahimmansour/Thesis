@@ -35,18 +35,16 @@
       // Compute index per node.
       nodes.forEach(function (node, i) {
         node.index = i;
-        node.count = 0;
         node.cooccurencecount = 0;
         node.similaritycount = 0;
         invertedindex[node.name] = i;
-        matrix[i] = d3.range(n).map(function (j) { return { x: j, y: i, z: 0 }; });
+        matrix[i] = d3.range(n).map(function (j) { return { x: j, y: i}; });
       });
 
       // Convert links to matrix; count character occurrences.
       tweets.links.forEach(function (tweet) {
-        matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].z += tweet.portion1;
+        matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].cooccurence = tweet.portion1;
         matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].similarity = tweet.portion2;
-        nodes[invertedindex[tweet.word1]].count = tweet.countTotal;
         nodes[invertedindex[tweet.word1]].cooccurencecount += tweet.portion1;
         nodes[invertedindex[tweet.word1]].similaritycount += tweet.portion2;
       });
@@ -86,6 +84,7 @@
           .attr("dy", ".32em")
           .attr("text-anchor", "end")
           .text(function (d, i) { return nodes[i].name; });
+
       }
 
       rowgen();
@@ -105,15 +104,17 @@
           .attr("y", x.rangeBand() / 2)
           .attr("dy", ".32em")
           .attr("text-anchor", "start")
-          .text(function (d, i) { return nodes[i].name; });
+          .text(function (d, i) { return nodes[i].name; })
+          ;
+
       }
       colgen();
       function row_f(row) {
         var cell = d3.select(this).selectAll(".cell")
           .data(row.filter(function (d) { 
-          return selected_group == "similarity" 
+          return (selected_group == "similarity") 
           ? ((d.similarity * 100 > relationvaluefrom) && (d.similarity * 100 <= relationvalueto))
-          : ((d.z * 100 > relationvaluefrom) && (d.z * 100 <= relationvalueto));
+          : ((d.cooccurence * 100 > relationvaluefrom) && (d.cooccurence * 100 <= relationvalueto));
         }))
           .enter().append("rect")
           .attr("class", "cell")
@@ -125,15 +126,15 @@
           .on("mouseover", mouseover)
           .on("mouseout", mouseout);
 
-        cell.style("opacity", 0.0).transition().duration(1000).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.z); })
+        cell.style("opacity", 0.0).transition().duration(1000).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.cooccurence); })
         cell.style("fill", function (d) { return selected_group == "similarity" ? c( Math.round( nodes[d.y].similaritycount)) : c(Math.round( nodes[d.y].cooccurencecount)) ; })
       }
 
       function mouseover(p) {
-        d3.selectAll(".row text").classed("active", function (d, i) { return i == p.y; });
-        d3.selectAll(".column text").classed("active", function (d, i) { return i == p.x; });
-        var tweetscount = "  (" + Math.round(nodes[p.y].count * (p.z)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
-        var tweetspercentage = "  " + Math.round(p.z * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
+        d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
+        d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+        var tweetscount = "  (" + Math.round(nodes[p.y].count * (p.cooccurence)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
+        var tweetspercentage = "  " + Math.round(p.cooccurence * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
         var nodesimilarity = "  '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
         var msg = tweetscount + "</br>" + ((selected_group == "similarity") ? nodesimilarity : tweetspercentage);tempAlert(msg, p);
         tempAlert(msg, p);
