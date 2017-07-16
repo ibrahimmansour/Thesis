@@ -85,6 +85,17 @@
           .attr("text-anchor", "end")
           .text(function (d, i) { return nodes[i].name; });
 
+        row.insert("rect","text")
+          .attr("x", function (d, i) { return 6 })
+          .attr("y", x.rangeBand() / 3 -2 )
+          .attr("width", function (d, i) {
+               return -6;})
+          .attr("height", "15px")
+          .attr("rx", 5) // rounded corners
+          .attr("ry", 5)
+          .style("fill", "transparent")
+          .style("stroke","black")
+          .style("stroke-width","0.15");
       }
 
       rowgen();
@@ -101,12 +112,39 @@
 
         column.append("text")
           .attr("x", 6)
-          .attr("y", x.rangeBand() / 2)
+          .attr("y", x.rangeBand() / 4)
           .attr("dy", ".32em")
           .attr("text-anchor", "start")
-          .text(function (d, i) { return nodes[i].name; })
-          ;
+          .text(function (d, i) { return nodes[i].name; });
 
+        if (selected_nodes <= 20 )
+         {
+          column.insert("rect","text")
+          .attr("x", 4)
+          .attr("y", x.rangeBand() / 2  )
+          .attr("width", function (d, i) { return 60; })
+          .attr("height", "12")
+          .attr("rx", 5) // rounded corners
+          .attr("ry", 5)
+          .style("fill", "transparent")
+          .style("stroke","black")
+          .style("stroke-width","0.15")
+          .style("fill", "red");
+
+          column.append("rect","text")
+          .attr("x", 4)
+          .attr("y", x.rangeBand() / 2  )
+          .attr("width", function (d, i) { return (nodes[i].semCountPo * 60) / nodes[i].count; })
+          .attr("height", "12")
+          .style("fill", "green");
+
+          column.insert("rect","text")
+          .attr("x", function (d, i) { return (4 + (nodes[i].semCountPo * 60) / nodes[i].count); })
+          .attr("y", x.rangeBand() / 2  )
+          .attr("width", function (d, i) { return (nodes[i].semCountNe * 60) / nodes[i].count; })
+          .attr("height", "12")
+          .style("fill", "blue");
+         }       
       }
       colgen();
       function row_f(row) {
@@ -131,8 +169,8 @@
       }
 
       function mouseover(p) {
-        d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
-        d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+        d3.selectAll(".row text").classed("active", function (d, i) { return i == p.y; });
+        d3.selectAll(".column text").style("fill", function (d, i) { return (i == p.x) ? "red" : "black"; });
         var tweetscount = "  (" + Math.round(nodes[p.y].count * (p.cooccurence)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
         var tweetspercentage = "  " + Math.round(p.cooccurence * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
         var nodesimilarity = "  '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
@@ -140,7 +178,8 @@
         tempAlert(msg, p);
       }
       function mouseout() {
-        d3.selectAll("text").classed("active", false);
+        d3.selectAll(".row text").classed("active", false);
+        d3.selectAll(".column text").style("fill", "black");
         el.parentNode.removeChild(el);
       }
       d3.select("#order").on("change", function () {
