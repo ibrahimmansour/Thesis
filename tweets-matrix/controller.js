@@ -5,10 +5,11 @@
   var relationvalueto =  document.getElementById("similarity_value_to").value;
 
   var margin = { top: 80, right: 0, bottom: 10, left: 80 },
-      width = 720,
+      width = 720,orders,
       height = 720;
 
   var x = d3.scale.ordinal().rangeBands([0, width]),
+      u = d3.scale.ordinal().rangeBands([70, 0]),
       z = d3.scale.linear().domain([0, 1]).clamp(true),
       c = d3.scale.category10().domain(d3.range(10));
 
@@ -50,7 +51,7 @@
       });
 
       // Precompute the orders.
-      var orders = {
+      orders = {
         name: d3.range(n).sort(function (a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
         count: d3.range(n).sort(function (a, b) { return nodes[b].count - nodes[a].count; }),
         cooccurence: d3.range(n).sort(function (a, b) { return nodes[b].cooccurencecount - nodes[a].cooccurencecount; }),
@@ -59,6 +60,7 @@
 
       // The default sort order.
       x.domain(orders[selected_order]);
+      u.domain(orders[selected_order]);
 
       svg.append("rect")
         .attr("class", "background")
@@ -80,20 +82,20 @@
 
         row.append("text")
           .attr("x", -6)
-          .attr("y", x.rangeBand() / 2)
+          .attr("y", x.rangeBand()/4)
           .attr("dy", ".32em")
           .attr("text-anchor", "end")
           .text(function (d, i) { return nodes[i].name; });
 
-        row.insert("rect","text")
-          .attr("x", function (d, i) { return 6 })
-          .attr("y", x.rangeBand() / 3 -2 )
+        row.append("rect","text")
+          .attr("x", function (d, i) { return -3 +  -u(i) })
+          .attr("y", x.rangeBand() / 2 )
           .attr("width", function (d, i) {
-               return -6;})
-          .attr("height", "15px")
+               return u(i);})
+          .attr("height", "10px")
           .attr("rx", 5) // rounded corners
           .attr("ry", 5)
-          .style("fill", "transparent")
+          .style("fill", function (d, i) { return selected_group == "similarity" ? c( Math.round( nodes[i].similaritycount)) : c(Math.round( nodes[i].cooccurencecount));})
           .style("stroke","black")
           .style("stroke-width","0.15");
       }
@@ -155,7 +157,6 @@
           : ((d.cooccurence * 100 > relationvaluefrom) && (d.cooccurence * 100 <= relationvalueto));
         }))
           .enter().append("rect")
-          .attr("class", "cell")
           .attr("x", function (d) { return x(d.x); })
           .attr("width", x.rangeBand())
           .attr("height", x.rangeBand())
@@ -164,7 +165,7 @@
           .on("mouseover", mouseover)
           .on("mouseout", mouseout);
 
-        cell.style("opacity", 0.0).transition().duration(1000).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.cooccurence); })
+        cell.style("opacity", 0.0).transition().duration(1500).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.cooccurence); })
         cell.style("fill", function (d) { return selected_group == "similarity" ? c( Math.round( nodes[d.y].similaritycount)) : c(Math.round( nodes[d.y].cooccurencecount)) ; })
       }
 
@@ -184,7 +185,11 @@
       }
       d3.select("#order").on("change", function () {
         selected_order = this.value;
-        order(this.value);
+         order(this.value);
+        svg.selectAll(".row").remove();
+        svg.selectAll(".column").remove();
+        rowgen();
+        colgen();
       });
 
       d3.select("#group").on("change", function () {
@@ -209,10 +214,9 @@
       });
 
       function order(value) {
-        x.domain(orders[value]);
-
         var t = svg.transition().duration(2500);
-
+        x.domain(orders[value]);
+        u.domain(orders[value]);
         t.selectAll(".row")
           .delay(function (d, i) { return x(i) * 4; })
           .attr("transform", function (d, i) { return "translate(0," + x(i) + ")"; })
