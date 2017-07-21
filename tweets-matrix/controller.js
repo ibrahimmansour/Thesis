@@ -9,9 +9,12 @@
       height = 720;
 
   var x = d3.scale.ordinal().rangeBands([0, width]),
-      u = d3.scale.ordinal().rangeBands([70, 0]),
+      barscale = d3.scale.ordinal().rangeBands([10,70]),
       z = d3.scale.linear().domain([0, 1]).clamp(true),
       c = d3.scale.category10().domain(d3.range(10));
+
+  var maxrelcount = 0;
+  var relscale;
 
   function myfunction() {
     var svg = d3.select("body").append("svg")
@@ -21,16 +24,14 @@
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var el = document.createElement("div");
-    function tempAlert(msg, location) {
-      el.setAttribute("style", "white-space:nowrap;border-radius: 15px;position:absolute;top:" + (x(location.y) + 125) + "px;left:" + x(location.x) + "px;background-color:LightGray;");
-      el.innerHTML = "<i>" + msg + "</i>";
-      document.body.appendChild(el);
-    }
-    
+
+    var div = d3.select("body").append("div")	
+      .attr("class", "tooltip")				
+      .style("opacity", 0);
+
     d3.json("tweets_" + selected_nodes +".json", function (tweets) {
       var matrix = [],
-        nodes = tweets.nodes,
+        nodes = tweets.nodes, mincount = 0, maxcount = 0,
         n = nodes.length;
       var invertedindex = [];
       // Compute index per node.
@@ -40,16 +41,22 @@
         node.similaritycount = 0;
         invertedindex[node.name] = i;
         matrix[i] = d3.range(n).map(function (j) { return { x: j, y: i}; });
+        if (node.count < mincount) mincount = node.count;
+        if (node.count > maxcount) maxcount = node.count;
       });
-
+      
+      barscale.domain(d3.range(mincount,maxcount+1));
       // Convert links to matrix; count character occurrences.
       tweets.links.forEach(function (tweet) {
         matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].cooccurence = tweet.portion1;
+        matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].cooccurencecount = tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
         matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]].similarity = tweet.portion2;
         nodes[invertedindex[tweet.word1]].cooccurencecount += tweet.portion1;
         nodes[invertedindex[tweet.word1]].similaritycount += tweet.portion2;
+        var relcount = tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
+        if (maxrelcount < relcount) maxrelcount = relcount;
       });
-
+      relscale = d3.scale.ordinal().domain(d3.range((maxrelcount+1))).rangePoints([0,1]);
       // Precompute the orders.
       orders = {
         name: d3.range(n).sort(function (a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
@@ -60,7 +67,6 @@
 
       // The default sort order.
       x.domain(orders[selected_order]);
-      u.domain(orders[selected_order]);
 
       svg.append("rect")
         .attr("class", "background")
@@ -85,19 +91,35 @@
           .attr("y", x.rangeBand()/4)
           .attr("dy", ".32em")
           .attr("text-anchor", "end")
-          .text(function (d, i) { return nodes[i].name; });
+          .text(function (d, i) { return nodes[i].name; })
+          .on("mouseover", rtextmouseover)
+          .on("mouseout", rtextmouseout);
 
         row.append("rect","text")
-          .attr("x", function (d, i) { return -3 +  -u(i) })
+          .attr("x", function (d, i) { return -barscale(nodes[i].count) - 3;})
           .attr("y", x.rangeBand() / 2 )
           .attr("width", function (d, i) {
-               return u(i);})
-          .attr("height", "10px")
+               return barscale(nodes[i].count);})
+          .attr("height", "12px")
           .attr("rx", 5) // rounded corners
           .attr("ry", 5)
-          .style("fill", function (d, i) { return selected_group == "similarity" ? c( Math.round( nodes[i].similaritycount)) : c(Math.round( nodes[i].cooccurencecount));})
+          .style("fill", function (d, i) { return "red";})
           .style("stroke","black")
           .style("stroke-width","0.15");
+
+          row.append("rect","text")
+          .attr("x", function (d, i) { return -(barscale(nodes[i].count) * ( nodes[i].semCountPo  / nodes[i].count )) -3;})
+          .attr("y", x.rangeBand() / 2  )
+          .attr("width", function (d, i) { return barscale(nodes[i].count) * ( nodes[i].semCountPo  / nodes[i].count ); })
+          .attr("height", "12")
+          .style("fill", "green");
+
+          row.append("rect","text")
+          .attr("x", function (d, i) { return  -(barscale(nodes[i].count) * ( nodes[i].semCountNe  / nodes[i].count )) -(barscale(nodes[i].count) * ( nodes[i].semCountPo  / nodes[i].count )) -3; })
+          .attr("y", x.rangeBand() / 2  )
+          .attr("width", function (d, i) { return barscale(nodes[i].count) * ( nodes[i].semCountNe  / nodes[i].count ); })
+          .attr("height", "12")
+          .style("fill", "blue");
       }
 
       rowgen();
@@ -117,14 +139,16 @@
           .attr("y", x.rangeBand() / 4)
           .attr("dy", ".32em")
           .attr("text-anchor", "start")
-          .text(function (d, i) { return nodes[i].name; });
+          .text(function (d, i) { return nodes[i].name; })
+          .on("mouseover", rtextmouseover)
+          .on("mouseout", rtextmouseout);
 
         if (selected_nodes <= 20 )
          {
           column.insert("rect","text")
           .attr("x", 4)
           .attr("y", x.rangeBand() / 2  )
-          .attr("width", function (d, i) { return 60; })
+          .attr("width", function (d, i) { return barscale(nodes[i].count); })
           .attr("height", "12")
           .attr("rx", 5) // rounded corners
           .attr("ry", 5)
@@ -136,14 +160,14 @@
           column.append("rect","text")
           .attr("x", 4)
           .attr("y", x.rangeBand() / 2  )
-          .attr("width", function (d, i) { return (nodes[i].semCountPo * 60) / nodes[i].count; })
+          .attr("width", function (d, i) { return (nodes[i].semCountPo * barscale(nodes[i].count)) / nodes[i].count; })
           .attr("height", "12")
           .style("fill", "green");
 
-          column.insert("rect","text")
-          .attr("x", function (d, i) { return (4 + (nodes[i].semCountPo * 60) / nodes[i].count); })
+          column.append("rect","text")
+          .attr("x", function (d, i) { return (4 + (nodes[i].semCountPo * barscale(nodes[i].count)) / nodes[i].count); })
           .attr("y", x.rangeBand() / 2  )
-          .attr("width", function (d, i) { return (nodes[i].semCountNe * 60) / nodes[i].count; })
+          .attr("width", function (d, i) { return (nodes[i].semCountNe * barscale(nodes[i].count)) / nodes[i].count; })
           .attr("height", "12")
           .style("fill", "blue");
          }       
@@ -165,31 +189,64 @@
           .on("mouseover", mouseover)
           .on("mouseout", mouseout);
 
-        cell.style("opacity", 0.0).transition().duration(1500).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : z(d.cooccurence); })
-        cell.style("fill", function (d) { return selected_group == "similarity" ? c( Math.round( nodes[d.y].similaritycount)) : c(Math.round( nodes[d.y].cooccurencecount)) ; })
+        cell.style("opacity", 0.0).transition().duration(1500).style("opacity", function (d) { return selected_group == "similarity" ? z(d.similarity) : relscale(d.cooccurencecount); })
+        cell.style("fill", function (d) { return selected_group == "similarity" ? c( Math.round( nodes[d.y].similaritycount)) : c(2) ; })
+        
+      }
+
+      function rtextmouseover()
+      {        
+       var txt = d3.select(this)[0][0].textContent;
+       div.transition()		
+           .duration(200)		
+           .style("opacity", .9);
+        div.html(nodes[invertedindex[txt]].count + " tweets contain " + txt  )
+            .style("left", d3.event.pageX - 200 + "px")		
+            .style("top", d3.event.pageY + "px");
+      }
+      function rtextmouseout(rtext)
+      {
+        div.transition()		
+           .duration(500)		
+           .style("opacity", 0);
       }
 
       function mouseover(p) {
         d3.selectAll(".row text").classed("active", function (d, i) { return i == p.y; });
         d3.selectAll(".column text").style("fill", function (d, i) { return (i == p.x) ? "red" : "black"; });
-        var tweetscount = "  (" + Math.round(nodes[p.y].count * (p.cooccurence)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
-        var tweetspercentage = "  " + Math.round(p.cooccurence * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
-        var nodesimilarity = "  '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
-        var msg = tweetscount + "</br>" + ((selected_group == "similarity") ? nodesimilarity : tweetspercentage);tempAlert(msg, p);
-        tempAlert(msg, p);
+        var tweetscount = "(" + Math.round(nodes[p.y].count * (p.cooccurence)) + " tweets) have both '" + nodes[p.y].name + "' and '" + nodes[p.x].name + "'";
+        var tweetspercentage = Math.round(p.cooccurence * 100) + "% of " + nodes[p.y].name + "'s Total (" + nodes[p.y].count + " tweets)";
+        var tweetcooccurencecount = Math.round(relscale(p.cooccurencecount) * 100) + "% of the maximum cooccurence count (" + maxrelcount + " tweets)";
+        var nodesimilarity = "'" + nodes[p.y].name + "' and '" + nodes[p.x].name + "' are " + Math.round(p.similarity * 100) + "% similar";
+        var msg = tweetscount + "</br>" + ((selected_group == "similarity") ? nodesimilarity : (tweetcooccurencecount + "</br>" + tweetspercentage));
+       
+        div.transition()		
+           .duration(200)		
+           .style("opacity", .9);
+        div.html(msg)
+            .style("left", d3.event.pageX - 200 + "px")		
+            .style("top", d3.event.pageY + 12 + "px");
       }
       function mouseout() {
         d3.selectAll(".row text").classed("active", false);
         d3.selectAll(".column text").style("fill", "black");
-        el.parentNode.removeChild(el);
+        div.transition()		
+           .duration(500)		
+           .style("opacity", 0);	
       }
       d3.select("#order").on("change", function () {
+        
         selected_order = this.value;
-         order(this.value);
+        
         svg.selectAll(".row").remove();
-        svg.selectAll(".column").remove();
+        x.domain(orders[selected_order]);
+        //svg.selectAll(".row").transition().each(row_f);
         rowgen();
-        colgen();
+        order(this.value);    
+       //svg.selectAll(".row").remove();
+        //svg.selectAll(".column").remove();
+        //rowgen();
+        //colgen();
       });
 
       d3.select("#group").on("change", function () {
@@ -216,7 +273,6 @@
       function order(value) {
         var t = svg.transition().duration(2500);
         x.domain(orders[value]);
-        u.domain(orders[value]);
         t.selectAll(".row")
           .delay(function (d, i) { return x(i) * 4; })
           .attr("transform", function (d, i) { return "translate(0," + x(i) + ")"; })

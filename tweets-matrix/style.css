@@ -1,9 +1,20 @@
 /* Copyright 2013 Michael Bostock. All rights reserved. Do not copy. */
 
-@import url(//fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
+
 
 html {
   min-width: 1040px;
+}
+
+div.tooltip {	
+    position: absolute;							
+    padding: 2px;				
+    font: 16px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;	
+    white-space:nowrap;		
 }
 
 .ocks-org body {
