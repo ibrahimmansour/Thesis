@@ -7,16 +7,9 @@ var app = express();
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-app.post('/listUsers', function (req, res) {
-   fs.readFile( __dirname + "/" + "tweets_20.json", 'utf8', function (err, data) {
-       //console.log( data );
-       res.end( data );
-   });
-})
-
 app.post('/getTweetsRelations', function (req, res) {
    var nodes = req.body.nodes;
-   fs.readFile( __dirname + "/" + "tweets_" + nodes + ".json", 'utf8', function (err, data) {
+   fs.readFile( __dirname + "/data/" + "tweets_" + nodes + ".json", 'utf8', function (err, data) {
        //console.log( data );
        res.end( data );
    });
