@@ -4,7 +4,7 @@ var selected_group = document.getElementById('group').value;
 var relationvaluefrom = document.getElementById('similarity_value_from').value;
 var relationvalueto = document.getElementById('similarity_value_to').value;
 
-var margin = {top: 80, right: 0, bottom: 10, left: 80}, width = 720, orders,
+var margin = {top: 80, right: 0, bottom: 10, left: 80}, width = 720,
     height = 720;
 
 var x = d3.scale.ordinal().rangeBands([0, width]),
@@ -12,77 +12,39 @@ var x = d3.scale.ordinal().rangeBands([0, width]),
     z = d3.scale.linear().domain([0, 1]).clamp(true),
     c = d3.scale.category10().domain(d3.range(10));
 
-var maxrelcount = 0;
 var relscale;
 
 function myfunction() {
-  var svg =
-      d3.select('body')
-          .append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .style('margin-left', -margin.left + 'px')
-          .append('g')
-          .attr(
-              'transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+  getTopWords(selected_nodes , function(tweets){
+      console.log(tweets);
+    var svg =
+        d3.select('body')
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .style('margin-left', -margin.left + 'px')
+            .append('g')
+            .attr(
+                'transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 
-  var div = d3.select('body')
-                .append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
+    var div = d3.select('body')
+                    .append('div')
+                    .attr('class', 'tooltip')
+                    .style('opacity', 0);
 
-  getTweetsRelations(selected_nodes ,function(tweets){
-    var matrix = [], nodes = tweets.nodes, mincount = 0, maxcount = 0,
-     n = nodes.length;
-    var invertedindex = [];
-    // Compute index per node.
-    nodes.forEach(function(node, i) {
-      node.index = i;
-      node.cooccurencecount = 0;
-      node.similaritycount = 0;
-      invertedindex[node.name] = i;
-      matrix[i] = d3.range(n).map(function(j) {
-        return {x: j, y: i};
-      });
-      if (node.count < mincount) mincount = node.count;
-      if (node.count > maxcount) maxcount = node.count;
-    });
+    var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
+     maxcount = tweets.maxcount, n = nodes.length,
+     invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount
+     orders = tweets.orders;
 
     barscale.domain(d3.range(mincount, maxcount + 1));
-    // Convert links to matrix; count character occurrences.
-    tweets.links.forEach(function(tweet) {
-      matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
-          .cooccurence = tweet.portion1;
-      matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
-          .cooccurencecount =
-          tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
-      matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
-          .similarity = tweet.portion2;
-      nodes[invertedindex[tweet.word1]].cooccurencecount += tweet.portion1;
-      nodes[invertedindex[tweet.word1]].similaritycount += tweet.portion2;
-      var relcount = tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
-      if (maxrelcount < relcount) maxrelcount = relcount;
-    });
+
     relscale =
         d3.scale.ordinal().domain(d3.range((maxrelcount + 1))).rangePoints([
           0, 1
         ]);
-    // Precompute the orders.
-    orders = {
-      name: d3.range(n).sort(function(a, b) {
-        return d3.ascending(nodes[a].name, nodes[b].name);
-      }),
-      count: d3.range(n).sort(function(a, b) {
-        return nodes[b].count - nodes[a].count;
-      }),
-      cooccurence: d3.range(n).sort(function(a, b) {
-        return nodes[b].cooccurencecount - nodes[a].cooccurencecount;
-      }),
-      similarity: d3.range(n).sort(function(a, b) {
-        return nodes[b].similaritycount - nodes[a].similaritycount;
-      })
-    };
 
     // The default sort order.
     x.domain(orders[selected_order]);
@@ -222,9 +184,7 @@ function myfunction() {
             .style('fill', 'transparent')
             .style('stroke', 'black')
             .style('stroke-width', '0.15')
-            .style('fill', 'red')
-            .on('mouseover', rtextmouseover)
-            .on('mouseout', rtextmouseout);
+            .style('fill', 'red');
 
         column.append('rect', 'text')
             .attr('x', 4)
@@ -294,13 +254,14 @@ function myfunction() {
       cell.style('fill', function(d) {
         return selected_group == 'similarity' ?
             c(Math.round(nodes[d.y].similaritycount)) :
-            c(2);
+            '#34495E';
       })
       }
 
     function rtextmouseover() {
       var txt = d3.select(this)[0][0].textContent;
       div.transition().duration(200).style('opacity', .9);
+      console.log(tweets.invertedindex[txt]);
       div.html(nodes[invertedindex[txt]].count + ' tweets contain ' + txt)
           .style('left', d3.event.pageX - 200 + 'px')
           .style('top', d3.event.pageY + 'px');
@@ -419,6 +380,22 @@ function getTweetsRelations(nodes, func) {
         dataType:'json',
         data: {
             nodes:nodes
+        },
+        success: func
+    });
+}
+
+function getTopWords(nodes, func) {
+    $.ajax({
+        type: "POST",
+        url: '/getTopWords',
+        dataType:'json',
+        data: {
+            numnodes:nodes,
+            searchkeyword : "Brexit",
+            startdate : "2016-07-01",
+            enddate : "2016-07-10",
+            wordtype : [6,9,18,34]
         },
         success: func
     });
