@@ -6,8 +6,7 @@ var exports = module.exports = {};
 function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordType, db, cb) {
     //function connection(err, db) {
     db.collection("Tweets_Main").find({
-        Search_Keyword: "Brexit",
-        Tweet_Date: { $gt: startDate, $gt: endDate },
+        Search_Keyword: searchKeyword,
         $and: [
             {
                 "Tokens": {
@@ -25,8 +24,9 @@ function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordT
                     }
                 }
             }
-        ]
-    }).toArray((err, results) => { if (err) { cb(err); } else { cb(results.length); } });
+        ],
+        Tweet_Date: { $gt: startDate, $lt: endDate }
+    }, {Text:1,_id:0}).toArray((err, results) => { if (err) { cb(err); } else { cb(results.length); } });
     //};
     //MongoClient.connect(url, connection);
     //return;

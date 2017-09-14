@@ -4,8 +4,8 @@ var selected_group = document.getElementById('group').value;
 var relationvaluefrom = document.getElementById('similarity_value_from').value;
 var relationvalueto = document.getElementById('similarity_value_to').value;
 
-var margin = {top: 80, right: 0, bottom: 10, left: 80}, width = 720,
-    height = 720;
+var margin = {top: 80, right: 0, bottom: 0, left: 80}, width = 540,
+    height = 540;
 
 var x = d3.scale.ordinal().rangeBands([0, width]),
     barscale = d3.scale.ordinal().rangeBands([10, 70]),
@@ -14,16 +14,23 @@ var x = d3.scale.ordinal().rangeBands([0, width]),
 
 var relscale;
 
+
 function myfunction() {
+  var svgloader = d3.select('body').append('div')
+    .attr('class', 'loader')
+    .style('margin-left', ( width + margin.left + margin.right )/2 + 'px')
+    .style('margin-top', ( height + margin.top + margin.bottom )/2 + 'px')
+    .append('img')
+    .attr('src', function(d) { return 'Imgs/ajax-loader.gif'; });
 
   getTopWords(selected_nodes , function(tweets){
-      console.log(tweets);
+   //console.log(tweets);
     var svg =
         d3.select('body')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
-            .style('margin-left', -margin.left + 'px')
+            .style('margin-left', margin.left + 'px')
             .append('g')
             .attr(
                 'transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -368,9 +375,10 @@ function myfunction() {
             return 'translate(' + x(i) + ')rotate(-90)';
           });
     }
-  });
+  svgloader.remove();});
   }
 myfunction();
+
 
 
 function getTweetsRelations(nodes, func) {
