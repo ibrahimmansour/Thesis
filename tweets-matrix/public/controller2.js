@@ -3,29 +3,29 @@ let name = params.get("name");
 console.log(name);
 var searchKeyword = "Brexit";
 var selected_nodes = 20;
-var selected_order = "count";
-var selected_group = "cooccurence";
-var relationvaluefrom = "0";
-var relationvalueto = "100";
-var startDate = "2016-07-01T00:00:00";
-var endDate = "2016-07-10T23:59";
+var selected_order = document.getElementById('order').value;
+var selected_group = document.getElementById('group').value;
+var relationvaluefrom = document.getElementById('similarity_value_from').value;
+var relationvalueto = document.getElementById('similarity_value_to').value;
+var startDate = document.getElementById('dateFrom').value;
+var endDate = document.getElementById('dateTo').value;
 console.log(startDate);
-var wordType = "nouns";
+var wordType = document.getElementById('wordtypeList').value;
 
-var margin = { top: 80 , right: 0, bottom: 0, left: 210 }, width = 160,
-    height = 160, svgz0oom = 1;
+var margin = { top: 120, right: 0, bottom: 0, left: 210 }, width = 450,
+    height = 450, svgzoom = 1;
 
 var x = d3.scaleBand().range([0, width]),
-    barscale = d3.scaleBand().range([4, 30]),
+    barscale = d3.scaleBand().range([10, 80]),
     z = d3.scaleLinear().domain([0, 1]).clamp(true),
     c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
 
 var relscale;
-var svgcounter=0;
 
-function myfunction(startdate, enddate) {
-    startDate = startdate;
-    endDate = enddate;
+var style = window.getComputedStyle(document.querySelector(".svgmatrix"));
+console.log(style.getPropertyValue('background'));
+
+function myfunction() {
     /*
      var svgloader = d3.select('body').append('div')
          .attr('class', 'loader')
@@ -37,7 +37,7 @@ function myfunction(startdate, enddate) {
     $('#svgloader').show();
     $('#tweetsloader').show();
     getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
-        svgcounter++;
+
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
             invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount,
@@ -77,25 +77,18 @@ function myfunction(startdate, enddate) {
         var svg =
             d3.select('#svg_matrix')
                 .append('svg')
-                .attr('id', 'svg' + svgcounter)
-                .attr('width', 400)
-                .attr('height', 310 )
-                /*.call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
+                .attr('width', 800)
+                .attr('height', 620 )
+                .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
                     $('#dropDownMenu').hide();
-                    d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-                    d3.select('#myg3').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
+                    d3.select('#myg').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
                 }))
-                */
                 .append('g')
-                .attr('id', 'myg'+svgcounter)
+                .attr('id', 'myg')
                 .attr(
                 'transform', 'translate(' + margin.left + ',' + margin.top + ')');
                 //.call(d3.drag().on("start", ()=>{return null;}));
-            
-            svg.append('text')
-                .attr("text-anchor", "end")
-                .attr("fill", "red")
-                .text(function(d) { return startdate; });
+
         function dragstarted() {
             d3.select(this).raise();
         }
@@ -464,7 +457,6 @@ function myfunction(startdate, enddate) {
             d3.selectAll('.column text').style('fill', function (d, i) {
                 return (i == p.x) ? 'red' : 'black';
             });
-            var tweetcount = Math.round(nodes[p.y].count * (p.cooccurence));
             var tweetscount = '(' + Math.round(nodes[p.y].count * (p.cooccurence)) +
                 ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
                 nodes[p.x].name + '\'';
@@ -472,7 +464,7 @@ function myfunction(startdate, enddate) {
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
             console.log(Math.round(p.cooccurencecount));
             var tweetcooccurencecount =
-                Math.round(Math.round(tweetcount/maxrelcount * 100)) +
+                Math.round(relscale(Math.round(p.cooccurencecount)) * 100) +
                 '% of the maximum cooccurence count (' + maxrelcount + ' tweets)';
             var nodesimilarity = '\'' + nodes[p.y].name + '\' and \'' +
                 nodes[p.x].name + '\' are ' + Math.round(p.similarity * 100) +
@@ -493,47 +485,96 @@ function myfunction(startdate, enddate) {
             div.transition().duration(500).style('opacity', 0);
         }
 
-        d3.select('#svg1')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg1').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#chartBtn').on('click', function () {
+            $('.textrect').toggle();
+            $('.charttext').toggle();
+            $('.plaintext').toggle();
+        });
 
-        d3.select('#svg2')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg2').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#zoomIn').on('click', function () {
+            svgzoom += 0.025;
+            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
 
-        d3.select('#svg3')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg3').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#zoomOut').on('click', function () {
+            svgzoom -= 0.025;
+            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
 
-        d3.select('#svg4')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg4').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#zoomOff').on('click', function () {
+            svgzoom = 1;
+            d3.select('#myg').attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
 
-        d3.select('#svg5')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg5').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#relationsSettingApplyBtn').on('click', function () {
+            d3.selectAll('.cells').transition().duration(2000).style('opacity', 0.0);
+            selected_order = document.getElementById('order').value;
+            selected_group = document.getElementById('group').value;
+            relationvaluefrom =
+                document.getElementById('similarity_value_from').value;
+            relationvalueto = document.getElementById('similarity_value_to').value;
+            order(selected_order);
+            setTimeout(refillsvg, 3500);
+        });
 
-        d3.select('#svg6')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg6').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#filterApplyBtn').on('click', function () {
+            searchKeyword = document.getElementById('keywordTxtbox').value;
+            selected_nodes = document.getElementById('nodescount').value;
+            startDate = document.getElementById('dateFrom').value;
+            endDate = document.getElementById('dateTo').value;
+            wordType = document.getElementById('wordtypeList').value;
+            tweetsdiv.remove();
+            d3.select('body').select('svg').remove();
+            myfunction();
+        });
+
+        d3.select('#nextBtn').on('click', function () {
+            tweetsdiv.remove();
+            getMoreTweets(tweetscounter, function (tweetstexts) {
+                console.log(tweetstexts);
+                tweetsdiv = d3.select("#panel_contents")
+                    .selectAll()
+                    .data(tweetstexts)
+                    .enter()
+                    .append('p')
+                    .style('border-style', "solid")
+                    .style('border-width', "1px")
+                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
+                if (tweetscounter < textlength) {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                else {
+                    d3.select("#nextBtn").attr('disabled', 'disabled');
+                }
+                if (tweetscounter >= 50) {
+                    d3.select("#prevBtn").attr('disabled', null);
+                }
+                $('#tweetsloader').hide();
+            });
+        });
+
+        d3.select('#prevBtn').on('click', function () {
+            tweetscounter = tweetscounter - 100;
+            tweetsdiv.remove();
+            getMoreTweets(tweetscounter, function (tweetstexts) {
+                console.log(tweetstexts);
+                tweetsdiv = d3.select("#panel_contents")
+                    .selectAll()
+                    .data(tweetstexts)
+                    .enter()
+                    .append('p')
+                    .style('border-style', "solid")
+                    .style('border-width', "1px")
+                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
+                if (tweetscounter < textlength) {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                if (tweetscounter <= 50) {
+                    d3.select("#prevBtn").attr('disabled', 'disabled');
+                }
+                $('#tweetsloader').hide();
+            });
+        });
 
         function order(value) {
             var t = svg.transition().duration(1000);
@@ -568,13 +609,7 @@ function myfunction(startdate, enddate) {
         $('.plaintext').hide();
     });
 }
-myfunction("2016-07-01T00:00:00", "2016-07-02T00:00:00");
-myfunction("2016-07-02T00:00:00","2016-07-03T00:00:00");
-myfunction("2016-07-03T00:00:00","2016-07-04T00:00:00");
-myfunction("2016-07-04T00:00:00","2016-07-05T00:00:00");
-myfunction("2016-07-05T00:00:00","2016-07-06T00:00:00");
-myfunction("2016-07-06T00:00:00","2016-07-07T00:00:00");
-   
+myfunction();
 
 function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func) {
     $('#tweetsloader').show();

@@ -26,7 +26,7 @@ function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordT
             }
         ],
         Tweet_Date: { $gt: startDate, $lt: endDate }
-    }, {Text:1,_id:0}).toArray((err, results) => { if (err) { cb(err); } else { cb(results.length); } });
+    }, {Text:1,_id:0}).toArray((err, results) => { if (err) { cb(err); } else { cb(results); } });
     //};
     //MongoClient.connect(url, connection);
     //return;
@@ -114,6 +114,7 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
             else {
                 var relations = {};
                 let links = [];
+                var tweets = [];
                 async.each(nodes, (node1, eachCb1) => {
                     async.each(nodes, (node2, eachCb2) => {
                         //console.log(nodes.indexOf(node2));
@@ -128,8 +129,9 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
                                 eachCb2();
                             }
                             else {
-                                getRelationCount(searchKeyword, node1.name, node2.name, startDate, endDate, wordType, db, (relcount, err) => {
+                                getRelationCount(searchKeyword, node1.name, node2.name, startDate, endDate, wordType, db, (texts, err) => {
                                     //console.log(node1.name + " " + node2.name + " " + relcount);
+                                    var relcount = texts.length;
                                     var link1 = {};
                                     link1.word1 = node1.name;
                                     link1.word2 = node2.name;
@@ -142,6 +144,11 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
                                     link2.portion2 = 0;
                                     links.push(link1);
                                     links.push(link2);
+                                    var i;
+                                    for (i=0; i < relcount; i++)
+                                        {
+                                            tweets.push(texts[i]);
+                                        }
                                     eachCb2();
                                 });
                             }
@@ -153,7 +160,8 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
                 }, () => {
                     relations.links = links;
                     relations.nodes = nodes;
-                    console.log(relations);
+                    relations.tweets = tweets;
+                    //console.log(relations);
                     cb(relations);
                     db.close();
                 });
@@ -164,11 +172,46 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
     return;
 }
 
-exports.getTopWords("Brexit", 5, "2016-07-01", "2016-07-10", [6, 9, 18, 34], (results, err) => {
+exports.getWordsTweets = function (searchKeyword, word1, word2 , startDate, endDate, cb){
+    function connection(err, db) {
+    db.collection("Tweets_Main").find({
+        Search_Keyword: "Brexit",
+        Tweet_Date: { $gt: startDate, $lt: endDate },
+        $and: [
+        {
+            "Tokens": {
+                $elemMatch: {
+                    Word: word1
+                }
+            }
+        },
+        {
+            "Tokens": {
+                $elemMatch: {
+                    Word: word2
+                }
+            }
+        }
+    ]},{_id:0,Text:1}).toArray((err,results) => {
+        cb(results);
+        db.close();
+    });
+}
+MongoClient.connect(url, connection);
+return;
+}
+
+/*
+exports.getWordsTweets("Brexit", "uk", "hangover", "2016-07-01", "2016-07-10", (results, err) => {
+    console.log(results);
+}
+);
+*/
+/*exports.getTopWords("Brexit", 5, "2016-07-01", "2016-07-10", [6, 9, 18, 34], (results, err) => {
     console.log(results.links.length);
 }
 );
-
+*/
 /*
 getRelationCount("Brexit", "europe", "europe", "2016-07-01", "2016-07-10", [6, 9, 18, 34], (results, err) => { console.log(results); });
 */
