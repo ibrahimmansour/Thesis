@@ -1,7 +1,7 @@
 let params = (new URL(document.location)).searchParams;
 let name = params.get("name");
 console.log(name);
-var searchKeyword = "Brexit";
+var searchKeyword = document.getElementById('dataset').value;
 var selected_nodes = 20;
 var selected_order = document.getElementById('order').value;
 var selected_group = document.getElementById('group').value;
@@ -20,20 +20,19 @@ var x = d3.scaleBand().range([0, width]),
     z = d3.scaleLinear().domain([0, 1]).clamp(true),
     c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
 
+var textfontmap = {};
+textfontmap[5] = 15;
+textfontmap[10] = 12;
+textfontmap[20] = 10;
+textfontmap[50] = 7;
+textfontmap[100] = 4;
+
 var relscale;
 
 var style = window.getComputedStyle(document.querySelector(".svgmatrix"));
 console.log(style.getPropertyValue('background'));
 
 function myfunction() {
-    /*
-     var svgloader = d3.select('body').append('div')
-         .attr('class', 'loader')
-         .style('margin-left', (width + margin.left + margin.right) / 2 + 'px')
-         .style('margin-top', (height + margin.top + margin.bottom) / 2 + 'px')
-         .append('img')
-         .attr('src', function (d) { return 'Imgs/ajax-loader.gif'; });
-    */
     $('#svgloader').show();
     $('#tweetsloader').show();
     getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
@@ -52,16 +51,16 @@ function myfunction() {
 
         // The default sort order.
         x.domain(orders[selected_order]);
-
+        $("#tweet_list_words").val("\"" + searchKeyword + "\"");
         var tweetsdiv = d3.select("#panel_contents")
             .selectAll()
             .data(tweets.tweets)
             .enter()
-            .append('p')
+            .append('li')
             .attr('class', 'tweets_contents')
-            .style('border-style', "solid")
-            .style('border-width', "1px")
-            .html(function (d) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text; });
+            .html(function (d) { tweetscounter++; return "<b>Tweet " + tweetscounter + "</b> : </br>" + d.Text; })
+            .on("mouseover", mouserovertweet)
+            .on("mouseout", mouseout);
 
         if (tweetscounter < textlength) {
             d3.select('#nextBtn').attr('disabled', null);
@@ -78,7 +77,7 @@ function myfunction() {
             d3.select('#svg_matrix')
                 .append('svg')
                 .attr('width', 800)
-                .attr('height', 620 )
+                .attr('height', 620)
                 .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
                     $('#dropDownMenu').hide();
                     d3.select('#myg').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
@@ -87,7 +86,7 @@ function myfunction() {
                 .attr('id', 'myg')
                 .attr(
                 'transform', 'translate(' + margin.left + ',' + margin.top + ')');
-                //.call(d3.drag().on("start", ()=>{return null;}));
+        //.call(d3.drag().on("start", ()=>{return null;}));
 
         function dragstarted() {
             d3.select(this).raise();
@@ -141,7 +140,7 @@ function myfunction() {
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.32em')
                 .attr('text-anchor', 'end')
-                .style('font-size', '4pt')
+                .style('font-size', textfontmap[selected_nodes] + 'pt')
                 .style('cursor', 'pointer')
                 .text(function (d, i) {
                     return nodes[i].name;
@@ -150,84 +149,84 @@ function myfunction() {
                 .on('mouseout', rtextmouseout)
                 .on('click', showdropdown);
 
-        if (selected_nodes <= 120) {
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -barscale(nodes[i].count) - 3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .attr('rx', 5)  // rounded corners
-                .attr('ry', 5)
-                .style(
-                'fill',
-                function (d, i) {
-                    return 'red';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
+            if (selected_nodes <= 120) {
+                row.append('rect', 'text')
+                    .attr(
+                    'x',
+                    function (d, i) {
+                        return -barscale(nodes[i].count) - 3;
+                    })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                    'width',
+                    function (d, i) {
+                        return barscale(nodes[i].count);
+                    })
+                    .attr('height', x.bandwidth() / 2)
+                    .attr('rx', 5)  // rounded corners
+                    .attr('ry', 5)
+                    .style(
+                    'fill',
+                    function (d, i) {
+                        return 'red';
+                    })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
 
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -(barscale(nodes[i].count) *
-                        (nodes[i].semCountPo / nodes[i].count)) -
-                        3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count) *
-                        (nodes[i].semCountPo / nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .style('fill',
-                function (d, i) {
-                    return 'green';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
-
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -(barscale(nodes[i].count) *
-                        (nodes[i].semCountNe / nodes[i].count)) -
-                        (barscale(nodes[i].count) *
+                row.append('rect', 'text')
+                    .attr(
+                    'x',
+                    function (d, i) {
+                        return -(barscale(nodes[i].count) *
                             (nodes[i].semCountPo / nodes[i].count)) -
-                        3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count) *
-                        (nodes[i].semCountNe / nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .style('fill',
-                function (d, i) {
-                    return 'blue';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
-        
+                            3;
+                    })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                    'width',
+                    function (d, i) {
+                        return barscale(nodes[i].count) *
+                            (nodes[i].semCountPo / nodes[i].count);
+                    })
+                    .attr('height', x.bandwidth() / 2)
+                    .style('fill',
+                    function (d, i) {
+                        return 'green';
+                    })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
+
+                row.append('rect', 'text')
+                    .attr(
+                    'x',
+                    function (d, i) {
+                        return -(barscale(nodes[i].count) *
+                            (nodes[i].semCountNe / nodes[i].count)) -
+                            (barscale(nodes[i].count) *
+                                (nodes[i].semCountPo / nodes[i].count)) -
+                            3;
+                    })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                    'width',
+                    function (d, i) {
+                        return barscale(nodes[i].count) *
+                            (nodes[i].semCountNe / nodes[i].count);
+                    })
+                    .attr('height', x.bandwidth() / 2)
+                    .style('fill',
+                    function (d, i) {
+                        return 'blue';
+                    })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
+
             }
         }
-        
+
         function colgen() {
             var column = svg.selectAll('.column')
                 .data(matrix)
@@ -250,7 +249,7 @@ function myfunction() {
                 .attr('text-anchor', 'start')
                 .attr('class', 'charttext')
                 .style('cursor', 'pointer')
-                .style('font-size', '4pt')
+                .style('font-size', textfontmap[selected_nodes] + 'pt')
                 .text(function (d, i) {
                     return nodes[i].name;
                 })
@@ -417,22 +416,137 @@ function myfunction() {
             tweetscounter = 0;
             var word1;
             var word2;
-            if (d.x) { word1 = nodes[d.x].name; word2 = nodes[d.y].name; }
+            if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; }
             else { word1 = nodes[i].name; word2 = nodes[i].name; }
-            getWordsTweets('Brexit', nodes[i].name, word1, word2, endDate, (results) => {
+            getWordsTweets('Brexit', word1, word2, startDate, endDate, (results) => {
+                console.log("word1: " + word1 + " word2: " + word2);
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
                     .data(results)
                     .enter()
-                    .append('p')
-                    .style('border-style', "solid")
-                    .style('border-width', "1px")
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
+                    .append('li')
+                    .attr('class', 'tweets_contents')
+                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .on("mouseover", mouserovertweet)
+                    .on("mouseout", mouseout);
+                if (word1 == word2) {
+                    $("#tweet_list_words").val("\"" + searchKeyword + "\"" + ",\"" + word1 + "\"");
+                }
+                else {
+                    $("#tweet_list_words").val("\"" + searchKeyword + "\"" + ",\"" + word1 + "\"" + ",\"" + word2 + "\"");
+                }
                 $('#tweetsloader').hide();
                 $('#dropDownMenu').hide();
             });
         }
+
+        d3.select('#chartBtn').on('click', function () {
+            $('.textrect').toggle();
+            $('.charttext').toggle();
+            $('.plaintext').toggle();
+        });
+
+        d3.select('#zoomIn').on('click', function () {
+            svgzoom += 0.025;
+            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
+
+        d3.select('#zoomOut').on('click', function () {
+            svgzoom -= 0.025;
+            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
+
+        d3.select('#zoomOff').on('click', function () {
+            svgzoom = 1;
+            d3.select('#myg').attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
+        });
+
+        d3.select('#relationsSettingApplyBtn').on('click', function () {
+            d3.selectAll('.cells').transition().duration(2000).style('opacity', 0.0);
+            selected_order = document.getElementById('order').value;
+            selected_group = document.getElementById('group').value;
+            relationvaluefrom =
+                document.getElementById('similarity_value_from').value;
+            relationvalueto = document.getElementById('similarity_value_to').value;
+            order(selected_order);
+            setTimeout(refillsvg, 3500);
+        });
+
+        d3.select('#filterApplyBtn').on('click', function () {
+            searchKeyword = document.getElementById('dataset').value;
+            selected_nodes = document.getElementById('nodescount').value;
+            startDate = document.getElementById('dateFrom').value;
+            endDate = document.getElementById('dateTo').value;
+            wordType = document.getElementById('wordtypeList').value;
+            tweetsdiv.remove();
+            d3.select('body').select('svg').remove();
+            myfunction();
+        });
+
+        d3.select('#dataset').on('change', function () {
+            searchKeyword = document.getElementById('dataset').value;
+            selected_nodes = document.getElementById('nodescount').value;
+            startDate = document.getElementById('dateFrom').value;
+            endDate = document.getElementById('dateTo').value;
+            wordType = document.getElementById('wordtypeList').value;
+            tweetsdiv.remove();
+            d3.select('body').select('svg').remove();
+            myfunction();
+        });
+
+        d3.select('#nextBtn').on('click', function () {
+            tweetsdiv.remove();
+            getMoreTweets(tweetscounter, function (tweetstexts) {
+                console.log(tweetstexts);
+                tweetsdiv = d3.select("#panel_contents")
+                    .selectAll()
+                    .data(tweetstexts)
+                    .enter()
+                    .append('li')
+                    .attr('class', 'tweets_contents')
+                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .on("mouseover", mouserovertweet)
+                    .on("mouseout", mouseout);
+                if (tweetscounter < textlength) {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                else {
+                    d3.select("#nextBtn").attr('disabled', 'disabled');
+                }
+                if (tweetscounter >= 50) {
+                    d3.select("#prevBtn").attr('disabled', null);
+                }
+                $('#tweetsloader').hide();
+            });
+        });
+
+        d3.select('#prevBtn').on('click', function () {
+            tweetscounter = tweetscounter - 100;
+            tweetsdiv.remove();
+            getMoreTweets(tweetscounter, function (tweetstexts) {
+                console.log(tweetstexts);
+                tweetsdiv = d3.select("#panel_contents")
+                    .selectAll()
+                    .data(tweetstexts)
+                    .enter()
+                    .append('li')
+                    .attr('class', 'tweets_contents')
+                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .on("mouseover", mouserovertweet)
+                    .on("mouseout", mouseout);
+                if (tweetscounter < textlength) {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                if (tweetscounter <= 50) {
+                    d3.select("#prevBtn").attr('disabled', 'disabled');
+                }
+                $('#tweetsloader').hide();
+            });
+        });
+
+
         function rtextmouseover(d, i) {
+
             div.transition().duration(200).style('opacity', .9);
             div.html(nodes[i].count + ' tweets contain ' + nodes[i].name)
                 //.attr("transform", "translate(" + d3.event.x + "," + d3.event.y + ")");
@@ -448,7 +562,7 @@ function myfunction() {
         function rtextmouseout(rtext) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').classed('active', false);
+            d3.selectAll('.column text').style('fill', 'black');
         }
         function mouseover(p) {
             d3.selectAll('.row text').classed('active', function (d, i) {
@@ -485,96 +599,15 @@ function myfunction() {
             div.transition().duration(500).style('opacity', 0);
         }
 
-        d3.select('#chartBtn').on('click', function () {
-            $('.textrect').toggle();
-            $('.charttext').toggle();
-            $('.plaintext').toggle();
-        });
-
-        d3.select('#zoomIn').on('click', function () {
-            svgzoom += 0.025;
-            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
-        });
-
-        d3.select('#zoomOut').on('click', function () {
-            svgzoom -= 0.025;
-            svg.attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
-        });
-
-        d3.select('#zoomOff').on('click', function () {
-            svgzoom = 1;
-            d3.select('#myg').attr("transform", 'translate(' + margin.left + ',' + margin.top + ') scale(' + svgzoom + ')');
-        });
-
-        d3.select('#relationsSettingApplyBtn').on('click', function () {
-            d3.selectAll('.cells').transition().duration(2000).style('opacity', 0.0);
-            selected_order = document.getElementById('order').value;
-            selected_group = document.getElementById('group').value;
-            relationvaluefrom =
-                document.getElementById('similarity_value_from').value;
-            relationvalueto = document.getElementById('similarity_value_to').value;
-            order(selected_order);
-            setTimeout(refillsvg, 3500);
-        });
-
-        d3.select('#filterApplyBtn').on('click', function () {
-            searchKeyword = document.getElementById('keywordTxtbox').value;
-            selected_nodes = document.getElementById('nodescount').value;
-            startDate = document.getElementById('dateFrom').value;
-            endDate = document.getElementById('dateTo').value;
-            wordType = document.getElementById('wordtypeList').value;
-            tweetsdiv.remove();
-            d3.select('body').select('svg').remove();
-            myfunction();
-        });
-
-        d3.select('#nextBtn').on('click', function () {
-            tweetsdiv.remove();
-            getMoreTweets(tweetscounter, function (tweetstexts) {
-                console.log(tweetstexts);
-                tweetsdiv = d3.select("#panel_contents")
-                    .selectAll()
-                    .data(tweetstexts)
-                    .enter()
-                    .append('p')
-                    .style('border-style', "solid")
-                    .style('border-width', "1px")
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
-                if (tweetscounter < textlength) {
-                    d3.select("#nextBtn").attr('disabled', null);
-                }
-                else {
-                    d3.select("#nextBtn").attr('disabled', 'disabled');
-                }
-                if (tweetscounter >= 50) {
-                    d3.select("#prevBtn").attr('disabled', null);
-                }
-                $('#tweetsloader').hide();
+        function mouserovertweet(d, i) {
+            console.log(d.Text.toLowerCase());
+            d3.selectAll('.row text').classed('active', function (dt, ind) {
+                return d.Text.toLowerCase().indexOf(nodes[ind].name.toLowerCase()) !== -1;
             });
-        });
-
-        d3.select('#prevBtn').on('click', function () {
-            tweetscounter = tweetscounter - 100;
-            tweetsdiv.remove();
-            getMoreTweets(tweetscounter, function (tweetstexts) {
-                console.log(tweetstexts);
-                tweetsdiv = d3.select("#panel_contents")
-                    .selectAll()
-                    .data(tweetstexts)
-                    .enter()
-                    .append('p')
-                    .style('border-style', "solid")
-                    .style('border-width', "1px")
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
-                if (tweetscounter < textlength) {
-                    d3.select("#nextBtn").attr('disabled', null);
-                }
-                if (tweetscounter <= 50) {
-                    d3.select("#prevBtn").attr('disabled', 'disabled');
-                }
-                $('#tweetsloader').hide();
+            d3.selectAll('.column text').style('fill', function (dt, ind) {
+                return (d.Text.toLowerCase().indexOf(nodes[ind].name.toLowerCase()) !== -1) ? "red" : "black";
             });
-        });
+        }
 
         function order(value) {
             var t = svg.transition().duration(1000);

@@ -14,6 +14,14 @@ line {
   stroke: #fff;
 }
 
+label {
+  font-weight:bold;
+}
+
+select,input{
+  background-color:rgba(235, 232, 230, 0.97);
+}
+
 text.active {
   fill: red;
 }
@@ -54,11 +62,12 @@ text.active {
 
 .svgmatrix{
   background: white;
-  margin-left:20px;
+  margin-left:70px;
   margin-top: 40px;
   width: 800px;
   height: 620px;
-  border: 1px solid black;
+  border-radius: 25px;
+  border: 0.5px solid black;
 }
 
 aside{
@@ -67,29 +76,38 @@ aside{
   margin-right: 980px;
   position: absolute;
   width: 230px;
+  padding: 0.5px;
 }
 
 .asideleft{
   background: white;
+  margin-left:10px;
 }
 
 .asideright{
   margin-right: -250px;
+  width: 250px;
 }
 
 .panel_contents{
   background: white;
   width: 250px;
   height: 550px;
-  overflow-y: scroll;
+  overflow-x: scroll;
 }
 
-.tweets_contents:after
+.tweets_contents
 {
     content:' ';
     display:block;
-    margin-top: 10px;
-    border:0.01px solid rgba(90, 87, 87, 0.92);
+    padding: 3px 3px 3px 3px;
+    border-bottom:0.5px solid rgba(43, 41, 41, 0.92);
+}
+
+.tweets_contents:hover
+{
+  background:lightgrey;
+  cursor: pointer;
 }
 
 div.tooltip {	
@@ -133,7 +151,7 @@ div.tooltip {
 
 
 .ocks-org body {
-  background: #fcfcfa;
+  background: rgba(235, 232, 230, 0.97);
   color: #333;
   font-family: "PT Serif", serif;
   margin: 1em auto 4em auto;

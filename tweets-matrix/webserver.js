@@ -40,8 +40,8 @@ app.post('/getTopWords', (req, res) => {
 })
 
 app.post('/getWordsTweets', (req, res) => {
-    var startDate = "2016-07-01";
-    var endDate = "2016-07-10";
+    var startDate = req.body.startdate;
+    var endDate = req.body.enddate;
     startDate.replace("T"," ");
     endDate.replace("T"," ");
     var searchKeyword = req.body.searchkeyword;
@@ -51,7 +51,7 @@ app.post('/getWordsTweets', (req, res) => {
     console.log(startDate);
     console.log(endDate);
     console.log(searchKeyword);
-    console.log(word1);
+    console.log(word1 + " word1");
     console.log(word2);
     application.getWordsTweets(searchKeyword, word1, word2, startDate, endDate, (results, err) => {
         tweetstext = results;

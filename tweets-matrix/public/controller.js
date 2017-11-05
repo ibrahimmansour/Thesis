@@ -1,18 +1,18 @@
 let params = (new URL(document.location)).searchParams;
 let name = params.get("name");
-console.log(name);
+//console.log(name);
 var searchKeyword = "Brexit";
-var selected_nodes = 20;
-var selected_order = "count";
+var selected_nodes = 10;
+var selected_order = "name";
 var selected_group = "cooccurence";
 var relationvaluefrom = "0";
 var relationvalueto = "100";
 var startDate = "2016-07-01T00:00:00";
 var endDate = "2016-07-10T23:59";
-console.log(startDate);
+//console.log(startDate);
 var wordType = "nouns";
 
-var margin = { top: 80 , right: 0, bottom: 0, left: 210 }, width = 160,
+var margin = { top: 100 , right: 0, bottom: 0, left: 210 }, width = 160,
     height = 160, svgz0oom = 1;
 
 var x = d3.scaleBand().range([0, width]),
@@ -20,29 +20,67 @@ var x = d3.scaleBand().range([0, width]),
     z = d3.scaleLinear().domain([0, 1]).clamp(true),
     c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
 
+var ordersmap = {};
+var matrixmap = {};
+var nodesmap = [];
+
 var relscale;
 var svgcounter=0;
 
-function myfunction(startdate, enddate) {
+
+function createSVGs(svgnum) {
+    var i;
+    for (i = 1; i <= svgnum; i++) {
+
+        d3.select('#svg_matrix')
+        .append('div')
+        .attr('id', 'container' + i)
+        .style('display', 'initial');
+
+        d3.select('#container'+i)
+            .append('svg')
+            .attr('id', 'svg' + i)
+            .attr('width', 390 + 'px')
+            .attr('height', 310 + 'px')
+            .style('border-right' , '0.3px solid black')
+            .style('border-bottom' , '0.3px solid black')
+            .append('g')
+            .attr('id', 'myg' + i)
+            .attr(
+            'transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+            d3.select('#container'+i)
+            .append('a')
+            .style('position','absolute')
+            .style('margin-left', -130 + 'px')
+            .style('margin-top', 300  + 'px' )
+            .text(startDate);
+            
+        d3.select('#svg_matrix')
+            .append('img')
+            .attr('id', 'loader' + i)
+            .attr('class', 'loader')
+            .attr('src', 'Imgs/ajax-loader.gif')
+            .style('margin-left', -130 + 'px')
+            .style('margin-top', 155 + 'px' );
+
+    }
+}
+createSVGs(6);
+
+function myfunction(svgcount, startdate, enddate) {
     startDate = startdate;
     endDate = enddate;
-    /*
-     var svgloader = d3.select('body').append('div')
-         .attr('class', 'loader')
-         .style('margin-left', (width + margin.left + margin.right) / 2 + 'px')
-         .style('margin-top', (height + margin.top + margin.bottom) / 2 + 'px')
-         .append('img')
-         .attr('src', function (d) { return 'Imgs/ajax-loader.gif'; });
-    */
     $('#svgloader').show();
-    $('#tweetsloader').show();
     getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
-        svgcounter++;
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
             invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount,
             orders = tweets.orders, textlength = tweets.textlength, tweetscounter = 0;
-
+        
+            ordersmap[svgcount] = orders;
+            matrixmap[svgcount] = matrix;
+            nodesmap[svgcount] = nodes;
         barscale.domain(d3.range(mincount, maxcount + 1));
 
         relscale =
@@ -53,64 +91,17 @@ function myfunction(startdate, enddate) {
         // The default sort order.
         x.domain(orders[selected_order]);
 
-        var tweetsdiv = d3.select("#panel_contents")
-            .selectAll()
-            .data(tweets.tweets)
-            .enter()
-            .append('p')
-            .attr('class', 'tweets_contents')
-            .style('border-style', "solid")
-            .style('border-width', "1px")
-            .html(function (d) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text; });
-
         if (tweetscounter < textlength) {
             d3.select('#nextBtn').attr('disabled', null);
         }
 
-        var zoom = d3.zoom()
-            .scaleExtent([1, 10])
-            .on("zoom", zoomed);
-        var drag_behavior = d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged);
-
         var svg =
-            d3.select('#svg_matrix')
-                .append('svg')
-                .attr('id', 'svg' + svgcounter)
-                .attr('width', 400)
-                .attr('height', 310 )
-                /*.call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-                    $('#dropDownMenu').hide();
-                    d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-                    d3.select('#myg3').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-                }))
-                */
-                .append('g')
-                .attr('id', 'myg'+svgcounter)
-                .attr(
-                'transform', 'translate(' + margin.left + ',' + margin.top + ')');
-                //.call(d3.drag().on("start", ()=>{return null;}));
-            
+            d3.select('#myg'+svgcount);
+
             svg.append('text')
                 .attr("text-anchor", "end")
                 .attr("fill", "red")
                 .text(function(d) { return startdate; });
-        function dragstarted() {
-            d3.select(this).raise();
-        }
-
-        function dragged(shape) {
-            var dx = d3.event.sourceEvent.offsetX,
-                dy = d3.event.sourceEvent.offsetY;
-
-            d3.select(this)
-                .attr("transform", shape => "translate(" + (dx - margin.left) + "," + (dy - margin.top) + ")");
-        }
-
-        function zoomed() {
-            container.attr("transform", d3.event.transform);
-        }
 
         var div = d3.select('body')
             .append('div')
@@ -122,9 +113,11 @@ function myfunction(startdate, enddate) {
             .attr('width', width)
             .attr('height', height);
 
-        function rowgen() {
-            var row = svg.selectAll('.row')
-                .data(matrix)
+        function rowgen(svgnum) {
+            //nodes = nodesmap[svgnum];
+            var row = d3.select('#myg' + svgnum)
+                .selectAll('.row')
+                .data(matrixmap[svgnum])
                 .enter()
                 .append('g')
                 .attr('class', 'row')
@@ -143,15 +136,15 @@ function myfunction(startdate, enddate) {
             row.append('text')
                 .attr('x',
                 function (d, i) {
-                    return -barscale(nodes[i].count) - 7;
+                    return -barscale((nodesmap[svgnum])[i].count) - 7;
                 })
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.32em')
                 .attr('text-anchor', 'end')
-                .style('font-size', '4pt')
+                .style('font-size', '8pt')
                 .style('cursor', 'pointer')
                 .text(function (d, i) {
-                    return nodes[i].name;
+                    return (nodesmap[svgnum])[i].name;
                 })
                 .on('mouseover', rtextmouseover)
                 .on('mouseout', rtextmouseout)
@@ -235,9 +228,11 @@ function myfunction(startdate, enddate) {
             }
         }
         
-        function colgen() {
-            var column = svg.selectAll('.column')
-                .data(matrix)
+        function colgen(svgnum) {
+            //nodes = nodesmap[svgnum];
+            var column = d3.select('#myg' + svgnum)
+                .selectAll('.column')
+                .data(matrixmap[svgnum])
                 .enter()
                 .append('g')
                 .attr('class', 'column')
@@ -257,9 +252,9 @@ function myfunction(startdate, enddate) {
                 .attr('text-anchor', 'start')
                 .attr('class', 'charttext')
                 .style('cursor', 'pointer')
-                .style('font-size', '4pt')
+                .style('font-size', '8pt')
                 .text(function (d, i) {
-                    return nodes[i].name;
+                    return (nodesmap[svgnum])[i].name;
                 })
                 .on('mouseover', rtextmouseover)
                 .on('mouseout', rtextmouseout)
@@ -347,7 +342,6 @@ function myfunction(startdate, enddate) {
                 .attr('ry', 10)
                 .on('mouseover', mouseover)
                 .on('mouseout', mouseout)
-                .on('click', showdropdown);
 
             cell.style('opacity', 0.0)
                 .transition()
@@ -364,17 +358,17 @@ function myfunction(startdate, enddate) {
                 })
         }
 
-        function refillsvg() {
-            svg.selectAll('.row').remove();
-            svg.selectAll('.column').remove();
-            rowgen();
-            colgen();
+        function refillsvg(svgnum) {
+            d3.select('#myg' + svgnum).selectAll('.row').remove();
+            d3.select('#myg' + svgnum).selectAll('.column').remove();
+            rowgen(svgnum);
+            colgen(svgnum);
         }
 
-        refillsvg();
+        refillsvg(svgcount);
 
         function rectmouseover(d, i) {
-            console.log(d3.select(this));
+            //console.log(d3.select(this));
             var color = d3.select(this)._groups[0][0].attributes["style"].nodeValue;
 
             var polcount = 0;
@@ -407,61 +401,36 @@ function myfunction(startdate, enddate) {
             d3.select('#showTweets').on('click', (e) => { getWordTweets(d, i); });
         }
 
-        $(document).mouseup(function (e) {
-            if (!$('#dropDownMenu').is(e.target) || $('#dropDownMenu').has(e.target).length === 0) {
-                $('#dropDownMenu').hide();
-            }
-        });
-
         function rectmouseout(d) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').style('fill', 'black');
         }
 
-        function getWordTweets(d, i) {
-            tweetsdiv.remove();
-            tweetscounter = 0;
-            var word1;
-            var word2;
-            if (d.x) { word1 = nodes[d.x].name; word2 = nodes[d.y].name; }
-            else { word1 = nodes[i].name; word2 = nodes[i].name; }
-            getWordsTweets('Brexit', nodes[i].name, word1, word2, endDate, (results) => {
-                tweetsdiv = d3.select("#panel_contents")
-                    .selectAll()
-                    .data(results)
-                    .enter()
-                    .append('p')
-                    .style('border-style', "solid")
-                    .style('border-width', "1px")
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text });
-                $('#tweetsloader').hide();
-                $('#dropDownMenu').hide();
-            });
-        }
         function rtextmouseover(d, i) {
             div.transition().duration(200).style('opacity', .9);
             div.html(nodes[i].count + ' tweets contain ' + nodes[i].name)
                 //.attr("transform", "translate(" + d3.event.x + "," + d3.event.y + ")");
                 .style('left', d3.event.pageX - 200 + 'px')
                 .style('top', d3.event.pageY + 'px');
-            d3.selectAll('.row text').classed('active', function (d, ind) {
+            d3.select('#myg' + svgcount).selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
-            d3.selectAll('.column text').style('fill', function (d, ind) {
+            d3.select('#myg' + svgcount).selectAll('.column text').style('fill', function (d, ind) {
                 return (ind == i) ? 'red' : 'black';
             });
         }
         function rtextmouseout(rtext) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').classed('active', false);
+            d3.selectAll('.column text').style('fill', 'black');
         }
         function mouseover(p) {
-            d3.selectAll('.row text').classed('active', function (d, i) {
+            console.log(d3.select(this));
+            d3.select('#myg' + svgcount).selectAll('.row text').classed('active', function (d, i) {
                 return i == p.y;
             });
-            d3.selectAll('.column text').style('fill', function (d, i) {
+            d3.select('#myg' + svgcount).selectAll('.column text').style('fill', function (d, i) {
                 return (i == p.x) ? 'red' : 'black';
             });
             var tweetcount = Math.round(nodes[p.y].count * (p.cooccurence));
@@ -470,7 +439,7 @@ function myfunction(startdate, enddate) {
                 nodes[p.x].name + '\'';
             var tweetspercentage = Math.round(p.cooccurence * 100) + '% of ' +
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
-            console.log(Math.round(p.cooccurencecount));
+
             var tweetcooccurencecount =
                 Math.round(Math.round(tweetcount/maxrelcount * 100)) +
                 '% of the maximum cooccurence count (' + maxrelcount + ' tweets)';
@@ -487,93 +456,82 @@ function myfunction(startdate, enddate) {
                 .style('left', d3.event.pageX - 200 + 'px')
                 .style('top', d3.event.pageY + 12 + 'px');
         }
+
         function mouseout() {
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').style('fill', 'black');
             div.transition().duration(500).style('opacity', 0);
         }
 
-        d3.select('#svg1')
+        d3.select('#svg' + svgcount)
         .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
             $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg1').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
+            d3.select('#myg' + svgcount).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
         }));
 
-        d3.select('#svg2')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg2').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        d3.select('#relationsSettingApplyBtn').on('click', function () {
 
-        d3.select('#svg3')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg3').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+            selected_order = document.getElementById('order').value;
+            selected_group = document.getElementById('group').value;
+            relationvaluefrom =
+                document.getElementById('similarity_value_from').value;
+            relationvalueto = document.getElementById('similarity_value_to').value;
+            d3.selectAll('.row').remove();
+            d3.selectAll('.column').remove();
 
-        d3.select('#svg4')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg4').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+            myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
+            myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
+            myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
+            myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
+            myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
 
-        d3.select('#svg5')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg5').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
-
-        d3.select('#svg6')
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
-            //d3.select('#myg'+svgcounter).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-            d3.select('#myg6').attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
+        });
 
         function order(value) {
-            var t = svg.transition().duration(1000);
-            x.domain(orders[value]);
-            //console.log(orders[value]);
-            t.selectAll('.row')
-                .delay(function (d, i) {
-                    return x(i) * 4;
-                })
-                .attr(
-                'transform',
-                function (d, i) {
-                    return 'translate(0,' + x(i) + ')';
-                })
-                .selectAll('.cell')
-                .delay(function (d) {
-                    return x(d.x) * 4;
-                })
-                .attr('x', function (d) {
-                    return x(d.x);
-                });
-
-            t.selectAll('.column')
-                .delay(function (d, i) {
-                    return x(i) * 4;
-                })
-                .attr('transform', function (d, i) {
-                    return 'translate(' + x(i) + ')rotate(-90)';
-                });
+            var i;
+            for (i=1;i<=6;i++)
+            {
+                var t = d3.select('#myg' + i).transition().duration(1000);
+                x.domain((ordersmap[i])[value]);
+                t.selectAll('.row')
+                    .delay(function (d, i) {
+                        return x(i) * 4;
+                    })
+                    .attr(
+                    'transform',
+                    function (d, i) {   
+                        return 'translate(0,' + x(i) + ')';
+                    })
+                    .selectAll('.cell')
+                    .delay(function (d) {
+                        return x(d.x) * 4;
+                    })
+                    .attr('x', function (d) {
+                        return x(d.x);
+                    });
+    
+                t.selectAll('.column')
+                    .delay(function (d, i) {
+                        return x(i) * 4;
+                    })
+                    .attr('transform', function (d, i) {
+                        return 'translate(' + x(i) + ')rotate(-90)';
+                    });
+            }           
         }
-        $('.loader').hide();
+        $('#loader' + svgcount).hide();
         $('.plaintext').hide();
     });
 }
-myfunction("2016-07-01T00:00:00", "2016-07-02T00:00:00");
-myfunction("2016-07-02T00:00:00","2016-07-03T00:00:00");
-myfunction("2016-07-03T00:00:00","2016-07-04T00:00:00");
-myfunction("2016-07-04T00:00:00","2016-07-05T00:00:00");
-myfunction("2016-07-05T00:00:00","2016-07-06T00:00:00");
-myfunction("2016-07-06T00:00:00","2016-07-07T00:00:00");
+
+
+myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
+myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
+myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
+myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
+myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
+myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
    
 
 function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func) {
@@ -592,34 +550,4 @@ function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func
         success: func
     });
 
-}
-
-function getWordsTweets(searchKeyword, word1, word2, startDate, endDate, func) {
-    $('#tweetsloader').show();
-    $.ajax({
-        type: "POST",
-        url: '/getWordsTweets',
-        dataType: 'json',
-        data: {
-            searchkeyword: searchKeyword,
-            word1: word1,
-            word2: word2,
-            startdate: startDate,
-            enddate: endDate,
-        },
-        success: func
-    });
-}
-
-function getMoreTweets(index, func) {
-    $('#tweetsloader').show();
-    $.ajax({
-        type: "POST",
-        url: '/getMoreText',
-        dataType: 'json',
-        data: {
-            index: index
-        },
-        success: func
-    });
 }

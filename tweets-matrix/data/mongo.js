@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 const async = require('async');
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb://dewdflts04:27017/mydb";
 var exports = module.exports = {};
 
 function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordType, db, cb) {
