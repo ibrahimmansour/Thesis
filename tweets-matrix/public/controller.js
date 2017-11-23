@@ -42,8 +42,8 @@ function createSVGs(svgnum) {
             .attr('id', 'svg' + i)
             .attr('width', 390 + 'px')
             .attr('height', 310 + 'px')
-            .style('border-right' , '0.3px solid black')
-            .style('border-bottom' , '0.3px solid black')
+            //.style('border-right' , '0.3px solid black')
+            //.style('border-bottom' , '0.3px solid black')
             .append('g')
             .attr('id', 'myg' + i)
             .attr(
@@ -51,9 +51,10 @@ function createSVGs(svgnum) {
 
             d3.select('#container'+i)
             .append('a')
+            .attr('id', 'svgtxt' + i)
             .style('position','absolute')
-            .style('margin-left', -130 + 'px')
-            .style('margin-top', 300  + 'px' )
+            .style('margin-left', -150 + 'px')
+            .style('margin-top', 270  + 'px' )
             .text(startDate);
             
         d3.select('#svg_matrix')
@@ -98,10 +99,14 @@ function myfunction(svgcount, startdate, enddate) {
         var svg =
             d3.select('#myg'+svgcount);
 
+            /*
             svg.append('text')
                 .attr("text-anchor", "end")
                 .attr("fill", "red")
                 .text(function(d) { return startdate; });
+            */
+            d3.select('#svgtxt' + svgcount)
+            .text(function(d) { return startdate.slice(0,10); });
 
         var div = d3.select('body')
             .append('div')

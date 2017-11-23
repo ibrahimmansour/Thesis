@@ -36,7 +36,7 @@ function myfunction() {
     $('#svgloader').show();
     $('#tweetsloader').show();
     getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
-
+        console.log(JSON.stringify(tweets.matrix));
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
             invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount,
@@ -346,12 +346,12 @@ function myfunction() {
                 .duration(1000)
                 .style('opacity', function (d) {
                     return selected_group == 'similarity' ?
-                        z(d.similarity) :
+                        d.similarity :
                         relscale(Math.round(d.cooccurencecount));
                 })
                 .style('fill', function (d) {
                     return selected_group == 'similarity' ?
-                        c(Math.round(nodes[d.y].similaritycount)) :
+                        '#34495E' :
                         '#34495E';
                 })
         }
@@ -565,6 +565,7 @@ function myfunction() {
             d3.selectAll('.column text').style('fill', 'black');
         }
         function mouseover(p) {
+            console.log(p.similarity);
             d3.selectAll('.row text').classed('active', function (d, i) {
                 return i == p.y;
             });
@@ -576,7 +577,7 @@ function myfunction() {
                 nodes[p.x].name + '\'';
             var tweetspercentage = Math.round(p.cooccurence * 100) + '% of ' +
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
-            console.log(Math.round(p.cooccurencecount));
+            //console.log(Math.round(p.cooccurencecount));
             var tweetcooccurencecount =
                 Math.round(relscale(Math.round(p.cooccurencecount)) * 100) +
                 '% of the maximum cooccurence count (' + maxrelcount + ' tweets)';

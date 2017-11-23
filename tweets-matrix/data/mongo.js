@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 const async = require('async');
-var url = "mongodb://dewdflts04:27017/mydb";
+var url = "mongodb://localhost:27017/mydb";
 var exports = module.exports = {};
 
 function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordType, db, cb) {
@@ -34,80 +34,79 @@ function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordT
 
 exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wordType, cb) {
     function connection(err, db) {
-        db.collection("Tweets_Main").aggregate(
-            [
-                {
-                    $unwind: "$Tokens"
-                },
-                {
-                    $match: {
-                        Search_Keyword: searchKeyword,
-                        Tweet_Date: { $gt: startDate, $lt: endDate },
-                        "Tokens.Word": { $not: new RegExp(searchKeyword, "i") },
-                        "Tokens.Type_Id": { $in: wordType }
-                    }
-                },
-                {
-                    $group: {
-                        _id: { Polarity: "$Polarity", Word: "$Tokens.Word" },
-                        avgCon: { $avg: "$Polarity_Confidence" },
-                        polcount: { $sum: 1 }
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$_id.Word",
-                        polaritys: {
-                            $push: {
-                                polarity: "$_id.Polarity",
-                                confidence: "$avgCon",
-                                count: "$polcount"
-                            },
-                        },
-                        count: { $sum: "$polcount" }
-                    }
-                },
-                {
-                    $sort: {
-                        count: -1,
-                        "polaritys.polarity": -1
-                    }
-                },
-                {
-                    $limit: numNodes
-                },
-                {
-                    $project: {
-                        "polaritys.polarity": 0
-                    }
-                },
-                {
-                    $project: {
-                        first: { $arrayElemAt: ["$polaritys", 0] },
-                        second: { $arrayElemAt: ["$polaritys", 1] },
-                        third: { $arrayElemAt: ["$polaritys", 2] },
-                        count: 1
-                    }
-                },
-                {
-                    $project: {
-                        name: "$_id",
-                        semCountPo: "$first.count",
-                        semConfValPo: "$first.confidence",
-                        semCountNt: "$second.count",
-                        semConfValNt: "$second.confidence",
-                        semCountNe: "$third.count",
-                        semConfValNe: "$third.confidence",
-                        count: 1
-                    }
-                },
-                {
-                    $project: {
-                        "_id": 0
-                    }
+        var query = [
+            {
+                $unwind: "$Tokens"
+            },
+            {
+                $match: {
+                    Search_Keyword: searchKeyword,
+                    Tweet_Date: { $gt: startDate, $lt: endDate },
+                    "Tokens.Word": { $not: new RegExp(searchKeyword, "i") },
+                    "Tokens.Type_Id": { $in: wordType }
                 }
-            ]
-        ).toArray((err, nodes) => {
+            },
+            {
+                $group: {
+                    _id: { Polarity: "$Polarity", Word: "$Tokens.Word" },
+                    avgCon: { $avg: "$Polarity_Confidence" },
+                    polcount: { $sum: 1 }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id.Word",
+                    polaritys: {
+                        $push: {
+                            polarity: "$_id.Polarity",
+                            confidence: "$avgCon",
+                            count: "$polcount"
+                        },
+                    },
+                    count: { $sum: "$polcount" }
+                }
+            },
+            {
+                $sort: {
+                    count: -1,
+                    "polaritys.polarity": -1
+                }
+            },
+            {
+                $limit: numNodes
+            },
+            {
+                $project: {
+                    "polaritys.polarity": 0
+                }
+            },
+            {
+                $project: {
+                    first: { $arrayElemAt: ["$polaritys", 0] },
+                    second: { $arrayElemAt: ["$polaritys", 1] },
+                    third: { $arrayElemAt: ["$polaritys", 2] },
+                    count: 1
+                }
+            },
+            {
+                $project: {
+                    name: "$_id",
+                    semCountPo: "$first.count",
+                    semConfValPo: "$first.confidence",
+                    semCountNt: "$second.count",
+                    semConfValNt: "$second.confidence",
+                    semCountNe: "$third.count",
+                    semConfValNe: "$third.confidence",
+                    count: 1
+                }
+            },
+            {
+                $project: {
+                    "_id": 0
+                }
+            }
+        ];
+        db.collection("Tweets_Main").aggregate(query).toArray((err, nodes) => {
             if (err) {
                 cb(err);
             }
