@@ -22,14 +22,17 @@ app.post('/getTopWords', (req, res) => {
     startDate.replace("T"," ");
     endDate.replace("T"," ");
     var wordType = wordTypes[req.body.wordtype];
+    var keyWords = req.body.keywords;
     var searchKeyword = req.body.searchkeyword;
-    if (!searchKeyword) {searchKeyword = "Brexit"};
-    console.log(numNodes);
+    if (!searchKeyword) {searchKeyword = "Brexit";}
+    if (!keyWords) {keyWords = []};
+    console.log(keyWords);
     console.log(startDate);
+    
     console.log(endDate);
     //console.log(wordType);
     console.log(searchKeyword);
-    application.getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, (tweets, err) => {
+    application.getTopWords(searchKeyword, keyWords, numNodes, startDate, endDate, wordType, (tweets, err) => {
         //console.log(tweets);
         tweetstextcounter=0;
         tweetstext = tweets.tweets;
@@ -44,6 +47,8 @@ app.post('/getWordsTweets', (req, res) => {
     var endDate = req.body.enddate;
     startDate.replace("T"," ");
     endDate.replace("T"," ");
+    var keyWords = req.body.keywords;
+    if (!keyWords) {keyWords = []};
     var searchKeyword = req.body.searchkeyword;
     if (!searchKeyword) {searchKeyword = "Brexit"};
     var word1 = req.body.word1;
@@ -53,7 +58,7 @@ app.post('/getWordsTweets', (req, res) => {
     console.log(searchKeyword);
     console.log(word1 + " word1");
     console.log(word2);
-    application.getWordsTweets(searchKeyword, word1, word2, startDate, endDate, (results, err) => {
+    application.getWordsTweets(searchKeyword,keyWords, word1, word2, startDate, endDate, (results, err) => {
         tweetstext = results;
         res.end(JSON.stringify(results.slice(0,50)));
     });

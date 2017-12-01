@@ -11,6 +11,7 @@ var startDate = document.getElementById('dateFrom').value;
 var endDate = document.getElementById('dateTo').value;
 console.log(startDate);
 var wordType = document.getElementById('wordtypeList').value;
+var keyWords = [];
 
 var margin = { top: 120, right: 0, bottom: 0, left: 210 }, width = 450,
     height = 450, svgzoom = 1;
@@ -35,7 +36,7 @@ console.log(style.getPropertyValue('background'));
 function myfunction() {
     $('#svgloader').show();
     $('#tweetsloader').show();
-    getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
+    getTopWords(searchKeyword, keyWords, selected_nodes, startDate, endDate, wordType, function (tweets) {
         console.log(JSON.stringify(tweets.matrix));
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
@@ -51,7 +52,11 @@ function myfunction() {
 
         // The default sort order.
         x.domain(orders[selected_order]);
-        $("#tweet_list_words").val("\"" + searchKeyword + "\"");
+        var tweet_list_words = "\"" + searchKeyword + "\"";
+        for (var i = 0; i < keyWords.length; i++) {
+            tweet_list_words += ",\"" + keyWords[i] + "\"";
+        }
+        $("#tweet_list_words").val(tweet_list_words);
         var tweetsdiv = d3.select("#panel_contents")
             .selectAll()
             .data(tweets.tweets)
@@ -393,10 +398,34 @@ function myfunction() {
 
         function showdropdown(d, i) {
             d3.select('#dropDownMenu')
-                .style('left', d3.event.pageX - 400 + 'px')
+                .style('left', d3.event.pageX - 365 + 'px')
                 .style('top', d3.event.pageY - 50 + 'px');
             $('#dropDownMenu').show();
             d3.select('#showTweets').on('click', (e) => { getWordTweets(d, i); });
+            d3.select('#navigate').on('click', (e) => {
+                var word1;
+                var word2;
+                keyWords = document.getElementById('keywordTxtbox').value.split(",").filter(x => x);
+                if (typeof (d.x) !== "undefined") {
+                     word1 = nodes[d.y].name; 
+                     word2 = nodes[d.x].name; 
+                     keyWords.push(word1);
+                     keyWords.push(word2);
+                    }
+                else { 
+                    word1 = nodes[i].name; 
+                    word2 = nodes[i].name;
+                    keyWords.push(word1);
+                }
+                searchKeyword = document.getElementById('dataset').value;
+                selected_nodes = document.getElementById('nodescount').value;
+                startDate = document.getElementById('dateFrom').value;
+                endDate = document.getElementById('dateTo').value;
+                wordType = document.getElementById('wordtypeList').value;
+                tweetsdiv.remove();
+                d3.select('body').select('svg').remove();
+                myfunction();             
+            });
         }
 
         $(document).mouseup(function (e) {
@@ -418,7 +447,7 @@ function myfunction() {
             var word2;
             if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; }
             else { word1 = nodes[i].name; word2 = nodes[i].name; }
-            getWordsTweets('Brexit', word1, word2, startDate, endDate, (results) => {
+            getWordsTweets('Brexit', keyWords, word1, word2, startDate, endDate, (results) => {
                 console.log("word1: " + word1 + " word2: " + word2);
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
@@ -429,12 +458,18 @@ function myfunction() {
                     .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
                     .on("mouseover", mouserovertweet)
                     .on("mouseout", mouseout);
+                var tweet_list_words = "\"" + searchKeyword + "\"";
+                for (var i = 0; i < keyWords.length; i++) {
+                    tweet_list_words += ",\"" + keyWords[i] + "\"";
+                }
+
                 if (word1 == word2) {
-                    $("#tweet_list_words").val("\"" + searchKeyword + "\"" + ",\"" + word1 + "\"");
+                    tweet_list_words += ",\"" + word1 + "\"";
                 }
                 else {
-                    $("#tweet_list_words").val("\"" + searchKeyword + "\"" + ",\"" + word1 + "\"" + ",\"" + word2 + "\"");
+                    tweet_list_words += ",\"" + word1 + "\"" + ",\"" + word2 + "\"";
                 }
+                $("#tweet_list_words").val(tweet_list_words);
                 $('#tweetsloader').hide();
                 $('#dropDownMenu').hide();
             });
@@ -474,6 +509,7 @@ function myfunction() {
 
         d3.select('#filterApplyBtn').on('click', function () {
             searchKeyword = document.getElementById('dataset').value;
+            keyWords = document.getElementById('keywordTxtbox').value.trim().split(",").filter(x => x);
             selected_nodes = document.getElementById('nodescount').value;
             startDate = document.getElementById('dateFrom').value;
             endDate = document.getElementById('dateTo').value;
@@ -584,10 +620,10 @@ function myfunction() {
             var nodesimilarity = '\'' + nodes[p.y].name + '\' and \'' +
                 nodes[p.x].name + '\' are ' + Math.round(p.similarity * 100) +
                 '% similar';
-            var msg = tweetscount + '</br>' +
+            var msg = 
                 ((selected_group == 'similarity') ?
                     nodesimilarity :
-                    (tweetcooccurencecount + '</br>' + tweetspercentage));
+                    (tweetscount + '</br>' + tweetcooccurencecount + '</br>' + tweetspercentage));
 
             div.transition().duration(200).style('opacity', .9);
             div.html(msg)
@@ -645,7 +681,7 @@ function myfunction() {
 }
 myfunction();
 
-function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func) {
+function getTopWords(searchKeyword, keyWords, numNodes, startDate, endDate, wordType, func) {
     $('#tweetsloader').show();
     $.ajax({
         type: "POST",
@@ -653,6 +689,7 @@ function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func
         dataType: 'json',
         data: {
             numnodes: numNodes,
+            keywords: keyWords,
             searchkeyword: searchKeyword,
             startdate: startDate,
             enddate: endDate,
@@ -663,7 +700,7 @@ function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func
 
 }
 
-function getWordsTweets(searchKeyword, word1, word2, startDate, endDate, func) {
+function getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, func) {
     $('#tweetsloader').show();
     $.ajax({
         type: "POST",
@@ -671,6 +708,7 @@ function getWordsTweets(searchKeyword, word1, word2, startDate, endDate, func) {
         dataType: 'json',
         data: {
             searchkeyword: searchKeyword,
+            keywords: keyWords,
             word1: word1,
             word2: word2,
             startdate: startDate,

@@ -1,48 +1,81 @@
 var MongoClient = require('mongodb').MongoClient;
 const async = require('async');
 var url = "mongodb://localhost:27017/mydb";
+var similarity = require('../app/similarity.js');
 var exports = module.exports = {};
 
-function getRelationCount(searchKeyword, word1, word2, startDate, endDate, wordType, db, cb) {
+function getRelationCount(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, db, cb) {
     //function connection(err, db) {
-    db.collection("Tweets_Main").find({
-        Search_Keyword: searchKeyword,
-        $and: [
-            {
-                "Tokens": {
-                    $elemMatch: {
-                        Word: word1,
-                        Type_Id: { $in: wordType }
-                    }
-                }
-            },
-            {
-                "Tokens": {
-                    $elemMatch: {
-                        Word: word2,
-                        Type_Id: { $in: wordType }
-                    }
+        var relquery = [{
+            "Tokens": {
+                $elemMatch: {
+                    Word: word1,
+                    Type_Id: { $in: wordType }
                 }
             }
-        ],
+        },
+        {
+            "Tokens": {
+                $elemMatch: {
+                    Word: word2,
+                    Type_Id: { $in: wordType }
+                }
+            }
+        }];
+        var i;
+        for (i=0;i<keyWords.length;i++)
+        {
+            relquery.push(
+                {
+                    "Tokens": {
+                        $elemMatch: {
+                            Word: keyWords[i],
+                            Type_Id: { $in: wordType }
+                        }
+                    }
+                }
+            );
+        }
+    db.collection("Tweets_Main").find({
+        Search_Keyword: searchKeyword,
+        $and: relquery,
         Tweet_Date: { $gt: startDate, $lt: endDate }
-    }, {Text:1,_id:0}).toArray((err, results) => { if (err) { cb(err); } else { cb(results); } });
+    }, { Text: 1, _id: 0 }).toArray((err, results) => { if (err) { cb(err); } else { cb(results); } });
     //};
     //MongoClient.connect(url, connection);
     //return;
 }
 
-exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wordType, cb) {
+exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, endDate, wordType, cb) {
     function connection(err, db) {
+        var matchquery = {Search_Keyword: searchKeyword, Tweet_Date: { $gt: startDate, $lt: endDate }};
+        if ( keyWords.length > 0 ) {
+            var allarr = [];
+            var i;
+            for (i=0;i<keyWords.length;i++)
+            {
+                var arrelem = {
+                    $elemMatch: {
+                        Word: keyWords[i],
+                        Type_Id: { $in: wordType }
+                    }
+                }
+                allarr.push(arrelem);
+            }
+            matchquery.Tokens = { $all: allarr};
+        }
+        keyWords.push(searchKeyword.toLowerCase());
         var query = [
+            {
+                $match: matchquery
+            },
             {
                 $unwind: "$Tokens"
             },
             {
                 $match: {
-                    Search_Keyword: searchKeyword,
-                    Tweet_Date: { $gt: startDate, $lt: endDate },
-                    "Tokens.Word": { $not: new RegExp(searchKeyword, "i") },
+                    "Tokens.Word": { $nin: keyWords },
+                    //"Tokens.Word": { $not: new RegExp("Brexit", "i") },
                     "Tokens.Type_Id": { $in: wordType }
                 }
             },
@@ -128,27 +161,29 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
                                 eachCb2();
                             }
                             else {
-                                getRelationCount(searchKeyword, node1.name, node2.name, startDate, endDate, wordType, db, (texts, err) => {
+                                getRelationCount(searchKeyword, keyWords, node1.name, node2.name, startDate, endDate, wordType, db, (texts, err) => {
                                     //console.log(node1.name + " " + node2.name + " " + relcount);
-                                    var relcount = texts.length;
-                                    var link1 = {};
-                                    link1.word1 = node1.name;
-                                    link1.word2 = node2.name;
-                                    link1.portion1 = relcount / node1.count;
-                                    link1.portion2 = 0;
-                                    var link2 = {};
-                                    link2.word1 = node2.name;
-                                    link2.word2 = node1.name;
-                                    link2.portion1 = relcount / node2.count;
-                                    link2.portion2 = 0;
-                                    links.push(link1);
-                                    links.push(link2);
-                                    var i;
-                                    for (i=0; i < relcount; i++)
-                                        {
-                                            tweets.push(texts[i]);
-                                        }
-                                    eachCb2();
+                                        similarity.getSimilarity(node1.name,node2.name, (res) => {
+                                            var relcount = texts.length;
+                                            var link1 = {};
+                                            link1.word1 = node1.name;
+                                            link1.word2 = node2.name;
+                                            link1.portion1 = relcount / node1.count;
+                                            link1.portion2 = res;
+                                            var link2 = {};
+                                            link2.word1 = node2.name;
+                                            link2.word2 = node1.name;
+                                            link2.portion1 = relcount / node2.count;
+                                            link2.portion2 = res;
+                                            links.push(link1);
+                                            links.push(link2);
+                                            var i;
+                                            for (i = 0; i < relcount; i++) {
+                                                tweets.push(texts[i]);
+                                            }
+                                            //eachCb2();
+                                         });
+                                         eachCb2();                                
                                 });
                             }
                         }
@@ -171,13 +206,9 @@ exports.getTopWords = function (searchKeyword, numNodes, startDate, endDate, wor
     return;
 }
 
-exports.getWordsTweets = function (searchKeyword, word1, word2 , startDate, endDate, cb){
+exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, cb) {
     function connection(err, db) {
-    db.collection("Tweets_Main").find({
-        Search_Keyword: "Brexit",
-        Tweet_Date: { $gt: startDate, $lt: endDate },
-        $and: [
-        {
+        var relquery = [{
             "Tokens": {
                 $elemMatch: {
                     Word: word1
@@ -190,14 +221,31 @@ exports.getWordsTweets = function (searchKeyword, word1, word2 , startDate, endD
                     Word: word2
                 }
             }
+        }];
+        var i;
+        for (i=0;i<keyWords.length;i++)
+        {
+            relquery.push(
+                {
+                    "Tokens": {
+                        $elemMatch: {
+                            Word: keyWords[i]
+                        }
+                    }
+                }
+            );
         }
-    ]},{_id:0,Text:1}).toArray((err,results) => {
-        cb(results);
-        db.close();
-    });
-}
-MongoClient.connect(url, connection);
-return;
+        db.collection("Tweets_Main").find({
+            Search_Keyword: "Brexit",
+            Tweet_Date: { $gt: startDate, $lt: endDate },
+            $and: relquery,
+        }, { _id: 0, Text: 1 }).toArray((err, results) => {
+            cb(results);
+            db.close();
+        });
+    }
+    MongoClient.connect(url, connection);
+    return;
 }
 
 /*
@@ -206,8 +254,9 @@ exports.getWordsTweets("Brexit", "uk", "hangover", "2016-07-01", "2016-07-10", (
 }
 );
 */
-/*exports.getTopWords("Brexit", 5, "2016-07-01", "2016-07-10", [6, 9, 18, 34], (results, err) => {
-    console.log(results.links.length);
+/*
+exports.getTopWords("Brexit", [] , 20, "2016-07-01T00:00", "2016-07-10T23:59", [6, 9, 18, 34], (results, err) => {
+    console.log(results.nodes);
 }
 );
 */

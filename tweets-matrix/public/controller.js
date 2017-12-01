@@ -11,6 +11,7 @@ var startDate = "2016-07-01T00:00:00";
 var endDate = "2016-07-10T23:59";
 //console.log(startDate);
 var wordType = "nouns";
+var keyWords = [];
 
 var margin = { top: 100 , right: 0, bottom: 0, left: 210 }, width = 160,
     height = 160, svgz0oom = 1;
@@ -73,7 +74,7 @@ function myfunction(svgcount, startdate, enddate) {
     startDate = startdate;
     endDate = enddate;
     $('#svgloader').show();
-    getTopWords(searchKeyword, selected_nodes, startDate, endDate, wordType, function (tweets) {
+    getTopWords(searchKeyword, keyWords, selected_nodes, startDate, endDate, wordType, function (tweets) {
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
             invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount,
