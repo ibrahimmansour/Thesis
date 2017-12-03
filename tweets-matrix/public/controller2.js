@@ -56,6 +56,8 @@ function myfunction() {
         for (var i = 0; i < keyWords.length; i++) {
             tweet_list_words += ",\"" + keyWords[i] + "\"";
         }
+        $
+        $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength );
         $("#tweet_list_words").val(tweet_list_words);
         var tweetsdiv = d3.select("#panel_contents")
             .selectAll()
@@ -373,7 +375,6 @@ function myfunction() {
         function rectmouseover(d, i) {
             console.log(d3.select(this));
             var color = d3.select(this)._groups[0][0].attributes["style"].nodeValue;
-
             var polcount = 0;
             var polconfidence = 0;
             var polarity = "";
@@ -445,17 +446,28 @@ function myfunction() {
             tweetscounter = 0;
             var word1;
             var word2;
-            if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; }
-            else { word1 = nodes[i].name; word2 = nodes[i].name; }
-            getWordsTweets('Brexit', keyWords, word1, word2, startDate, endDate, (results) => {
+            if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; tweets.textlength = (Math.round(nodes[d.y].count * (d.cooccurence)));}
+            else { word1 = nodes[i].name; word2 = nodes[i].name; tweets.textlength = nodes[i].count;}
+            getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, (results) => {
                 console.log("word1: " + word1 + " word2: " + word2);
+                var tweetscounterto = tweetscounter + 50;
+                if (tweetscounterto >= tweets.textlength)
+                {
+                    tweetscounterto = tweets.textlength;
+                    d3.select("#nextBtn").attr('disabled', 'disabled');
+                }
+                else
+                {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounterto) + ") of " + tweets.textlength);
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
                     .data(results)
                     .enter()
                     .append('li')
                     .attr('class', 'tweets_contents')
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .html(function (d) { tweetscounter++; return "<b>Tweet " + tweetscounter + "</b> : </br>" + d.Text; })
                     .on("mouseover", mouserovertweet)
                     .on("mouseout", mouseout);
                 var tweet_list_words = "\"" + searchKeyword + "\"";
@@ -534,21 +546,26 @@ function myfunction() {
             tweetsdiv.remove();
             getMoreTweets(tweetscounter, function (tweetstexts) {
                 console.log(tweetstexts);
+                var tweetscounterto = tweetscounter + 50;
+                if (tweetscounterto >= tweets.textlength)
+                {
+                    tweetscounterto = tweets.textlength;
+                    d3.select("#nextBtn").attr('disabled', 'disabled');
+                }
+                else
+                {
+                    d3.select("#nextBtn").attr('disabled', null);
+                }
+                $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounterto) + ") of " + tweets.textlength );
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
                     .data(tweetstexts)
                     .enter()
                     .append('li')
                     .attr('class', 'tweets_contents')
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .html(function (d) { tweetscounter++; return "<b>Tweet " + tweetscounter + "</b> : </br>" + d.Text; })
                     .on("mouseover", mouserovertweet)
                     .on("mouseout", mouseout);
-                if (tweetscounter < textlength) {
-                    d3.select("#nextBtn").attr('disabled', null);
-                }
-                else {
-                    d3.select("#nextBtn").attr('disabled', 'disabled');
-                }
                 if (tweetscounter >= 50) {
                     d3.select("#prevBtn").attr('disabled', null);
                 }
@@ -557,7 +574,18 @@ function myfunction() {
         });
 
         d3.select('#prevBtn').on('click', function () {
-            tweetscounter = tweetscounter - 100;
+            d3.select("#nextBtn").attr('disabled', null);
+            if (tweetscounter <= 100)
+            {
+                tweetscounter = 0;
+                d3.select("#prevBtn").attr('disabled', 'disabled');
+            }
+            else
+            {
+                tweetscounter -=100;
+                tweetscounter = Math.round(tweetscounter / 50)*50;
+            }
+            $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength );
             tweetsdiv.remove();
             getMoreTweets(tweetscounter, function (tweetstexts) {
                 console.log(tweetstexts);
@@ -567,15 +595,17 @@ function myfunction() {
                     .enter()
                     .append('li')
                     .attr('class', 'tweets_contents')
-                    .html(function (d, i) { tweetscounter++; return "Tweet " + tweetscounter + " : </br>" + d.Text })
+                    .html(function (d) { tweetscounter++; return "<b>Tweet " + tweetscounter + "</b> : </br>" + d.Text; })
                     .on("mouseover", mouserovertweet)
                     .on("mouseout", mouseout);
-                if (tweetscounter < textlength) {
+                /*
+                    if (tweetscounter < textlength) {
                     d3.select("#nextBtn").attr('disabled', null);
                 }
                 if (tweetscounter <= 50) {
                     d3.select("#prevBtn").attr('disabled', 'disabled');
                 }
+                */
                 $('#tweetsloader').hide();
             });
         });
@@ -608,9 +638,14 @@ function myfunction() {
             d3.selectAll('.column text').style('fill', function (d, i) {
                 return (i == p.x) ? 'red' : 'black';
             });
-            var tweetscount = '(' + Math.round(nodes[p.y].count * (p.cooccurence)) +
-                ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
-                nodes[p.x].name + '\'';
+            
+            //var tweetscount = '(' + Math.round(nodes[p.y].count * (p.cooccurence)) +
+            //    ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
+            //    nodes[p.x].name + '\'';
+
+            var tweetscount = '(' + p.commontweetsnum +
+            ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
+            nodes[p.x].name + '\'';
             var tweetspercentage = Math.round(p.cooccurence * 100) + '% of ' +
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
             //console.log(Math.round(p.cooccurencecount));
@@ -700,7 +735,7 @@ function getTopWords(searchKeyword, keyWords, numNodes, startDate, endDate, word
 
 }
 
-function getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, func) {
+function getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, func) {
     $('#tweetsloader').show();
     $.ajax({
         type: "POST",
@@ -713,6 +748,7 @@ function getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDat
             word2: word2,
             startdate: startDate,
             enddate: endDate,
+            wordtype: wordType
         },
         success: func
     });

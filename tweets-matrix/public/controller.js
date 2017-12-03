@@ -153,8 +153,7 @@ function myfunction(svgcount, startdate, enddate) {
                     return (nodesmap[svgnum])[i].name;
                 })
                 .on('mouseover', rtextmouseover)
-                .on('mouseout', rtextmouseout)
-                .on('click', showdropdown);
+                .on('mouseout', rtextmouseout);
 
         if (selected_nodes <= 120) {
             row.append('rect', 'text')
@@ -263,8 +262,7 @@ function myfunction(svgcount, startdate, enddate) {
                     return (nodesmap[svgnum])[i].name;
                 })
                 .on('mouseover', rtextmouseover)
-                .on('mouseout', rtextmouseout)
-                .on('click', showdropdown);
+                .on('mouseout', rtextmouseout);
 
             if (selected_nodes <= 120) {
                 column.insert('rect')
@@ -399,14 +397,6 @@ function myfunction(svgcount, startdate, enddate) {
             });
         }
 
-        function showdropdown(d, i) {
-            d3.select('#dropDownMenu')
-                .style('left', d3.event.pageX - 400 + 'px')
-                .style('top', d3.event.pageY - 50 + 'px');
-            $('#dropDownMenu').show();
-            d3.select('#showTweets').on('click', (e) => { getWordTweets(d, i); });
-        }
-
         function rectmouseout(d) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
@@ -471,7 +461,6 @@ function myfunction(svgcount, startdate, enddate) {
 
         d3.select('#svg' + svgcount)
         .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            $('#dropDownMenu').hide();
             d3.select('#myg' + svgcount).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
         }));
 
@@ -540,7 +529,7 @@ myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
 myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
    
 
-function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func) {
+function getTopWords(searchKeyword, keyWords, numNodes, startDate, endDate, wordType, func) {
     $('#tweetsloader').show();
     $.ajax({
         type: "POST",
@@ -548,6 +537,7 @@ function getTopWords(searchKeyword, numNodes, startDate, endDate, wordType, func
         dataType: 'json',
         data: {
             numnodes: numNodes,
+            keywords: keyWords,
             searchkeyword: searchKeyword,
             startdate: startDate,
             enddate: endDate,

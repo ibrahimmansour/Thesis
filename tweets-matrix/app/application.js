@@ -35,6 +35,8 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
             matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
                 .cooccurence = tweet.portion1;
             matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
+                .commontweetsnum = tweet.relcount;
+            matrix[invertedindex[tweet.word1]][invertedindex[tweet.word2]]
                 .cooccurencecount =
                 tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
             nodes[invertedindex[tweet.word1]].cooccurencecount += tweet.portion1 * nodes[invertedindex[tweet.word1]].count;
@@ -91,8 +93,8 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
     // Precompute the orders.
 }
 
-exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, cb) {
-    mongo.getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, (tweets, err) => {
+exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, cb) {
+    mongo.getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, (tweets, err) => {
         cb(tweets);
     });
 }

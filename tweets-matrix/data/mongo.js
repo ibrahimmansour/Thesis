@@ -38,9 +38,9 @@ function getRelationCount(searchKeyword, keyWords, word1, word2, startDate, endD
         }
     db.collection("Tweets_Main").find({
         Search_Keyword: searchKeyword,
-        $and: relquery,
-        Tweet_Date: { $gt: startDate, $lt: endDate }
-    }, { Text: 1, _id: 0 }).toArray((err, results) => { if (err) { cb(err); } else { cb(results); } });
+        Tweet_Date: { $gt: startDate, $lt: endDate },
+        $and: relquery
+    }, { Text: 1, _id: 0 }).toArray((err, results) => {cb(results); });
     //};
     //MongoClient.connect(url, connection);
     //return;
@@ -157,6 +157,7 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
                                 link.word2 = node2.name;
                                 link.portion1 = 0;
                                 link.portion2 = 0;
+                                link.relcount = 0;
                                 links.push(link);
                                 eachCb2();
                             }
@@ -170,11 +171,13 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
                                             link1.word2 = node2.name;
                                             link1.portion1 = relcount / node1.count;
                                             link1.portion2 = res;
+                                            link1.relcount = relcount;
                                             var link2 = {};
                                             link2.word1 = node2.name;
                                             link2.word2 = node1.name;
                                             link2.portion1 = relcount / node2.count;
                                             link2.portion2 = res;
+                                            link2.relcount = relcount;
                                             links.push(link1);
                                             links.push(link2);
                                             var i;
@@ -206,22 +209,25 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
     return;
 }
 
-exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, cb) {
+exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, cb) {
     function connection(err, db) {
         var relquery = [{
             "Tokens": {
                 $elemMatch: {
-                    Word: word1
+                    Word: word1,
+                    Type_Id: { $in: wordType }
                 }
             }
         },
         {
             "Tokens": {
                 $elemMatch: {
-                    Word: word2
+                    Word: word2,
+                    Type_Id: { $in: wordType }
                 }
             }
         }];
+        keyWords.push(searchKeyword.toLowerCase());
         var i;
         for (i=0;i<keyWords.length;i++)
         {
@@ -229,17 +235,18 @@ exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startD
                 {
                     "Tokens": {
                         $elemMatch: {
-                            Word: keyWords[i]
+                            Word: keyWords[i],
+                            Type_Id: { $in: wordType }
                         }
                     }
                 }
             );
         }
         db.collection("Tweets_Main").find({
-            Search_Keyword: "Brexit",
+            Search_Keyword: searchKeyword,
             Tweet_Date: { $gt: startDate, $lt: endDate },
-            $and: relquery,
-        }, { _id: 0, Text: 1 }).toArray((err, results) => {
+            $and: relquery
+        }, { Text: 1, _id: 0 }).toArray((err, results) => {
             cb(results);
             db.close();
         });

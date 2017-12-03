@@ -110,7 +110,6 @@ aside{
 .tweets_contents:hover
 {
   background:lightgrey;
-  cursor: pointer;
 }
 
 div.tooltip {	

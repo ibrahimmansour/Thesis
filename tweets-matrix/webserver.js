@@ -51,6 +51,7 @@ app.post('/getWordsTweets', (req, res) => {
     if (!keyWords) {keyWords = []};
     var searchKeyword = req.body.searchkeyword;
     if (!searchKeyword) {searchKeyword = "Brexit"};
+    var wordType = wordTypes[req.body.wordtype];
     var word1 = req.body.word1;
     var word2 = req.body.word2;
     console.log(startDate);
@@ -58,8 +59,10 @@ app.post('/getWordsTweets', (req, res) => {
     console.log(searchKeyword);
     console.log(word1 + " word1");
     console.log(word2);
-    application.getWordsTweets(searchKeyword,keyWords, word1, word2, startDate, endDate, (results, err) => {
+    application.getWordsTweets(searchKeyword,keyWords, word1, word2, startDate, endDate, wordType, (results, err) => {
         tweetstext = results;
+        results[0].tweetslength = results.length;
+        console.log(JSON.stringify(results.slice(0,2)));
         res.end(JSON.stringify(results.slice(0,50)));
     });
 })
