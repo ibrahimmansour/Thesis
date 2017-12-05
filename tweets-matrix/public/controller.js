@@ -1,35 +1,8 @@
-let params = (new URL(document.location)).searchParams;
-let name = params.get("name");
-//console.log(name);
-var searchKeyword = "Brexit";
-var selected_nodes = 10;
-var selected_order = "name";
-var selected_group = "cooccurence";
-var relationvaluefrom = "0";
-var relationvalueto = "100";
-var startDate = "2016-07-01T00:00:00";
-var endDate = "2016-07-10T23:59";
-//console.log(startDate);
-var wordType = "nouns";
-var keyWords = [];
-
-var margin = { top: 100 , right: 0, bottom: 0, left: 210 }, width = 160,
-    height = 160, svgz0oom = 1;
-
-var x = d3.scaleBand().range([0, width]),
-    barscale = d3.scaleBand().range([4, 30]),
-    z = d3.scaleLinear().domain([0, 1]).clamp(true),
-    c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
-
-var ordersmap = {};
-var matrixmap = {};
-var nodesmap = [];
-
-var relscale;
-var svgcounter=0;
 
 
 function createSVGs(svgnum) {
+    var margin = { top: 110 , right: 0, bottom: 0, left: 110 }, width = 150,
+    height = 150, svgz0oom = 1;
     var i;
     for (i = 1; i <= svgnum; i++) {
 
@@ -41,8 +14,8 @@ function createSVGs(svgnum) {
         d3.select('#container'+i)
             .append('svg')
             .attr('id', 'svg' + i)
-            .attr('width', 390 + 'px')
-            .attr('height', 310 + 'px')
+            .attr('width', 260 + 'px')
+            .attr('height', 260 + 'px')
             //.style('border-right' , '0.3px solid black')
             //.style('border-bottom' , '0.3px solid black')
             .append('g')
@@ -54,9 +27,8 @@ function createSVGs(svgnum) {
             .append('a')
             .attr('id', 'svgtxt' + i)
             .style('position','absolute')
-            .style('margin-left', -150 + 'px')
-            .style('margin-top', 270  + 'px' )
-            .text(startDate);
+            .style('margin-left', -130 + 'px')
+            .style('margin-top', 270  + 'px' );
             
         d3.select('#svg_matrix')
             .append('img')
@@ -71,6 +43,39 @@ function createSVGs(svgnum) {
 createSVGs(6);
 
 function myfunction(svgcount, startdate, enddate) {
+    var margin = { top: 110 , right: 0, bottom: 0, left: 110 }, width = 150,
+    height = 150, svgz0oom = 1;
+
+    let params = (new URL(document.location)).searchParams;
+    let name = params.get("name");
+    //console.log(name);
+    var searchKeyword = "Brexit";
+    var selected_nodes = 10;
+    var selected_order = "name";
+    var selected_group = "cooccurence";
+    var relationvaluefrom = "0";
+    var relationvalueto = "100";
+    var startDate = "2016-07-01T00:00:00";
+    var endDate = "2016-07-10T23:59";
+    //console.log(startDate);
+    var wordType = "nouns";
+    var keyWords = [];
+    
+    
+    var x = d3.scaleBand().range([0, width]),
+        barscale = d3.scaleBand().range([4, 30]),
+        z = d3.scaleLinear().domain([0, 1]).clamp(true),
+        c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
+    
+    var ordersmap = {};
+    var matrixmap = {};
+    var nodesmap = [];
+    
+    var relscale;
+    var svgcounter=0;
+    var selectedrow;
+    var selectedcol;
+
     startDate = startdate;
     endDate = enddate;
     $('#svgloader').show();
@@ -334,7 +339,10 @@ function myfunction(svgcount, startdate, enddate) {
                 }))
                 .enter()
                 .append('rect')
-                .attr('class', 'cells')
+                .attr('class',
+                function (d) {
+                    return nodes[d.y].name + "" + nodes[d.x].name;
+                })
                 .attr(
                 'x',
                 function (d) {
@@ -421,10 +429,27 @@ function myfunction(svgcount, startdate, enddate) {
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').style('fill', 'black');
         }
+        
         function mouseover(p) {
             console.log(d3.select(this));
+            d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
+            .style('fill', 'green');
+
             d3.select('#myg' + svgcount).selectAll('.row text').classed('active', function (d, i) {
-                return i == p.y;
+                selectedrow = nodes[p.y].name;
+                return nodes[i].name == selectedrow;
+            });
+            d3.select('#myg' + 1).selectAll('.row text').classed('active', function (d, i) {
+                return nodes[i].name == selectedrow;
+            });
+            d3.select('#myg' + 2).selectAll('.row text').classed('active', function (d, i) {
+                return nodes[i].name == selectedrow;
+            });
+            d3.select('#myg' + 3).selectAll('.row text').classed('active', function (d, i) {
+                return nodes[i].name == selectedrow;
+            });
+            d3.select('#myg' + 4).selectAll('.row text').classed('active', function (d, i) {
+                return nodes[i].name == selectedrow;
             });
             d3.select('#myg' + svgcount).selectAll('.column text').style('fill', function (d, i) {
                 return (i == p.x) ? 'red' : 'black';
@@ -451,9 +476,12 @@ function myfunction(svgcount, startdate, enddate) {
             div.html(msg)
                 .style('left', d3.event.pageX - 200 + 'px')
                 .style('top', d3.event.pageY + 12 + 'px');
+            console.log(d3.event.pageX + " x " + p.x);
         }
 
-        function mouseout() {
+        function mouseout(p) {
+            d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
+            .style('fill', '#34495E');
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').style('fill', 'black');
             div.transition().duration(500).style('opacity', 0);

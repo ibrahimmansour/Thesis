@@ -1,9 +1,46 @@
 /* Copyright 2013 Michael Bostock. All rights reserved. Do not copy. */
 
 
+/* Style the tab */
+div.tab {
+  top : -32px;
+  left: 405px;
+  position: absolute;
+  overflow: hidden;
+  width: 133px;
+  height: 30px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 10px;
+  transition: 0.3s;
+  font-size: 14px;
+  display: table-cell; 
+  vertical-align: middle;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+  background-color: #ccc;
+}
+
 
 html {
   min-width: 1040px;
+  margin-top: 8px;
 }
 
 .background {
@@ -46,10 +83,8 @@ text.active {
 }
 
 .dropdown a:hover {
-      background-color: #f1f1f1
-
+      background-color: #f1f1f1;
 }
-
 
 .button {
   background-color: #4CAF50; /* Green */

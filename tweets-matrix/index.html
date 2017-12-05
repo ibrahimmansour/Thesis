@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="ocks-org do-not-copy">
+<html class="ocks-org do-not-copy" style="background-color:rgba(235, 232, 230, 0.97);">
 <meta charset="utf-8">
 <title id="title">TweetsVIS Co-occurrence</title>
 <style>
@@ -10,7 +10,23 @@
 <script src="/d3/d3.v4.min.js" charset="utf-8"></script>
 <script src="/jquery/jquery-1.10.2.min.js" charset="utf-8"></script>
 
-<aside id="RelationSettings" class="asideleft" style="margin-top:0px;margin-left:10px;">
+<aside id="Datasets" class="asideleft" style="margin-top:0px;">
+    <div class="panel_name">
+        <span>
+            Primary Dataset
+        </span>
+      </div>
+      <div style="margin-left:5px;">
+        <div>
+        <p><b>Dataset: </b><select id="dataset">
+        <option value="Brexit">Brexit</option>
+        <option value="EuroCup2016">EuroCup2016</option>
+      </select>
+       </p>
+      </div>
+</aside>
+
+<aside id="RelationSettings" class="asideleft" style="margin-top:120px;">
   <div class="panel_name">
     <span>
         Relations Settings
@@ -18,7 +34,7 @@
   </div>
 <div style="margin-left:5px;">
   <div>
-  <p>Order: <select id="order">
+  <p><b>Order: </b><select id="order">
   <option value="name">by Name</option>
   <option value="count">by Frequency</option>
   <option value="cooccurence">by Co-occurrence</option>
@@ -27,14 +43,14 @@
  </p>
 </div>
 <div>
-    <p>Group: <select id="group">
+    <p><b>Group:</b> <select id="group">
         <option value="cooccurence">by Co-occurrence</option>
         <option value="similarity">by Similarity Count</option>
       </select>
     </p>
 </div>
 <div>
-    <p>Relation Value(%):</p>
+    <p><b>Relation Value(%):</b></p>
     <label for="similarity_value_from">From:</label>
     <input id="similarity_value_from" type="number" min="0" max="100" step="5" value="0" style="width: 40px;" >
     <label for="similarity_value_to">To:</label>
@@ -44,15 +60,15 @@
 </div>
 </aside>
 
-<!--aside id="Filters" class="asideleft" style="margin-top:250px;">
+<aside id="Filters" class="asideleft" style="margin-top:350px;">
     <div class="panel_name">
       <span>
           Filters
       </span>
     </div>
-<div>
+<div style="margin-left:5px;">
   <p>
-    <label for="keywordTxtbox">Keyword: </label>
+    <label for="keywordTxtbox">Keywords: </label>
     <span>
         <input id="keywordTxtbox">
         </input>
@@ -91,12 +107,13 @@
 </div>
 </aside>
 
-<aside class="asideright" style="margin-top:0px;">
+<aside class="asideright" style="margin-top:0px;background:rgba(235, 232, 230, 0.97);">
 <div class="panel_name">
-        <span>
+        <span id="tweets_panel_title">
             Tweets
         </span>
 </div>
+<div style="margin-top:5px;background:rgba(235, 232, 230, 0.97);"><label style="display:block;">Containing: </label><input type="text" id="tweet_list_words" size="32" readonly="" style="background:rgba(235, 232, 230, 0.97);"></div>
 <div id="panel_contents" class="panel_contents">
     <img id='tweetsloader' src='Imgs/ajax-loader.gif' class='loader' style='margin-top:275px;margin-left:100px'/>
 </div>
@@ -104,10 +121,10 @@
     <button id="prevBtn" disabled>Prev</button>
     <button id="nextBtn" disabled>Next</button>
 </div>
-</aside-->
-
+</aside>
 <body>
-    <div id='svg_matrix' class='svgmatrix' style="width:1200px">
+    <div id='svg_matrix' class='svgmatrix'>
+        <img id='svgloader' src='Imgs/ajax-loader.gif' class='loader' style='margin-top:275px;margin-left:400px'/>
         <div style="text-align:center;display:none;">
         <button id="chartBtn">Enable Bars</button>
         <button id="zoomIn">Zoom In</button>
@@ -117,6 +134,7 @@
     </div>
     <div id="dropDownMenu" class="dropdown dropdown-content" style="display:none">
         <button id="showTweets" class='button'>Show Tweets</button>
+        <button id="navigate" class='button'>Navigate</button>
     </div>
 </body>
 

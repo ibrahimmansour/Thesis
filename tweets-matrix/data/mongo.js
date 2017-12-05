@@ -65,7 +65,14 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
             matchquery.Tokens = { $all: allarr};
         }
         keyWords.push(searchKeyword.toLowerCase());
-        var query = [
+        var keyWords2 = [];
+        keyWords.forEach(function(element) {
+            keyWords2.push(element);
+        });
+        for (var i = 65; i <= 90; i++) {
+            keyWords2.push(String.fromCharCode(i).toLowerCase());
+       }
+            var query = [
             {
                 $match: matchquery
             },
@@ -74,7 +81,7 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
             },
             {
                 $match: {
-                    "Tokens.Word": { $nin: keyWords },
+                    "Tokens.Word": { $nin: keyWords2 },
                     //"Tokens.Word": { $not: new RegExp("Brexit", "i") },
                     "Tokens.Type_Id": { $in: wordType }
                 }

@@ -123,6 +123,10 @@
 </div>
 </aside>
 <body>
+        <div class='tab' style="text-align:center;">
+                <button id='static' class="tablinks active">Static</button>
+                <button id='evolution' class="tablinks">Evolution</button>
+            </div>
     <div id='svg_matrix' class='svgmatrix'>
         <img id='svgloader' src='Imgs/ajax-loader.gif' class='loader' style='margin-top:275px;margin-left:400px'/>
         <div style="text-align:center;display:none;">
@@ -130,7 +134,15 @@
         <button id="zoomIn">Zoom In</button>
         <button id="zoomOff">Reset</button>
         <button id="zoomOut">Zoom Out</button>
+        </div>
     </div>
+    <div id='svg_matrix2' class='svgmatrix' style='display:none;'>
+            <div style="text-align:center;display:none;">
+            <button id="chartBtn">Enable Bars</button>
+            <button id="zoomIn">Zoom In</button>
+            <button id="zoomOff">Reset</button>
+            <button id="zoomOut">Zoom Out</button>
+        </div>
     </div>
     <div id="dropDownMenu" class="dropdown dropdown-content" style="display:none">
         <button id="showTweets" class='button'>Show Tweets</button>
