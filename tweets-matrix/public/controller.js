@@ -9,6 +9,7 @@ var endDate = document.getElementById('dateTo').value;
 var wordType = document.getElementById('wordtypeList').value;
 var keyWords = [];
 var root = true;
+var evolselected = false;
 
 function setTab(evt) {
     var i, tabcontent, tablinks;
@@ -23,15 +24,48 @@ function setTab(evt) {
     evt.currentTarget.className += " active";
 }
 
+d3.select('#filterApplyBtn').on('click', function () {
+    searchKeyword = document.getElementById('dataset').value;
+    keyWords = document.getElementById('keywordTxtbox').value.trim().split(",").filter(x => x);
+    selected_nodes = document.getElementById('nodescount').value;
+    startDate = document.getElementById('dateFrom').value;
+    endDate = document.getElementById('dateTo').value;
+    wordType = document.getElementById('wordtypeList').value;
+    //tweetsdiv.remove();
+    
+    if (evolselected)
+    {
+        d3.select('#svg_matrix2').selectAll('div').remove();
+        d3.select('#svg_matrix2').selectAll('img').remove();
+        createSVGs(6);
+        myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
+        myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
+        myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
+        myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
+        myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
+        myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
+    }
+    else
+    {
+        d3.select('#panel_contents').selectAll('li').remove();
+        d3.select('body').select('svg').remove();
+        createStaticVis();
+    }
+});
+
 d3.select('#static').on('click', function () {
+evolselected = false;
 $('#svg_matrix').show();
 $('#svg_matrix2').hide();
+$('#evolutionpar').hide();
 setTab(event);
 })
 
 d3.select('#evolution').on('click', function () {
+    evolselected = true;
     setTab(event);
     $('#svg_matrix2').show();
+    $('#evolutionpar').show();
     $('#svg_matrix').hide();
     if (root)
     {
@@ -556,18 +590,6 @@ function createStaticVis() {
             myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
         });
 
-        d3.select('#filterApplyBtn').on('click', function () {
-            searchKeyword = document.getElementById('dataset').value;
-            keyWords = document.getElementById('keywordTxtbox').value.trim().split(",").filter(x => x);
-            selected_nodes = document.getElementById('nodescount').value;
-            startDate = document.getElementById('dateFrom').value;
-            endDate = document.getElementById('dateTo').value;
-            wordType = document.getElementById('wordtypeList').value;
-            tweetsdiv.remove();
-            d3.select('body').select('svg').remove();
-            createStaticVis();
-        });
-
         d3.select('#dataset').on('change', function () {
             searchKeyword = document.getElementById('dataset').value;
             selected_nodes = document.getElementById('nodescount').value;
@@ -668,12 +690,15 @@ function createStaticVis() {
             d3.selectAll('.column text').style('fill', 'black');
         }
         function mouseover(p) {
-            console.log(p.similarity);
+            //console.log(p.similarity);
+
+
             d3.select('#' + nodes[p.y].name + nodes[p.x].name)
             .style('fill', 'green');
 
             d3.selectAll('.row text').classed('active', function (d, i) {
-                return i == p.y;
+               console.log(d3.select(this).text()=="uk");
+                return d3.select(this).text() == nodes[p.y].name;
             });
             d3.selectAll('.column text').style('fill', function (d, i) {
                 return (i == p.x) ? 'red' : 'black';
@@ -760,6 +785,7 @@ function createSVGs(svgnum) {
     var margin = { top: 110 , right: 0, bottom: 0, left: 110 }, width = 150,
     height = 150, svgz0oom = 1;
     var i;
+    
     for (i = 1; i <= svgnum; i++) {
 
         d3.select('#svg_matrix2')
@@ -813,7 +839,15 @@ function myfunction(svgcount, startdate, enddate) {
     var selectedrow;
     var selectedcol;
 
-    startDate = startdate;
+    var selected_evolution = document.getElementById('evolution_type').value;
+    if (selected_evolution == "accumulated")
+    {
+        startDate = "2016-07-01T00:00:00";
+    }
+    else
+    {
+        startDate = startdate;
+    }
     endDate = enddate;
     $('#loader'+ svgcount).show();
     getTopWords(searchKeyword, keyWords, selected_nodes, startDate, endDate, wordType, function (tweets) {
@@ -1165,25 +1199,12 @@ function myfunction(svgcount, startdate, enddate) {
             console.log(d3.select(this));
             d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
             .style('fill', 'green');
-
-            d3.select('#myg' + svgcount).selectAll('.row text').classed('active', function (d, i) {
-                selectedrow = nodes[p.y].name;
-                return nodes[i].name == selectedrow;
+            console.log (d3.selectAll('.row text'));
+            d3.selectAll('.row text').classed('active', function (d, i) {
+                return d3.select(this).text() == nodes[p.y].name;
             });
-            d3.select('#myg' + 1).selectAll('.row text').classed('active', function (d, i) {
-                return nodes[i].name == selectedrow;
-            });
-            d3.select('#myg' + 2).selectAll('.row text').classed('active', function (d, i) {
-                return nodes[i].name == selectedrow;
-            });
-            d3.select('#myg' + 3).selectAll('.row text').classed('active', function (d, i) {
-                return nodes[i].name == selectedrow;
-            });
-            d3.select('#myg' + 4).selectAll('.row text').classed('active', function (d, i) {
-                return nodes[i].name == selectedrow;
-            });
-            d3.select('#myg' + svgcount).selectAll('.column text').style('fill', function (d, i) {
-                return (i == p.x) ? 'red' : 'black';
+            d3.selectAll('.column text').style('fill', function (d, i) {
+                return (d3.select(this).text() == nodes[p.x].name) ? 'red' : 'black';
             });
             var tweetcount = Math.round(nodes[p.y].count * (p.cooccurence));
             var tweetscount = '(' + Math.round(nodes[p.y].count * (p.cooccurence)) +
