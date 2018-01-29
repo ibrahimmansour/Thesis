@@ -62,8 +62,12 @@ select,input{
   background-color:rgba(235, 232, 230, 0.97);
 }
 
-text.active {
+text.active 
+{
   fill: red;
+  font-size: 175% !important;
+  font-family: cursive;
+  font-weight:500;
 }
 
 .dropdown {
@@ -90,7 +94,7 @@ text.active {
 }
 
 .button {
-  background-color: #4CAF50; /* Green */
+  background-color: #34495E; /* Green */
   border: 0.5px solid black;
   padding: 3px 3px;
   color: white;
@@ -194,7 +198,7 @@ div.tooltip {
   background: rgba(235, 232, 230, 0.97);
   color: #333;
   font-family: "PT Serif", serif;
-  margin: 1em auto 4em auto;
+  margin: 1.5em auto 4em auto;
   position: relative;
   width: 960px;
 }

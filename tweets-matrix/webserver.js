@@ -26,7 +26,7 @@ app.post('/getTopWords', (req, res) => {
     var searchKeyword = req.body.searchkeyword;
     if (!searchKeyword) {searchKeyword = "Brexit";}
     if (!keyWords) {keyWords = []};
-    console.log(keyWords);
+    console.log(JSON.stringify(req.body,null,2));
     console.log(startDate);
     
     console.log(endDate);
@@ -38,7 +38,9 @@ app.post('/getTopWords', (req, res) => {
         tweetstext = tweets.tweets;
         tweets.tweets = tweets.tweets.slice(0,50);
         tweets.textlength = tweetstext.length;
+        //console.log(JSON.stringify(tweets.matrix[0],null,2));
         res.end(JSON.stringify(tweets));
+
     });
 })
 

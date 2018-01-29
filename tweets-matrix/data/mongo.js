@@ -205,7 +205,7 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
                     relations.links = links;
                     relations.nodes = nodes;
                     relations.tweets = tweets;
-                    //console.log(relations);
+                    console.log(JSON.stringify(relations.links,null,2));
                     cb(relations);
                     db.close();
                 });

@@ -69,6 +69,8 @@ d3.select('#evolution').on('click', function () {
     $('#svg_matrix').hide();
     if (root)
     {
+        selected_nodes = 10;
+        $('#nodescount').val(selected_nodes);
         createSVGs(6);
         myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
         myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
@@ -316,7 +318,6 @@ function createStaticVis() {
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.42em')
                 .attr('text-anchor', 'start')
-                .attr('class', 'charttext')
                 .style('cursor', 'pointer')
                 .style('font-size', textfontmap[selected_nodes] + 'pt')
                 .text(function (d, i) {
@@ -450,21 +451,21 @@ function createStaticVis() {
                 + " (" + Math.round(polpercentage) + " % of " + nodes[i].count + " Tweets) </br>"
                 + " Polarity Confidence = (" + Math.round(polconfidence * 100) / 100 + ")";
             div.html(msg)
-                .style('left', d3.event.pageX - 200 + 'px')
-                .style('top', d3.event.pageY + 'px');
+                .style('left', d3.event.pageX - 370 + 'px')
+                .style('top', d3.event.pageY - 60 + 'px');
             div.transition().duration(200).style('opacity', .9);
             d3.selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
-            d3.selectAll('.column text').style('fill', function (d, ind) {
-                return (ind == i) ? 'red' : 'black';
+            d3.selectAll('.column text').classed('active', function (d, ind) {
+                return (ind == i);
             });
         }
 
         function showdropdown(d, i) {
             d3.select('#dropDownMenu')
                 .style('left', d3.event.pageX - 365 + 'px')
-                .style('top', d3.event.pageY - 50 + 'px');
+                .style('top', d3.event.pageY - 35 + 'px');
             $('#dropDownMenu').show();
             d3.select('#showTweets').on('click', (e) => { getWordTweets(d, i); });
             d3.select('#navigate').on('click', (e) => {
@@ -502,7 +503,7 @@ function createStaticVis() {
         function rectmouseout(d) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
         }
 
         function getWordTweets(d, i) {
@@ -675,33 +676,33 @@ function createStaticVis() {
             div.transition().duration(200).style('opacity', .9);
             div.html(nodes[i].count + ' tweets contain ' + nodes[i].name)
                 //.attr("transform", "translate(" + d3.event.x + "," + d3.event.y + ")");
-                .style('left', d3.event.pageX - 200 + 'px')
-                .style('top', d3.event.pageY + 'px');
+                .style('left', d3.event.pageX - 370 + 'px')
+                .style('top', d3.event.pageY -60 + 'px');
             d3.selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
-            d3.selectAll('.column text').style('fill', function (d, ind) {
-                return (ind == i) ? 'red' : 'black';
+            d3.selectAll('.column text').classed('active', function (d, ind) {
+                return (ind == i);
             });
         }
         function rtextmouseout(rtext) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
         }
         function mouseover(p) {
             //console.log(p.similarity);
 
 
             d3.select('#' + nodes[p.y].name + nodes[p.x].name)
-            .style('fill', 'green');
+            .style('fill', 'red');
 
             d3.selectAll('.row text').classed('active', function (d, i) {
-               console.log(d3.select(this).text()=="uk");
                 return d3.select(this).text() == nodes[p.y].name;
             });
-            d3.selectAll('.column text').style('fill', function (d, i) {
-                return (i == p.x) ? 'red' : 'black';
+            d3.selectAll('.column text').classed('active', function (d, i) {
+                return (i == p.x);
+                //return d3.select(this).text() == nodes[p.x].name;
             });
             console.log(d3.event.pageX + " x " + x(p.x));
             nodes[p.x].name + '\'';
@@ -732,7 +733,7 @@ function createStaticVis() {
             d3.selectAll('.cells')
             .style('fill', '#34495E');
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
             div.transition().duration(500).style('opacity', 0);
         }
 
@@ -741,8 +742,8 @@ function createStaticVis() {
             d3.select('#svg_matrix').selectAll('.row text').classed('active', function (dt, ind) {
                 return d.Text.toLowerCase().indexOf(nodes[ind].name.toLowerCase()) !== -1;
             });
-            d3.select('#svg_matrix').selectAll('.column text').style('fill', function (dt, ind) {
-                return (d.Text.toLowerCase().indexOf(nodes[ind].name.toLowerCase()) !== -1) ? "red" : "black";
+            d3.select('#svg_matrix').selectAll('.column text').classed('active', function (dt, ind) {
+                return (d.Text.toLowerCase().indexOf(nodes[ind].name.toLowerCase()) !== -1);
             });
         }
 
@@ -1165,15 +1166,15 @@ function myfunction(svgcount, startdate, enddate) {
             d3.selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
-            d3.selectAll('.column text').style('fill', function (d, ind) {
-                return (ind == i) ? 'red' : 'black';
+            d3.selectAll('.column text').classed('active', function (d, ind) {
+                return (ind == i);
             });
         }
 
         function rectmouseout(d) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
         }
 
         function rtextmouseover(d, i) {
@@ -1185,26 +1186,26 @@ function myfunction(svgcount, startdate, enddate) {
             d3.select('#myg' + svgcount).selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
-            d3.select('#myg' + svgcount).selectAll('.column text').style('fill', function (d, ind) {
-                return (ind == i) ? 'red' : 'black';
+            d3.select('#myg' + svgcount).selectAll('.column text').classed('active', function (d, ind) {
+                return (ind == i);
             });
         }
         function rtextmouseout(rtext) {
             div.transition().duration(500).style('opacity', 0);
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
         }
         
         function mouseover(p) {
             console.log(d3.select(this));
             d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
-            .style('fill', 'green');
+            .style('fill', 'red');
             console.log (d3.selectAll('.row text'));
             d3.selectAll('.row text').classed('active', function (d, i) {
                 return d3.select(this).text() == nodes[p.y].name;
             });
-            d3.selectAll('.column text').style('fill', function (d, i) {
-                return (d3.select(this).text() == nodes[p.x].name) ? 'red' : 'black';
+            d3.selectAll('.column text').classed('active', function (d, i) {
+                return (d3.select(this).text() == nodes[p.x].name);
             });
             var tweetcount = Math.round(nodes[p.y].count * (p.cooccurence));
             var tweetscount = '(' + Math.round(nodes[p.y].count * (p.cooccurence)) +
@@ -1235,7 +1236,7 @@ function myfunction(svgcount, startdate, enddate) {
             d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
             .style('fill', '#34495E');
             d3.selectAll('.row text').classed('active', false);
-            d3.selectAll('.column text').style('fill', 'black');
+            d3.selectAll('.column text').classed('active', false);
             div.transition().duration(500).style('opacity', 0);
         }
 
