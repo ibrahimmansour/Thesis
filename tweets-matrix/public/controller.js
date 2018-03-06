@@ -54,6 +54,8 @@ d3.select('#filterApplyBtn').on('click', function () {
 });
 
 d3.select('#static').on('click', function () {
+startDate = document.getElementById('dateFrom').value;
+endDate = document.getElementById('dateTo').value;
 evolselected = false;
 $('#svg_matrix').show();
 $('#svg_matrix2').hide();
@@ -1129,11 +1131,7 @@ function myfunction(svgcount, startdate, enddate) {
                         z(d.similarity) :
                         relscale(Math.round(d.cooccurencecount));
                 })
-                .style('fill', function (d) {
-                    return selected_group == 'similarity' ?
-                        c(Math.round(nodes[d.y].similaritycount)) :
-                        '#34495E';
-                })
+                .style('fill', '#34495E');
         }
 
         function refillsvg(svgnum) {

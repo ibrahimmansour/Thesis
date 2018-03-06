@@ -95,6 +95,7 @@ exports.getTopWords = function (searchKeyword, keyWords, numNodes, startDate, en
 
 exports.getWordsTweets = function (searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, cb) {
     mongo.getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, (tweets, err) => {
+        console.log(searchKeyword + " " + keyWords + " " + word1 + " " + word2 + " " + startDate + " " + endDate + " " + wordType);
         cb(tweets);
     });
 }

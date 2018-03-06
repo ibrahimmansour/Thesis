@@ -12,7 +12,7 @@ app.use(express.static('public'));
 var wordTypes = {};
 wordTypes.verbs = [2, 7, 17, 20, 24, 28];
 wordTypes.nouns = [6, 9, 18, 34];
-//wordTypes.all = [];
+wordTypes.all = [2,6,7,9,17,18,20,24,28,34];
 var tweetstext;
 
 app.post('/getTopWords', (req, res) => {
