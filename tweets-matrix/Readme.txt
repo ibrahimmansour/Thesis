@@ -1,14 +1,9 @@
-This is a nodejs project that utilizes MongoDB. A pre-requisite to run this project is to have nodejs and mongodb installed. 
-Also the following nodejs modules need to be first installed with npm:
-
-1-express
-2-wordnet
-3-mongodb
-4-async
-5-body-parser
-6-fs
+This is a nodejs project that utilizes MongoDB. A pre-requisite to run this project is to have node,npm and mongodb installed. 
 
 After installing those requirements, the project can be run as follows:
 
-mongod --dbpath "Path to the database which is our data folder in the root project (IbrahimThesis/data)"
-node webserver.js
+npm install //to install the modules
+mongod --dbpath "Path to the database which is our data folder in the root project (tweets-matrix/data)" //to run the Mongodb server
+node webserver.js //entry point
+
+The project runs on the localhost, port 8080. So to start type localhost:8080 on a browser.
