@@ -32,21 +32,34 @@ d3.select('#filterApplyBtn').on('click', function () {
     endDate = document.getElementById('dateTo').value;
     wordType = document.getElementById('wordtypeList').value;
     //tweetsdiv.remove();
-    
-    if (evolselected)
-    {
+
+    if (evolselected) {
         d3.select('#svg_matrix2').selectAll('div').remove();
         d3.select('#svg_matrix2').selectAll('img').remove();
         createSVGs(6);
-        myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
-        myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
-        myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
-        myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
-        myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
-        myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
+        var selected_evolution = document.getElementById('evolution_type').value;
+        if (selected_evolution == "overlapping") {
+            d3.selectAll('.svgtext')
+            .style('font-size', '10px')
+            .style('margin-left', -150 + 'px')
+            .style('margin-top', 270 + 'px');
+            myfunction(1, "2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2, "2016-07-01T18:00:00", "2016-07-03T00:00:00");
+            myfunction(3, "2016-07-02T18:00:00", "2016-07-04T00:00:00");
+            myfunction(6, "2016-07-03T18:00:00", "2016-07-05T00:00:00");
+            myfunction(5, "2016-07-04T18:00:00", "2016-07-06T00:00:00");
+            myfunction(4, "2016-07-05T18:00:00", "2016-07-07T00:00:00");
+        }
+        else {
+            myfunction(1, "2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2, "2016-07-02T00:00:00", "2016-07-03T00:00:00");
+            myfunction(3, "2016-07-03T00:00:00", "2016-07-04T00:00:00");
+            myfunction(6, "2016-07-04T00:00:00", "2016-07-05T00:00:00");
+            myfunction(5, "2016-07-05T00:00:00", "2016-07-06T00:00:00");
+            myfunction(4, "2016-07-06T00:00:00", "2016-07-07T00:00:00");
+        }
     }
-    else
-    {
+    else {
         d3.select('#panel_contents').selectAll('li').remove();
         d3.select('body').select('svg').remove();
         createStaticVis();
@@ -54,13 +67,13 @@ d3.select('#filterApplyBtn').on('click', function () {
 });
 
 d3.select('#static').on('click', function () {
-startDate = document.getElementById('dateFrom').value;
-endDate = document.getElementById('dateTo').value;
-evolselected = false;
-$('#svg_matrix').show();
-$('#svg_matrix2').hide();
-$('#evolutionpar').hide();
-setTab(event);
+    startDate = document.getElementById('dateFrom').value;
+    endDate = document.getElementById('dateTo').value;
+    evolselected = false;
+    $('#svg_matrix').show();
+    $('#svg_matrix2').hide();
+    $('#evolutionpar').hide();
+    setTab(event);
 })
 
 d3.select('#evolution').on('click', function () {
@@ -69,21 +82,31 @@ d3.select('#evolution').on('click', function () {
     $('#svg_matrix2').show();
     $('#evolutionpar').show();
     $('#svg_matrix').hide();
-    if (root)
-    {
+    if (root) {
         selected_nodes = 10;
         $('#nodescount').val(selected_nodes);
         createSVGs(6);
-        myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
-        myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
-        myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
-        myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
-        myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
-        myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
+        var selected_evolution = document.getElementById('evolution_type').value;
+        if (selected_evolution == "overlapping") {
+            myfunction(1, "2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2, "2016-07-01T18:00:00", "2016-07-03T00:00:00");
+            myfunction(3, "2016-07-02T18:00:00", "2016-07-04T00:00:00");
+            myfunction(6, "2016-07-03T18:00:00", "2016-07-05T00:00:00");
+            myfunction(5, "2016-07-04T18:00:00", "2016-07-06T00:00:00");
+            myfunction(4, "2016-07-05T18:00:00", "2016-07-07T00:00:00");
+        }
+        else {
+            myfunction(1, "2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2, "2016-07-02T00:00:00", "2016-07-03T00:00:00");
+            myfunction(3, "2016-07-03T00:00:00", "2016-07-04T00:00:00");
+            myfunction(6, "2016-07-04T00:00:00", "2016-07-05T00:00:00");
+            myfunction(5, "2016-07-05T00:00:00", "2016-07-06T00:00:00");
+            myfunction(4, "2016-07-06T00:00:00", "2016-07-07T00:00:00");
+        }
         root = false;
     }
-    })
-    
+})
+
 
 function createStaticVis() {
     var margin = { top: 140, right: 0, bottom: 0, left: 210 }, width = 450,
@@ -97,7 +120,7 @@ function createStaticVis() {
     textfontmap[10] = 12;
     textfontmap[20] = 10;
     textfontmap[50] = 7;
-    textfontmap[100] = 4;    
+    textfontmap[100] = 4;
     var relscale;
 
     $('#svgloader').show();
@@ -123,7 +146,7 @@ function createStaticVis() {
             tweet_list_words += ",\"" + keyWords[i] + "\"";
         }
         $
-        $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength );
+        $("#tweets_panel_title").text("Tweets (" + (tweetscounter + 1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength);
         $("#tweet_list_words").val(tweet_list_words);
         var tweetsdiv = d3.select("#panel_contents")
             .selectAll()
@@ -158,7 +181,7 @@ function createStaticVis() {
                 .append('g')
                 .attr('id', 'myg')
                 .attr(
-                'transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                    'transform', 'translate(' + margin.left + ',' + margin.top + ')');
         //.call(d3.drag().on("start", ()=>{return null;}));
 
         function dragstarted() {
@@ -194,10 +217,10 @@ function createStaticVis() {
                 .append('g')
                 .attr('class', 'row')
                 .attr(
-                'transform',
-                function (d, i) {
-                    return 'translate(0,' + x(i) + ')';
-                })
+                    'transform',
+                    function (d, i) {
+                        return 'translate(0,' + x(i) + ')';
+                    })
                 .each(row_f);
 
             row.append('line')
@@ -207,9 +230,9 @@ function createStaticVis() {
 
             row.append('text')
                 .attr('x',
-                function (d, i) {
-                    return -barscale(nodes[i].count) - 7;
-                })
+                    function (d, i) {
+                        return -barscale(nodes[i].count) - 7;
+                    })
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.32em')
                 .attr('text-anchor', 'end')
@@ -225,74 +248,74 @@ function createStaticVis() {
             if (selected_nodes <= 120) {
                 row.append('rect', 'text')
                     .attr(
-                    'x',
-                    function (d, i) {
-                        return -barscale(nodes[i].count) - 3;
-                    })
+                        'x',
+                        function (d, i) {
+                            return -barscale(nodes[i].count) - 3;
+                        })
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return barscale(nodes[i].count);
-                    })
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count);
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('rx', 5)  // rounded corners
                     .attr('ry', 5)
                     .style(
-                    'fill',
-                    function (d, i) {
-                        return 'red';
-                    })
+                        'fill',
+                        function (d, i) {
+                            return 'red';
+                        })
                     .on('mouseover', rectmouseover)
                     .on('mouseout', rectmouseout)
                     ;
 
                 row.append('rect', 'text')
                     .attr(
-                    'x',
-                    function (d, i) {
-                        return -(barscale(nodes[i].count) *
-                            (nodes[i].semCountPo / nodes[i].count)) -
-                            3;
-                    })
-                    .attr('y', x.bandwidth() / 5)
-                    .attr(
-                    'width',
-                    function (d, i) {
-                        return barscale(nodes[i].count) *
-                            (nodes[i].semCountPo / nodes[i].count);
-                    })
-                    .attr('height', x.bandwidth() / 2)
-                    .style('fill',
-                    function (d, i) {
-                        return 'green';
-                    })
-                    .on('mouseover', rectmouseover)
-                    .on('mouseout', rectmouseout)
-                    ;
-
-                row.append('rect', 'text')
-                    .attr(
-                    'x',
-                    function (d, i) {
-                        return -(barscale(nodes[i].count) *
-                            (nodes[i].semCountNe / nodes[i].count)) -
-                            (barscale(nodes[i].count) *
+                        'x',
+                        function (d, i) {
+                            return -(barscale(nodes[i].count) *
                                 (nodes[i].semCountPo / nodes[i].count)) -
-                            3;
-                    })
+                                3;
+                        })
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return barscale(nodes[i].count) *
-                            (nodes[i].semCountNe / nodes[i].count);
-                    })
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count) *
+                                (nodes[i].semCountPo / nodes[i].count);
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .style('fill',
-                    function (d, i) {
-                        return 'blue';
-                    })
+                        function (d, i) {
+                            return 'green';
+                        })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
+
+                row.append('rect', 'text')
+                    .attr(
+                        'x',
+                        function (d, i) {
+                            return -(barscale(nodes[i].count) *
+                                (nodes[i].semCountNe / nodes[i].count)) -
+                                (barscale(nodes[i].count) *
+                                    (nodes[i].semCountPo / nodes[i].count)) -
+                                3;
+                        })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count) *
+                                (nodes[i].semCountNe / nodes[i].count);
+                        })
+                    .attr('height', x.bandwidth() / 2)
+                    .style('fill',
+                        function (d, i) {
+                            return 'blue';
+                        })
                     .on('mouseover', rectmouseover)
                     .on('mouseout', rectmouseout)
                     ;
@@ -314,9 +337,9 @@ function createStaticVis() {
 
             column.append('text')
                 .attr('x',
-                function (d, i) {
-                    return barscale(nodes[i].count) + 8;
-                })
+                    function (d, i) {
+                        return barscale(nodes[i].count) + 8;
+                    })
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.42em')
                 .attr('text-anchor', 'start')
@@ -334,10 +357,10 @@ function createStaticVis() {
                     .attr('x', 4)
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return barscale(nodes[i].count);
-                    })
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count);
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('rx', 5)  // rounded corners
                     .attr('ry', 5)
@@ -353,11 +376,11 @@ function createStaticVis() {
                     .attr('x', 4)
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return (nodes[i].semCountPo * barscale(nodes[i].count)) /
-                            nodes[i].count;
-                    })
+                        'width',
+                        function (d, i) {
+                            return (nodes[i].semCountPo * barscale(nodes[i].count)) /
+                                nodes[i].count;
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('class', 'textrect')
                     .style('fill', 'green')
@@ -366,20 +389,20 @@ function createStaticVis() {
 
                 column.append('rect', 'text')
                     .attr(
-                    'x',
-                    function (d, i) {
-                        return (
-                            4 +
-                            (nodes[i].semCountPo * barscale(nodes[i].count)) /
-                            nodes[i].count);
-                    })
+                        'x',
+                        function (d, i) {
+                            return (
+                                4 +
+                                (nodes[i].semCountPo * barscale(nodes[i].count)) /
+                                nodes[i].count);
+                        })
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return (nodes[i].semCountNe * barscale(nodes[i].count)) /
-                            nodes[i].count;
-                    })
+                        'width',
+                        function (d, i) {
+                            return (nodes[i].semCountNe * barscale(nodes[i].count)) /
+                                nodes[i].count;
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('class', 'textrect')
                     .style('fill', 'blue')
@@ -399,16 +422,16 @@ function createStaticVis() {
                 }))
                 .enter()
                 .append('rect')
-                .attr('id' ,
-                function (d) {
-                    return nodes[d.y].name + "" + nodes[d.x].name;
-                })
+                .attr('id',
+                    function (d) {
+                        return nodes[d.y].name + "" + nodes[d.x].name;
+                    })
                 .attr('class', 'cells')
                 .attr(
-                'x',
-                function (d) {
-                    return x(d.x);
-                })
+                    'x',
+                    function (d) {
+                        return x(d.x);
+                    })
                 .attr('width', x.bandwidth())
                 .attr('height', x.bandwidth())
                 .attr('rx', 10)  // rounded corners
@@ -475,12 +498,12 @@ function createStaticVis() {
                 var word2;
                 keyWords = document.getElementById('keywordTxtbox').value.split(",").filter(x => x);
                 if (typeof (d.x) !== "undefined") {
-                     word1 = nodes[d.y].name; 
-                     word2 = nodes[d.x].name; 
-                     keyWords.push(word1);
-                     keyWords.push(word2);
-                    }
-                else { 
+                    word1 = nodes[d.y].name;
+                    word2 = nodes[d.x].name;
+                    keyWords.push(word1);
+                    keyWords.push(word2);
+                }
+                else {
                     word1 = nodes[i].name;
                     word2 = nodes[i].name;
                     keyWords.push(word1);
@@ -492,7 +515,7 @@ function createStaticVis() {
                 wordType = document.getElementById('wordtypeList').value;
                 tweetsdiv.remove();
                 d3.select('#svg_matrix').select('svg').remove();
-                createStaticVis();             
+                createStaticVis();
             });
         }
 
@@ -513,21 +536,19 @@ function createStaticVis() {
             tweetscounter = 0;
             var word1;
             var word2;
-            if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; tweets.textlength = (Math.round(nodes[d.y].count * (d.cooccurence)));}
-            else { word1 = nodes[i].name; word2 = nodes[i].name; tweets.textlength = nodes[i].count;}
+            if (typeof (d.x) !== "undefined") { word1 = nodes[d.y].name; word2 = nodes[d.x].name; tweets.textlength = (Math.round(nodes[d.y].count * (d.cooccurence))); }
+            else { word1 = nodes[i].name; word2 = nodes[i].name; tweets.textlength = nodes[i].count; }
             getWordsTweets(searchKeyword, keyWords, word1, word2, startDate, endDate, wordType, (results) => {
                 console.log("word1: " + word1 + " word2: " + word2);
                 var tweetscounterto = tweetscounter + 50;
-                if (tweetscounterto >= tweets.textlength)
-                {
+                if (tweetscounterto >= tweets.textlength) {
                     tweetscounterto = tweets.textlength;
                     d3.select("#nextBtn").attr('disabled', 'disabled');
                 }
-                else
-                {
+                else {
                     d3.select("#nextBtn").attr('disabled', null);
                 }
-                $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounterto) + ") of " + tweets.textlength);
+                $("#tweets_panel_title").text("Tweets (" + (tweetscounter + 1) + "-" + (tweetscounterto) + ") of " + tweets.textlength);
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
                     .data(results)
@@ -585,12 +606,12 @@ function createStaticVis() {
             order(selected_order);
             setTimeout(refillsvg, 3500);
 
-            myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
-            myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
-            myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
-            myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
-            myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
-            myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
+            myfunction(1, "2016-07-01T00:00:00", "2016-07-02T00:00:00");
+            myfunction(2, "2016-07-02T00:00:00", "2016-07-03T00:00:00");
+            myfunction(3, "2016-07-03T00:00:00", "2016-07-04T00:00:00");
+            myfunction(4, "2016-07-04T00:00:00", "2016-07-05T00:00:00");
+            myfunction(5, "2016-07-05T00:00:00", "2016-07-06T00:00:00");
+            myfunction(6, "2016-07-06T00:00:00", "2016-07-07T00:00:00");
         });
 
         d3.select('#dataset').on('change', function () {
@@ -609,16 +630,14 @@ function createStaticVis() {
             getMoreTweets(tweetscounter, function (tweetstexts) {
                 console.log(tweetstexts);
                 var tweetscounterto = tweetscounter + 50;
-                if (tweetscounterto >= tweets.textlength)
-                {
+                if (tweetscounterto >= tweets.textlength) {
                     tweetscounterto = tweets.textlength;
                     d3.select("#nextBtn").attr('disabled', 'disabled');
                 }
-                else
-                {
+                else {
                     d3.select("#nextBtn").attr('disabled', null);
                 }
-                $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounterto) + ") of " + tweets.textlength );
+                $("#tweets_panel_title").text("Tweets (" + (tweetscounter + 1) + "-" + (tweetscounterto) + ") of " + tweets.textlength);
                 tweetsdiv = d3.select("#panel_contents")
                     .selectAll()
                     .data(tweetstexts)
@@ -637,17 +656,15 @@ function createStaticVis() {
 
         d3.select('#prevBtn').on('click', function () {
             d3.select("#nextBtn").attr('disabled', null);
-            if (tweetscounter <= 100)
-            {
+            if (tweetscounter <= 100) {
                 tweetscounter = 0;
                 d3.select("#prevBtn").attr('disabled', 'disabled');
             }
-            else
-            {
-                tweetscounter -=100;
-                tweetscounter = Math.round(tweetscounter / 50)*50;
+            else {
+                tweetscounter -= 100;
+                tweetscounter = Math.round(tweetscounter / 50) * 50;
             }
-            $("#tweets_panel_title").text("Tweets (" + (tweetscounter+1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength );
+            $("#tweets_panel_title").text("Tweets (" + (tweetscounter + 1) + "-" + (tweetscounter + 50) + ") of " + tweets.textlength);
             tweetsdiv.remove();
             getMoreTweets(tweetscounter, function (tweetstexts) {
                 console.log(tweetstexts);
@@ -679,7 +696,7 @@ function createStaticVis() {
             div.html(nodes[i].count + ' tweets contain ' + nodes[i].name)
                 //.attr("transform", "translate(" + d3.event.x + "," + d3.event.y + ")");
                 .style('left', d3.event.pageX - 370 + 'px')
-                .style('top', d3.event.pageY -60 + 'px');
+                .style('top', d3.event.pageY - 60 + 'px');
             d3.selectAll('.row text').classed('active', function (d, ind) {
                 return ind == i;
             });
@@ -697,7 +714,7 @@ function createStaticVis() {
 
 
             d3.select('#' + nodes[p.y].name + nodes[p.x].name)
-            .style('fill', 'red');
+                .style('fill', 'red');
 
             d3.selectAll('.row text').classed('active', function (d, i) {
                 return d3.select(this).text() == nodes[p.y].name;
@@ -710,8 +727,8 @@ function createStaticVis() {
             nodes[p.x].name + '\'';
 
             var tweetscount = '(' + p.commontweetsnum +
-            ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
-            nodes[p.x].name + '\'';
+                ' tweets) have both \'' + nodes[p.y].name + '\' and \'' +
+                nodes[p.x].name + '\'';
             var tweetspercentage = Math.round(p.cooccurence * 100) + '% of ' +
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
             //console.log(Math.round(p.cooccurencecount));
@@ -721,7 +738,7 @@ function createStaticVis() {
             var nodesimilarity = '\'' + nodes[p.y].name + '\' and \'' +
                 nodes[p.x].name + '\' are ' + Math.round(p.similarity * 100) +
                 '% similar';
-            var msg = 
+            var msg =
                 ((selected_group == 'similarity') ?
                     nodesimilarity :
                     (tweetscount + '</br>' + tweetcooccurencecount + '</br>' + tweetspercentage));
@@ -733,7 +750,7 @@ function createStaticVis() {
         }
         function mouseout(p) {
             d3.selectAll('.cells')
-            .style('fill', '#34495E');
+                .style('fill', '#34495E');
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').classed('active', false);
             div.transition().duration(500).style('opacity', 0);
@@ -758,10 +775,10 @@ function createStaticVis() {
                     return x(i) * 4;
                 })
                 .attr(
-                'transform',
-                function (d, i) {
-                    return 'translate(0,' + x(i) + ')';
-                })
+                    'transform',
+                    function (d, i) {
+                        return 'translate(0,' + x(i) + ')';
+                    })
                 .selectAll('.cell')
                 .delay(function (d) {
                     return x(d.x) * 4;
@@ -785,18 +802,18 @@ function createStaticVis() {
 createStaticVis();
 
 function createSVGs(svgnum) {
-    var margin = { top: 110 , right: 0, bottom: 0, left: 110 }, width = 150,
-    height = 150, svgz0oom = 1;
+    var margin = { top: 110, right: 0, bottom: 0, left: 110 }, width = 150,
+        height = 150, svgz0oom = 1;
     var i;
-    
+
     for (i = 1; i <= svgnum; i++) {
 
         d3.select('#svg_matrix2')
-        .append('div')
-        .attr('id', 'container' + i)
-        .style('display', 'initial');
+            .append('div')
+            .attr('id', 'container' + i)
+            .style('display', 'initial');
 
-        d3.select('#container'+i)
+        d3.select('#container' + i)
             .append('svg')
             .attr('id', 'svg' + i)
             .attr('width', 260 + 'px')
@@ -806,29 +823,30 @@ function createSVGs(svgnum) {
             .append('g')
             .attr('id', 'myg' + i)
             .attr(
-            'transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                'transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-            d3.select('#container'+i)
+        d3.select('#container' + i)
             .append('a')
             .attr('id', 'svgtxt' + i)
-            .style('position','absolute')
+            .attr('class', 'svgtext')
+            .style('position', 'absolute')
             .style('margin-left', -130 + 'px')
-            .style('margin-top', 270  + 'px' );
-            
+            .style('margin-top', 270 + 'px');
+
         d3.select('#svg_matrix2')
             .append('img')
             .attr('id', 'loader' + i)
             .attr('class', 'loader')
             .attr('src', 'Imgs/ajax-loader.gif')
             .style('margin-left', -100 + 'px')
-            .style('margin-top', 150 + 'px' );
+            .style('margin-top', 150 + 'px');
 
     }
 }
 
 function myfunction(svgcount, startdate, enddate) {
-    var margin = { top: 110 , right: 0, bottom: 0, left: 110 }, width = 150,
-    height = 150, svgz0oom = 1;
+    var margin = { top: 110, right: 0, bottom: 0, left: 110 }, width = 150,
+        height = 150, svgz0oom = 1;
     var x = d3.scaleBand().range([0, width]),
         barscale = d3.scaleBand().range([4, 30]),
         z = d3.scaleLinear().domain([0, 1]).clamp(true),
@@ -836,32 +854,30 @@ function myfunction(svgcount, startdate, enddate) {
     var ordersmap = {};
     var matrixmap = {};
     var nodesmap = [];
-    
+
     var relscale;
-    var svgcounter=0;
+    var svgcounter = 0;
     var selectedrow;
     var selectedcol;
 
     var selected_evolution = document.getElementById('evolution_type').value;
-    if (selected_evolution == "accumulated")
-    {
+    if (selected_evolution == "accumulated") {
         startDate = "2016-07-01T00:00:00";
     }
-    else
-    {
+    else {
         startDate = startdate;
     }
     endDate = enddate;
-    $('#loader'+ svgcount).show();
+    $('#loader' + svgcount).show();
     getTopWords(searchKeyword, keyWords, selected_nodes, startDate, endDate, wordType, function (tweets) {
         var matrix = tweets.matrix, nodes = tweets.nodes, mincount = tweets.mincount,
             maxcount = tweets.maxcount, n = nodes.length,
             invertedindex = tweets.invertedindex, maxrelcount = tweets.maxrelcount,
             orders = tweets.orders, textlength = tweets.textlength, tweetscounter = 0;
-        
-            ordersmap[svgcount] = orders;
-            matrixmap[svgcount] = matrix;
-            nodesmap[svgcount] = nodes;
+
+        ordersmap[svgcount] = orders;
+        matrixmap[svgcount] = matrix;
+        nodesmap[svgcount] = nodes;
         barscale.domain(d3.range(mincount, maxcount + 1));
 
         relscale =
@@ -877,10 +893,18 @@ function myfunction(svgcount, startdate, enddate) {
         }
 
         var svg =
-            d3.select('#myg'+svgcount);
+            d3.select('#myg' + svgcount);
 
+        if (selected_evolution == "overlapping")
+        {
             d3.select('#svgtxt' + svgcount)
-            .text(function(d) { return startdate.slice(0,10); });
+            .html(function (d) { return "From: " + startdate.replace("T"," ") + "</br>To: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + endDate.replace("T"," "); });
+        }
+        else
+        {
+            d3.select('#svgtxt' + svgcount)
+            .html(function (d) { return startdate.slice(0,10) });
+        }
 
         var div = d3.select('body')
             .append('div')
@@ -901,10 +925,10 @@ function myfunction(svgcount, startdate, enddate) {
                 .append('g')
                 .attr('class', 'row')
                 .attr(
-                'transform',
-                function (d, i) {
-                    return 'translate(0,' + x(i) + ')';
-                })
+                    'transform',
+                    function (d, i) {
+                        return 'translate(0,' + x(i) + ')';
+                    })
                 .each(row_f);
 
             row.append('line')
@@ -914,9 +938,9 @@ function myfunction(svgcount, startdate, enddate) {
 
             row.append('text')
                 .attr('x',
-                function (d, i) {
-                    return -barscale((nodesmap[svgnum])[i].count) - 7;
-                })
+                    function (d, i) {
+                        return -barscale((nodesmap[svgnum])[i].count) - 7;
+                    })
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.32em')
                 .attr('text-anchor', 'end')
@@ -928,84 +952,84 @@ function myfunction(svgcount, startdate, enddate) {
                 .on('mouseover', rtextmouseover)
                 .on('mouseout', rtextmouseout);
 
-        if (selected_nodes <= 120) {
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -barscale(nodes[i].count) - 3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .attr('rx', 5)  // rounded corners
-                .attr('ry', 5)
-                .style(
-                'fill',
-                function (d, i) {
-                    return 'red';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
+            if (selected_nodes <= 120) {
+                row.append('rect', 'text')
+                    .attr(
+                        'x',
+                        function (d, i) {
+                            return -barscale(nodes[i].count) - 3;
+                        })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count);
+                        })
+                    .attr('height', x.bandwidth() / 2)
+                    .attr('rx', 5)  // rounded corners
+                    .attr('ry', 5)
+                    .style(
+                        'fill',
+                        function (d, i) {
+                            return 'red';
+                        })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
 
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -(barscale(nodes[i].count) *
-                        (nodes[i].semCountPo / nodes[i].count)) -
-                        3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count) *
-                        (nodes[i].semCountPo / nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .style('fill',
-                function (d, i) {
-                    return 'green';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
+                row.append('rect', 'text')
+                    .attr(
+                        'x',
+                        function (d, i) {
+                            return -(barscale(nodes[i].count) *
+                                (nodes[i].semCountPo / nodes[i].count)) -
+                                3;
+                        })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count) *
+                                (nodes[i].semCountPo / nodes[i].count);
+                        })
+                    .attr('height', x.bandwidth() / 2)
+                    .style('fill',
+                        function (d, i) {
+                            return 'green';
+                        })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
 
-            row.append('rect', 'text')
-                .attr(
-                'x',
-                function (d, i) {
-                    return -(barscale(nodes[i].count) *
-                        (nodes[i].semCountNe / nodes[i].count)) -
-                        (barscale(nodes[i].count) *
-                            (nodes[i].semCountPo / nodes[i].count)) -
-                        3;
-                })
-                .attr('y', x.bandwidth() / 5)
-                .attr(
-                'width',
-                function (d, i) {
-                    return barscale(nodes[i].count) *
-                        (nodes[i].semCountNe / nodes[i].count);
-                })
-                .attr('height', x.bandwidth() / 2)
-                .style('fill',
-                function (d, i) {
-                    return 'blue';
-                })
-                .on('mouseover', rectmouseover)
-                .on('mouseout', rectmouseout)
-                ;
-        
+                row.append('rect', 'text')
+                    .attr(
+                        'x',
+                        function (d, i) {
+                            return -(barscale(nodes[i].count) *
+                                (nodes[i].semCountNe / nodes[i].count)) -
+                                (barscale(nodes[i].count) *
+                                    (nodes[i].semCountPo / nodes[i].count)) -
+                                3;
+                        })
+                    .attr('y', x.bandwidth() / 5)
+                    .attr(
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count) *
+                                (nodes[i].semCountNe / nodes[i].count);
+                        })
+                    .attr('height', x.bandwidth() / 2)
+                    .style('fill',
+                        function (d, i) {
+                            return 'blue';
+                        })
+                    .on('mouseover', rectmouseover)
+                    .on('mouseout', rectmouseout)
+                    ;
+
             }
         }
-        
+
         function colgen(svgnum) {
             //nodes = nodesmap[svgnum];
             var column = d3.select('#myg' + svgnum)
@@ -1022,9 +1046,9 @@ function myfunction(svgcount, startdate, enddate) {
 
             column.append('text')
                 .attr('x',
-                function (d, i) {
-                    return barscale(nodes[i].count) + 8;
-                })
+                    function (d, i) {
+                        return barscale(nodes[i].count) + 8;
+                    })
                 .attr('y', x.bandwidth() / 3)
                 .attr('dy', '.42em')
                 .attr('text-anchor', 'start')
@@ -1042,10 +1066,10 @@ function myfunction(svgcount, startdate, enddate) {
                     .attr('x', 4)
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return barscale(nodes[i].count);
-                    })
+                        'width',
+                        function (d, i) {
+                            return barscale(nodes[i].count);
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('rx', 5)  // rounded corners
                     .attr('ry', 5)
@@ -1061,11 +1085,11 @@ function myfunction(svgcount, startdate, enddate) {
                     .attr('x', 4)
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return (nodes[i].semCountPo * barscale(nodes[i].count)) /
-                            nodes[i].count;
-                    })
+                        'width',
+                        function (d, i) {
+                            return (nodes[i].semCountPo * barscale(nodes[i].count)) /
+                                nodes[i].count;
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('class', 'textrect')
                     .style('fill', 'green')
@@ -1074,20 +1098,20 @@ function myfunction(svgcount, startdate, enddate) {
 
                 column.append('rect', 'text')
                     .attr(
-                    'x',
-                    function (d, i) {
-                        return (
-                            4 +
-                            (nodes[i].semCountPo * barscale(nodes[i].count)) /
-                            nodes[i].count);
-                    })
+                        'x',
+                        function (d, i) {
+                            return (
+                                4 +
+                                (nodes[i].semCountPo * barscale(nodes[i].count)) /
+                                nodes[i].count);
+                        })
                     .attr('y', x.bandwidth() / 5)
                     .attr(
-                    'width',
-                    function (d, i) {
-                        return (nodes[i].semCountNe * barscale(nodes[i].count)) /
-                            nodes[i].count;
-                    })
+                        'width',
+                        function (d, i) {
+                            return (nodes[i].semCountNe * barscale(nodes[i].count)) /
+                                nodes[i].count;
+                        })
                     .attr('height', x.bandwidth() / 2)
                     .attr('class', 'textrect')
                     .style('fill', 'blue')
@@ -1108,14 +1132,14 @@ function myfunction(svgcount, startdate, enddate) {
                 .enter()
                 .append('rect')
                 .attr('class',
-                function (d) {
-                    return nodes[d.y].name + "" + nodes[d.x].name;
-                })
+                    function (d) {
+                        return nodes[d.y].name + "" + nodes[d.x].name;
+                    })
                 .attr(
-                'x',
-                function (d) {
-                    return x(d.x);
-                })
+                    'x',
+                    function (d) {
+                        return x(d.x);
+                    })
                 .attr('width', x.bandwidth())
                 .attr('height', x.bandwidth())
                 .attr('rx', 10)  // rounded corners
@@ -1193,12 +1217,12 @@ function myfunction(svgcount, startdate, enddate) {
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').classed('active', false);
         }
-        
+
         function mouseover(p) {
             console.log(d3.select(this));
             d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
-            .style('fill', 'red');
-            console.log (d3.selectAll('.row text'));
+                .style('fill', 'red');
+            console.log(d3.selectAll('.row text'));
             d3.selectAll('.row text').classed('active', function (d, i) {
                 return d3.select(this).text() == nodes[p.y].name;
             });
@@ -1213,7 +1237,7 @@ function myfunction(svgcount, startdate, enddate) {
                 nodes[p.y].name + '\'s Total (' + nodes[p.y].count + ' tweets)';
 
             var tweetcooccurencecount =
-                Math.round(Math.round(tweetcount/maxrelcount * 100)) +
+                Math.round(Math.round(tweetcount / maxrelcount * 100)) +
                 '% of the maximum cooccurence count (' + maxrelcount + ' tweets)';
             var nodesimilarity = '\'' + nodes[p.y].name + '\' and \'' +
                 nodes[p.x].name + '\' are ' + Math.round(p.similarity * 100) +
@@ -1232,40 +1256,39 @@ function myfunction(svgcount, startdate, enddate) {
 
         function mouseout(p) {
             d3.selectAll('.' + nodes[p.y].name + nodes[p.x].name)
-            .style('fill', '#34495E');
+                .style('fill', '#34495E');
             d3.selectAll('.row text').classed('active', false);
             d3.selectAll('.column text').classed('active', false);
             div.transition().duration(500).style('opacity', 0);
         }
 
         d3.select('#svg' + svgcount)
-        .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
-            d3.select('#myg' + svgcount).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
-        }));
-/*
-        d3.select('#relationsSettingApplyBtn').on('click', function () {
-
-            selected_order = document.getElementById('order').value;
-            selected_group = document.getElementById('group').value;
-            relationvaluefrom =
-                document.getElementById('similarity_value_from').value;
-            relationvalueto = document.getElementById('similarity_value_to').value;
-            d3.selectAll('.row').remove();
-            d3.selectAll('.column').remove();
-
-            myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
-            myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
-            myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
-            myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
-            myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
-            myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
-
-        });
-*/
+            .call(d3.zoom().scaleExtent([0.2, 10]).on("zoom", function () {
+                d3.select('#myg' + svgcount).attr('transform', 'translate(' + (margin.left + d3.zoomTransform(this).x) + ',' + (margin.top + d3.zoomTransform(this).y) + ') scale(' + d3.zoomTransform(this).k + ')');
+            }));
+        /*
+                d3.select('#relationsSettingApplyBtn').on('click', function () {
+        
+                    selected_order = document.getElementById('order').value;
+                    selected_group = document.getElementById('group').value;
+                    relationvaluefrom =
+                        document.getElementById('similarity_value_from').value;
+                    relationvalueto = document.getElementById('similarity_value_to').value;
+                    d3.selectAll('.row').remove();
+                    d3.selectAll('.column').remove();
+        
+                    myfunction(1,"2016-07-01T00:00:00", "2016-07-02T00:00:00");
+                    myfunction(2,"2016-07-02T00:00:00","2016-07-03T00:00:00");
+                    myfunction(3,"2016-07-03T00:00:00","2016-07-04T00:00:00");
+                    myfunction(4,"2016-07-04T00:00:00","2016-07-05T00:00:00");
+                    myfunction(5,"2016-07-05T00:00:00","2016-07-06T00:00:00");
+                    myfunction(6,"2016-07-06T00:00:00","2016-07-07T00:00:00");
+        
+                });
+        */
         function order(value) {
             var i;
-            for (i=1;i<=6;i++)
-            {
+            for (i = 1; i <= 6; i++) {
                 var t = d3.select('#myg' + i).transition().duration(1000);
                 x.domain((ordersmap[i])[value]);
                 t.selectAll('.row')
@@ -1273,10 +1296,10 @@ function myfunction(svgcount, startdate, enddate) {
                         return x(i) * 4;
                     })
                     .attr(
-                    'transform',
-                    function (d, i) {   
-                        return 'translate(0,' + x(i) + ')';
-                    })
+                        'transform',
+                        function (d, i) {
+                            return 'translate(0,' + x(i) + ')';
+                        })
                     .selectAll('.cell')
                     .delay(function (d) {
                         return x(d.x) * 4;
@@ -1284,7 +1307,7 @@ function myfunction(svgcount, startdate, enddate) {
                     .attr('x', function (d) {
                         return x(d.x);
                     });
-    
+
                 t.selectAll('.column')
                     .delay(function (d, i) {
                         return x(i) * 4;
@@ -1292,7 +1315,7 @@ function myfunction(svgcount, startdate, enddate) {
                     .attr('transform', function (d, i) {
                         return 'translate(' + x(i) + ')rotate(-90)';
                     });
-            }           
+            }
         }
         $('#loader' + svgcount).hide();
         $('.plaintext').hide();
@@ -1302,7 +1325,7 @@ function myfunction(svgcount, startdate, enddate) {
 
 
 function getTopWords(searchKeyword, keyWords, numNodes, startDate, endDate, wordType, func) {
-   //$('#tweetsloader').show();
+    //$('#tweetsloader').show();
     $.ajax({
         type: "POST",
         url: '/getTopWords',
